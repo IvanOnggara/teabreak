@@ -870,6 +870,7 @@ class SuperAdminFranchise extends CI_Controller {
 				'total_harga' => $pernota->total_harga,
 				'pembayaran' => $pernota->pembayaran,
 				'keterangan' => $pernota->keterangan,
+				'keterangan_void' => $pernota->keterangan_void,
 				'shift' => $pernota->shift
 				// 'id_nota' => $pernota->id_nota,
 				// 'nama_produk' => $pernota->nama_produk,
@@ -894,6 +895,7 @@ class SuperAdminFranchise extends CI_Controller {
 
 		foreach ($data_detail_nota as $perdetail) {
 			$where = array('id_nota' => $perdetail->id_nota,'nama_produk' => $perdetail->nama_produk);
+			$stat2 = true;
 			// $newdetail = array(
 			// 	'id_nota' => $perdetail->id_nota,
 			// 	'nama_produk' => $perdetail->nama_produk,
