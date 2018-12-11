@@ -104,7 +104,7 @@
                                 <div class="stat-widget-one">
                                     <!-- <div class="stat-icon dib"><i class="ti-money text-success border-success"></i></div> -->
                                     <div class="stat-content dib">
-                                        <div class="stat-text"><h4><b>Total Pemasukan</b></h4></div>
+                                        <div class="stat-text"><h4><b>Total Pemasukan (Cash Setoran)</b></h4></div>
                                         <div class="stat-digit"><h2><b id="totalpemasukan">Rp. --.---,-</b></h2></div>
                                     </div>
                                 </div>

@@ -39,7 +39,7 @@
                                             <input type="text" id="id" placeholder="Masukkan ID Stan" class="form-control" autocomplete="none">
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="nama" class=" form-control-label">Nama Stan</label>
                                             
@@ -47,7 +47,7 @@
                                             <input type="text" style="display: none">
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="password" class=" form-control-label">Password</label>
                                             <div class="input-group">
@@ -59,6 +59,15 @@
                                                         <i id="eye" class="fa fa-eye"></i></button>
                                                 </div>
                                             </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="nama" class=" form-control-label">Jumlah Pegawai</label>
+                                            
+                                            <input type="text" id="jumlahpgw" placeholder="Masukkan Jumlah Pegawai" class="form-control numeric" value="" autocomplete="none">
+                                            <input type="text" style="display: none">
                                         </div>
                                         
                                     </div>
@@ -102,6 +111,7 @@
                                 <th>Nama Stan</th>
                                 <th>Alamat</th>
                                 <th>Password</th>
+                                <th>Jumlah Pegawai</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                               </tr>
@@ -153,6 +163,12 @@
                                 </div>
                                 
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nama" class=" form-control-label">Jumlah Pegawai</label>
+                                    <input type="text" id="editjumlahpgw" placeholder="Masukkan Jumlah Pegawai" class="form-control numeric">
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-10">
@@ -188,5 +204,19 @@
     <script src=<?php echo base_url("assets/datatable/JSZip-2.5.0/jszip.js")?>></script>
     <script src=<?php echo base_url("assets/datatable/pdfmake-0.1.36/pdfmake.js")?>></script>
     <script src=<?php echo base_url("assets/datatable/pdfmake-0.1.36/vfs_fonts.js")?>></script>
+    <script type="text/javascript">
+        $('.numeric').on('input', function (event) { 
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if ($(this).val().length > 1) {
+                    if ($(this).val().charAt(0) == '0') {
+                        if ($(this).val().charAt(1) == '0') {
+                            $(this).val(0);
+                        }else{
+                            $(this).val($(this).val().substring(1));
+                        }
+                    }
+                }
+            });
+    </script>
 </body>
 </html>

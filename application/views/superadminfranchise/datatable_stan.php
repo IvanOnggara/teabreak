@@ -13,6 +13,7 @@
             $("#editidlama").val(response[0].id_stan);
             $("#editalamat").val(response[0].alamat);
             $("#editnama").val(response[0].nama_stan);
+            $("#editjumlahpgw").val(response[0].jumlah_pegawai)
             $("#editpassword").val(response[0].password);
             $("#modal_edit").modal('show');
           },
@@ -30,11 +31,12 @@
     var nama =  $("#editnama").val();
     var id_lama = $("#editidlama").val();
     var password = $("#editpassword").val();
-    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0) {
+    var jumlahpegawai = $("#editjumlahpgw").val();
+    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&jumlahpegawai.replace(/\s/g, '').length>0) {
     $.ajax({
           type:"post",
           url: "<?php echo base_url('superadminfranchise/edit_stan')?>/",
-          data:{ id_lama:id_lama,id:id,alamat:alamat,nama:nama,password:password},
+          data:{ id_lama:id_lama,id:id,alamat:alamat,nama:nama,password:password,jumlahpegawai:jumlahpegawai},
           success:function(response)
           {
             if(response == 'Berhasil Diupdate'){
@@ -50,6 +52,9 @@
               }
               if($('#editpassword').has("error")){
                 $('#editpassword').removeClass("error");
+              }
+              if($('#editjumlahpgw').has("error")){
+                $('#editjumlahpgw').removeClass("error");
               }
               reload_table();
             }else{
@@ -75,6 +80,13 @@
       }else{
         if($('#editnama').has("error")){
           $('#editnama').removeClass("error");
+        }
+      }
+      if (jumlahpegawai.replace(/\s/g, '').length<=0) {
+        $('#editjumlahpgw').addClass("error");
+      }else{
+        if($('#editjumlahpgw').has("error")){
+          $('#editjumlahpgw').removeClass("error");
         }
       }
       if (alamat.replace(/\s/g, '').length<=0) {
@@ -133,12 +145,13 @@ function tambahstan(){
     var nama = $("#nama").val();
     var alamat = $("#alamat").val();
     var password = $("#password").val();
-    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0) {
+    var jumlahpegawai = $("#jumlahpgw").val();
+    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&jumlahpegawai.replace(/\s/g, '').length>0) {
         $.ajax(
             {
                 type:"post",
                 url: "<?php echo base_url('superadminfranchise/tambah_stan')?>/",
-                data:{ id:id,nama:nama,alamat:alamat,password:password},
+                data:{ id:id,nama:nama,alamat:alamat,password:password,jumlahpegawai:jumlahpegawai},
                 success:function(response)
                 {
 
@@ -156,10 +169,15 @@ function tambahstan(){
                     if($('#password').has("error")){
                       $('#password').removeClass("error");
                     }
+                    if($('#jumlahpgw').has("error")){
+                      $('#jumlahpgw').removeClass("error");
+                    }
+
                     $("#id").val('');
                     $("#nama").val('');
                     $("#alamat").val('');
                     $("#password").val('');
+                    $("#jumlahpgw").val('');
                     $("#id").focus();
                     alert(response);
                   }else if(response == 'ID Data Sudah ada di dalam database'){
@@ -208,6 +226,14 @@ function tambahstan(){
             }
         }
 
+        if (jumlahpegawai.replace(/\s/g, '').length<=0) {
+            $('#jumlahpgw').addClass("error");
+        }else{
+            if($('#jumlahpgw').has("error")){
+                $('#jumlahpgw').removeClass("error");
+            }
+        }
+
         alert("Silahkan periksa kembali inputan anda!");
     }
   }
@@ -252,6 +278,7 @@ function tambahstan(){
           'nama_stan' : json.data[i].nama_stan,
           'alamat' : json.data[i].alamat,
           'password' : json.data[i].password,
+          'jumlah_pegawai' : json.data[i].jumlah_pegawai,
           'edit' : '<button onclick=edit_stan("'+json.data[i].id_stan+'") class="btn btn-warning" style="color:white;">Edit</button> ',
           'delete' : '<button onclick=delete_stan("'+json.data[i].id_stan+'") class="btn btn-info" style="color:white;">Delete</button>'
         })
@@ -265,7 +292,7 @@ function tambahstan(){
                 text: 'Copy',
                 filename: 'Data Stan',
                 exportOptions: {
-                  columns:[0,1,2,3]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'excelHtml5',
@@ -273,37 +300,38 @@ function tambahstan(){
                 className: 'exportExcel',
                 filename: 'Data Stan',
                 exportOptions: {
-                  columns:[0,1,2,3]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'csvHtml5',
                 filename: 'Data Stan',
                 exportOptions: {
-                  columns:[0,1,2,3]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'pdfHtml5',
                 filename: 'Data Stan',
                 exportOptions: {
-                  columns:[0,1,2,3]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'print',
                 filename: 'Data Stan',
                 exportOptions: {
-                  columns:[0,1,2,3]
+                  columns:[0,1,2,3,4]
                 }
             }
         ],
         "lengthChange": true,
       columns: 
       [
-      {"data": "id_stan"},
-      {"data": "nama_stan"},
-      {"data": "alamat"},
-      {"data": "password"},
-      {"data": "edit","orderable": false,"searchable": false},
-      {"data": "delete","orderable": false,"searchable": false},
+        {"data": "id_stan"},
+        {"data": "nama_stan"},
+        {"data": "alamat"},
+        {"data": "password"},
+        {"data": "jumlah_pegawai"},
+        {"data": "edit","orderable": false,"searchable": false},
+        {"data": "delete","orderable": false,"searchable": false},
       ],
 
       rowCallback: function(row, data, iDisplayIndex) {

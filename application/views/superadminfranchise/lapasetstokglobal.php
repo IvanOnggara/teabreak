@@ -2,7 +2,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Laporan Sisa Stok Stan</h1>
+                        <h1>Laporan Aset Stock Global</h1>
                     </div>
                 </div>
             </div>
@@ -10,57 +10,36 @@
 
         <div class="content mt-3">
             <div class="animated fadeIn">
-
-                <div class="row">
-                  <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Data Laporan Sisa Stok Stan</strong>
+                            <strong class="card-title">Laporan Aset Stock Global</strong>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="id" class=" form-control-label">Stan</label>
-                                        <select name="select" id="select_stan" class="form-control" onchange="refreshTable()">
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Tanggal</label>
                                         <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control">
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="id" class=" form-control-label">Tanggal Akhir</label>
-                                        <input type="text" id="tanggal_akhir" placeholder="Masukkan Tanggal Akhir" class="form-control">
-                                    </div>
-                                </div> -->
                             </div>
                             <br>
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                                     <thead class="">
                                       <tr>
-                                        <th>Tanggal</th>
-                                        <th>ID Bahan Jadi</th>
-                                        <th>Nama Bahan Jadi</th>
-                                        <th>Stok Masuk</th>
-                                        <th>Stok Keluar</th>
-                                        <th>Sisa Stok</th>
+                                        <th>Keterangan</th>
+                                        <th>Total Nominal Aset</th>
                                       </tr>
                                     </thead>
                                 </table>
                                 <br>
                         </div>
-                        <!-- <div class="card-footer">
-                            <h2 id="total_harga_akhir">Total Penjualan Rp ,-</h2>
-                        </div> -->
-                    </div> <!-- .card -->
-
-                  </div><!--/.col-->
+                        <div class="card-footer">
+                          <strong class="card-title" id="totalaset">Total Aset : Rp. -</strong>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div> <!-- .content -->
@@ -101,33 +80,118 @@
             useCurrent: false
         });
 
-        // $('#tanggal_akhir').datetimepicker({
-        //     format: 'DD/MM/YYYY',
-        //     useCurrent: false
-        // });
-
         $("#tanggal_awal").on("dp.change", function(e) {
-            refreshTable();
+            reload_table();
             // $('#tanggal_akhir').data("DateTimePicker").minDate(e.date);
         });
 
-        // $("#tanggal_akhir").on("dp.change", function(e) {
-        //     refreshTable();
-        //     $('#tanggal_awal').data("DateTimePicker").maxDate(e.date);
-        // });
+        var tanggalfull = new Date();
+          var tanggal = tanggalfull.getDate();
+          var bulan = tanggalfull.getMonth()+1;
+          var tahun = tanggalfull.getFullYear();
+          var jam = tanggalfull.getHours();
+          var menit = tanggalfull.getMinutes();
 
-        // $("#tanggal_awal").click(function () {
-        //     if ($("#tanggal_akhir").val()!='') {
-        //         $('#tanggal_awal').data("DateTimePicker").maxDate($('#tanggal_akhir').data('date'));
-        //     }
-        // });
+          if (parseInt(tanggal)<10) {
+            tanggal = "0"+tanggal;
+          }
 
-        // $('#tanggal_akhir').click(function () {
-        //     if ($("#tanggal_awal").val()!='') {
-        //         $('#tanggal_akhir').data("DateTimePicker").minDate($('#tanggal_awal').data('date'));
-        //     }
-        // });
+          if (parseInt(bulan)<10) {
+            bulan = "0"+bulan;
+          }
 
+          if (parseInt(jam)<10) {
+            jam = "0"+jam;
+          }
+
+          if (parseInt(menit)<10) {
+            menit = "0"+menit;
+          }
+
+        $('#tanggal_awal').val(tanggal+"/"+bulan+"/"+tahun);
+
+        $('.numeric').on('input', function (event) { 
+
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if ($(this).val().indexOf('.') == 0) {
+              $(this).val($(this).val().substring(1));
+            }
+            if ($(this).val().length > 1) {
+                if ($(this).val().charAt(0) == '0') {
+                    if ($(this).val().charAt(1) != '.') {
+                        this.value = $(this).val().charAt(1);
+                    }else{
+                        // this.value = $(this).val().charAt(1);
+                    }
+                }
+            }
+
+            if ($(this).val().split(".").length > 2) {
+                this.value = this.value.slice(0,-1);
+            }
+
+            if ($(this).val()=='') {
+                this.value = 0;
+            }
+        });
+
+        $("#process").hide();
+        var tabeldata;
+
+        function reload_table(){
+          tabeldata.ajax.reload();
+        }
+
+        function gettanggal() {
+            return $("#tanggal_awal").val()
+        }
+
+        var totalaset = 0;
+
+         tabeldata = $("#mytable").DataTable({
+              initComplete: function() {
+                var api = this.api();
+                $('#mytable_filter input')
+                .on('.DT')
+                .on('keyup.DT', function(e) {
+                  if (e.keyCode == 13) {
+                    api.search(this.value).draw();
+                  }
+                });
+              },
+              oLanguage: {
+                sProcessing: "loading..."
+              },
+              responsive: true,
+              ajax: {
+            "type"   : "POST",
+            "url"    : "<?php echo base_url('superadminfranchise/dataAsetGlobal');?>",
+            "data": function(d){
+                var datt = $('#tanggal_awal').val();
+                datt = datt.split("/");
+                d.tanggal = datt[2]+"-"+datt[1]+"-"+datt[0];
+            },
+            "dataSrc": function (json) {
+              totalaset = 0;
+              var return_data = new Array();
+              for(var i=0;i< json.length; i++){
+                return_data.push({
+                  'keterangan': json[i].keterangan,
+                  'total_nominal_aset' : json[i].total_nominal_aset,
+                })
+                totalaset = totalaset+json[i].total_nominal_aset;
+              }
+
+              $("#totalaset").html('Total Aset : Rp. '+totalaset+" ,-");
+              
+              return return_data;
+            }
+          },
+          columns: [
+            {'data': 'keterangan'},
+            {'data': 'total_nominal_aset'}
+          ]
+        });
     </script>
 </body>
 </html>

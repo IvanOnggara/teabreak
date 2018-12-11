@@ -19,6 +19,11 @@ class Produk extends CI_Model{
         return $res->num_rows();
     }
 
+    public function getRowCountAll($table){
+        $res = $this->db->get($table);
+        return $res->num_rows();
+    }
+
     public function getDataLimit($table,$limit){
         $res = $this->db->get($table,$limit,0);
         return $res->result();
@@ -142,6 +147,22 @@ class Produk extends CI_Model{
         else{
             return false;
         }
+    }
+
+    public function getLastDateWithWhere($select,$table,$where)
+    {
+        $this->db->select($select); 
+        $this->db->from($table);
+        $this->db->where($where);
+        return $this->db->get()->result();
+    }
+
+    public function getDataJoin($where,$table1,$table2,$connecttable1,$connecttable2)
+    { 
+        $this->db->from($table1);
+        $this->db->join($table2,$table1.'.'.$connecttable1.'='.$table2.'.'.$connecttable2);
+        $this->db->where($where);
+        return $this->db->get()->result();
     }
 }
 ?>

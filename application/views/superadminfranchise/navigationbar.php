@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <link rel="stylesheet" href=<?php echo base_url("assets/css/themify-icons.css")?>>
     <link rel="stylesheet" href=<?php echo base_url("assets/css/flag-icon.min.css")?>>
+    <link rel="stylesheet" href=<?php echo base_url("assets/css/teabreak.css")?>>
     <link rel="stylesheet" href=<?php echo base_url("assets/css/cs-skin-elastic.css")?>>
     <link rel="stylesheet" href=<?php echo base_url("assets/datatable/datatables.css") ?>>
     <!-- bootstrap-daterangepicker -->
@@ -116,6 +117,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="gajibonusstan">
                         <a style="pointer-events: none;" href="gajibonusstan"> <i class="menu-icon ti-money"></i>Gaji Bonus Stan </a>
                     </li>
+                    <li id="pengeluaranstan">
+                        <a href="pengeluaranstan"> <i class="menu-icon fa fa-money"></i>Pengeluaran Stan </a>
+                    </li>
                     <li id="rekapharianstan">
                         <a href="rekapharianstan"> <i class="menu-icon ti-book"></i>Rekap Harian Stan </a>
                     </li>
@@ -130,11 +134,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </li>
 
                     <h3 class="menu-title">LAPORAN</h3><!-- /.menu-title -->
+                    <li id="lappengeluaranwh">
+                        <a href="lappengeluaranwh"> <i class="menu-icon ti-agenda"></i>Laporan Pengeluaran WareHouse</a>
+                    </li>
+                    <li id="lapasetstokstan">
+                        <a href="lapasetstokstan"> <i class="menu-icon ti-agenda"></i>Laporan Aset Stan</a>
+                    </li>
+                    <li id="lapasetstokwh">
+                        <a href="lapasetstokwh"> <i class="menu-icon ti-agenda"></i>Laporan Aset Warehouse</a>
+                    </li>
+                    <li id="lapasetstokglobal">
+                        <a href="lapasetstokglobal"> <i class="menu-icon ti-agenda"></i>Laporan Aset Global</a>
+                    </li>
                     <li id="lappenjstan">
                         <a href="lappenjstan"> <i class="menu-icon ti-agenda"></i>Laporan Penjualan Stand</a>
                     </li>
                     <li>
                         <a href="lapsisastok"> <i class="menu-icon ti-agenda"></i>Laporan Sisa Stock Stan</a>
+                    </li>
+                    <li>
+                        <a href="lapsisastokwh"> <i class="menu-icon ti-agenda"></i>Laporan Sisa Stock Warehouse</a>
                     </li>
                     <li id="">
                         <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Laporan Pembelian</a>

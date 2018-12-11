@@ -39,7 +39,7 @@
 			    "type"   : "POST",
 			    "data": function(data) {
 				  data.tanggal_awal = $('#tanggal_awal').val();
-				  data.tanggal_akhir = $('#tanggal_akhir').val();
+				  data.tanggal_akhir = $('#tanggal_awal').val();
 				  data.id_stan = $('#select_stan').val();
 				},
 			    "url"    : "<?php echo base_url('superadminfranchise/stokData');?>",
@@ -52,6 +52,8 @@
 			          'tanggal': json[i].tanggal,
 			          'id_bahan_jadi'  : json[i].id_bahan_jadi,
 			          'nama_bahan_jadi' : json[i].nama_bahan_jadi,
+			          'stok_masuk' : json[i].stok_masuk,
+			          'stok_keluar' : json[i].stok_keluar,
 			          'stok_sisa' : json[i].stok_sisa
 			        });
 			      }
@@ -100,6 +102,8 @@
 				    {'data': 'tanggal'},
 				    {'data': 'id_bahan_jadi'},
 				    {'data': 'nama_bahan_jadi'},
+				    {'data': 'stok_masuk'},
+				    {'data': 'stok_keluar'},
 				    {'data': 'stok_sisa'}
 				  ],
 	    	});

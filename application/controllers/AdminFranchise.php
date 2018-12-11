@@ -360,6 +360,26 @@ class AdminFranchise extends CI_Controller {
     $success = $this->Produk->insert('pengeluaran_lain_gudang',$data);
 
     if ($success) {
+      $exist = $this->Produk->getRowCountAll('modal_gudang');
+
+      if ($exist > 0) {
+        $datamodal = $this->Produk->getAllData('modal_gudang');
+        $modal = $datamodal[0]->jumlah_modal;
+        $data = array(
+          'jumlah_modal' => $modal+$jumlahpengeluaran
+        );
+        $where = array(
+          'id' => 'modaldata'
+        );
+
+        $ok = $this->Produk->update('modal_gudang',$data, $where);
+      }else{
+        $data = array(
+          'jumlah_modal' => 0-$jumlahpengeluaran
+        );
+        $ok = $this->Produk->insert('modal_gudang',$data);
+      }
+
       echo "Berhasil Ditambahkan";
     }
     
@@ -409,6 +429,25 @@ class AdminFranchise extends CI_Controller {
     }
 
     if ($cek) {
+      $exist = $this->Produk->getRowCountAll('modal_gudang');
+
+      if ($exist > 0) {
+        $datamodal = $this->Produk->getAllData('modal_gudang');
+        $modal = $datamodal[0]->jumlah_modal;
+        $data = array(
+          'jumlah_modal' => $modal-$realdata[0]->pengeluaran+$pengeluaranbaru
+        );
+        $where = array(
+          'id' => 'modaldata'
+        );
+
+        $ok = $this->Produk->update('modal_gudang',$data, $where);
+      }else{
+        $data = array(
+          'jumlah_modal' => 0-$pengeluaranbaru
+        );
+        $ok = $this->Produk->insert('modal_gudang',$data);
+      }
       echo "Berhasil Diupdate";
     }else{
       echo "gagal";
@@ -650,7 +689,24 @@ class AdminFranchise extends CI_Controller {
       echo $this->datatables->generate();
   }
 
+  public function getmodal()
+  {
+    $exist = $this->Produk->getRowCountAll('modal_gudang');
 
+    if ($exist > 0) {
+      $datamodal = $this->Produk->getAllData('modal_gudang');
+      $modal = $datamodal[0]->jumlah_modal;
+    }else{
+      $data = array(
+        'jumlah_modal' => 0
+      );
+      $this->Produk->insert('modal_gudang',$data);
+      $modal = 0;
+    }
+
+    echo $modal;
+
+  }
 
 }
 ?>

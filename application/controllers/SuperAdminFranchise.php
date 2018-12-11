@@ -268,7 +268,7 @@ class SuperAdminFranchise extends CI_Controller {
 
 	public function datastan(){
 		$this->load->library('datatables');
-		$this->datatables->select('id_stan,nama_stan,alamat,password');
+		$this->datatables->select('id_stan,nama_stan,alamat,password,jumlah_pegawai');
 		$this->datatables->from('stan');
 		echo$this->datatables->generate();
 	}
@@ -285,7 +285,8 @@ class SuperAdminFranchise extends CI_Controller {
 		        'id_stan' => $this->input->post('id'),
 		        'nama_stan' => $this->input->post('nama'),
 		        'alamat' => $this->input->post('alamat'),
-		        'password' => $this->input->post('password')
+		        'password' => $this->input->post('password'),
+		        'jumlah_pegawai' => $this->input->post('jumlahpegawai'),
 		    );
 
 			$this->Produk->insert('stan',$data);
@@ -321,7 +322,8 @@ class SuperAdminFranchise extends CI_Controller {
 				'id_stan' => $idbaru,
 		        'nama_stan' => $this->input->post('nama'),
 		        'alamat' => $this->input->post('alamat'),
-		        'password' => $this->input->post('password')
+		        'password' => $this->input->post('password'),
+		        'jumlah_pegawai' => $this->input->post('jumlahpegawai')
 		    );
 			$this->Post->Update('stan',$data,$where);
 			echo "Berhasil Diupdate";
@@ -1440,5 +1442,291 @@ class SuperAdminFranchise extends CI_Controller {
             $this->load->view('superadminfranchise/pembelian');
 			// $this->load->view('superadminfranchise/datatable_produk');
         }
+  }
+
+  public function lappengeluaranwh()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lappengeluaranwh');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function topupmodal()
+  {
+  	$data = $this->input->post('jumlah');
+
+  	$datamodal = $this->Produk->getAllData('modal_gudang');
+    $modal = $datamodal[0]->jumlah_modal;
+    $data = array(
+      'jumlah_modal' => $modal-$data
+    );
+    $where = array(
+      'id' => 'modaldata'
+    );
+
+    $ok = $this->Produk->update('modal_gudang',$data, $where);
+    if ($ok) {
+    	echo "sukses";
+    }else{
+    	echo "gagal";
+    }
+  }
+
+  public function getpengeluaranlain()
+  {
+  	$tanggal = $this->input->post('tanggal');
+  	$tanggal = explode("/", $tanggal);
+  	$tanggal = $tanggal[2]."-".$tanggal[1]."-".$tanggal[0];
+  	$data = array('tanggal' => $tanggal);
+  	// var_dump($tanggal);
+  	$this->load->library('datatables');
+    $this->datatables->select('id_pengeluaran,tanggal,keterangan,pengeluaran');
+    $this->datatables->from('pengeluaran_lain_gudang');
+    $this->datatables->where($data);
+    echo $this->datatables->generate();
+    
+  }
+
+  public function lapasetstokstan()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lapasetstokstan');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function lapasetstokwh()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lapasetstokwh');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function dataSisaStok()
+  {
+  	$tanggal = $this->input->post('tanggal');
+  	$stan = $this->input->post('stan');
+
+  	$where1 = array(
+		'tanggal<=' => $tanggal
+	);
+	$getlasttanggal = $this->Produk->getLastDateWithWhere('MAX(tanggal) as tanggal','stok_bahan_jadi',$where1);
+	// var_dump($getlasttanggal);
+	if ($getlasttanggal[0]->tanggal === NULL) {
+		$getlasttanggal[0]->tanggal = '';
+	}
+		
+	if ($tanggal == '') {
+		$where = array('tanggal' => '','id_stan' => $stan);
+		$this->load->library('datatables');
+		$this->datatables->select('stok_bahan_jadi.id_bahan_jadi,stok_bahan_jadi.nama_bahan_jadi,stok_bahan_jadi.stok_sisa,bahan_jadi.harga_bahan_jadi');
+		$this->datatables->from('stok_bahan_jadi');
+		$this->datatables->join('bahan_jadi','stok_bahan_jadi.id_bahan_jadi = bahan_jadi.id_bahan_jadi');
+		$this->datatables->where($where);
+		
+		echo $this->datatables->generate();
+	}else{
+		$tanggal = strtotime($tanggal);
+		$tanggal = date('Y-m-d',$tanggal);
+
+		$where = array('tanggal' => $getlasttanggal[0]->tanggal,'id_stan' => $stan);
+		// $alldata = $this->ModelKasir->getData($where,'stok_bahan_jadi');
+
+		// return json_encode($alldata);
+
+		$this->load->library('datatables');
+		$this->datatables->select('stok_bahan_jadi.id_bahan_jadi,stok_bahan_jadi.nama_bahan_jadi,stok_bahan_jadi.stok_sisa,bahan_jadi.harga_bahan_jadi');
+		$this->datatables->from('stok_bahan_jadi');
+		$this->datatables->join('bahan_jadi','stok_bahan_jadi.id_bahan_jadi = bahan_jadi.id_bahan_jadi');
+		$this->datatables->where($where);
+		
+		echo $this->datatables->generate();
+	}
+  }
+
+  public function dataSisaStokwh()
+  {
+  	$tanggal = $this->input->post('tanggal');
+
+  	$where1 = array(
+		'tanggal<=' => $tanggal
+	);
+	$getlasttanggal = $this->Produk->getLastDateWithWhere('MAX(tanggal) as tanggal','stok_bahan_jadi_gudang',$where1);
+	// var_dump($getlasttanggal);
+	if ($getlasttanggal[0]->tanggal === NULL) {
+		$getlasttanggal[0]->tanggal = '';
+	}
+		
+	if ($tanggal == '') {
+		$where = array('tanggal' => '');
+		$this->load->library('datatables');
+		$this->datatables->select('stok_bahan_jadi_gudang.id_bahan_jadi,stok_bahan_jadi_gudang.nama_bahan_jadi,stok_bahan_jadi_gudang.stok_sisa,bahan_jadi.harga_bahan_jadi');
+		$this->datatables->from('stok_bahan_jadi_gudang');
+		$this->datatables->join('bahan_jadi','stok_bahan_jadi.id_bahan_jadi = bahan_jadi.id_bahan_jadi');
+		$this->datatables->where($where);
+		
+		echo $this->datatables->generate();
+	}else{
+		$tanggal = strtotime($tanggal);
+		$tanggal = date('Y-m-d',$tanggal);
+
+		$where = array('tanggal' => $getlasttanggal[0]->tanggal);
+		// $alldata = $this->ModelKasir->getData($where,'stok_bahan_jadi');
+
+		// return json_encode($alldata);
+
+		$this->load->library('datatables');
+		$this->datatables->select('stok_bahan_jadi_gudang.id_bahan_jadi,stok_bahan_jadi_gudang.nama_bahan_jadi,stok_bahan_jadi_gudang.stok_sisa,bahan_jadi.harga_bahan_jadi');
+		$this->datatables->from('stok_bahan_jadi_gudang');
+		$this->datatables->join('bahan_jadi','stok_bahan_jadi_gudang.id_bahan_jadi = bahan_jadi.id_bahan_jadi');
+		$this->datatables->where($where);
+		
+		echo $this->datatables->generate();
+	}
+  }
+
+  public function lapasetstokglobal()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lapasetstokglobal');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function lapsisastokwh()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lapsisastokwh');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function dataAsetGlobal()
+  {
+  	$allstan = $this->Produk->getSpecificColumn('stan','id_stan,nama_stan,alamat');
+  	$tanggal = $this->input->post('tanggal');
+  	// $tanggal = '2018-11-20';
+  	$array = array();
+
+  	// var_dump($allstan);
+
+  	foreach ($allstan as $value) {
+  		$where1 = array(
+  			'id_stan' => $value->id_stan,
+  			'tanggal<=' => $tanggal
+  		);
+  		$getlasttanggal = $this->Produk->getLastDateWithWhere('MAX(tanggal) as tanggal','stok_bahan_jadi',$where1);
+  		// var_dump($getlasttanggal);
+  		if ($getlasttanggal[0]->tanggal === NULL) {
+  			$getlasttanggal[0]->tanggal = '';
+  		}
+
+  		$where = array(
+  			'id_stan' => $value->id_stan,
+  			'tanggal' => $getlasttanggal[0]->tanggal
+  		);
+  		// var_dump($where);
+
+  		$laststokstan = $this->Produk->getDataJoin($where,'stok_bahan_jadi','bahan_jadi','id_bahan_jadi','id_bahan_jadi');
+  		$totalaset = 0;
+  		
+  		foreach ($laststokstan as $value1) {
+  			$totalaset = $totalaset + ($value1->stok_sisa*$value1->harga_bahan_jadi);
+  		}
+  		$obj = array();
+  		$obj['keterangan'] = $value->nama_stan." ( ".$value->alamat." ) ";
+  		$obj['total_nominal_aset'] = $totalaset;
+
+  		// var_dump($obj);
+
+  		array_push($array, $obj);
+  	}
+
+  	#UNTUK WAREHOUSE
+  	$where1 = array(
+		'tanggal<=' => $tanggal
+	);
+	$getlasttanggal = $this->Produk->getLastDateWithWhere('MAX(tanggal) as tanggal','stok_bahan_jadi_gudang',$where1);
+	// var_dump($getlasttanggal);
+	if ($getlasttanggal[0]->tanggal === NULL) {
+		$getlasttanggal[0]->tanggal = '';
+	}
+
+	$where = array(
+		'tanggal' => $getlasttanggal[0]->tanggal
+	);
+
+  	$laststokstan = $this->Produk->getDataJoin($where,'stok_bahan_jadi_gudang','bahan_jadi','id_bahan_jadi','id_bahan_jadi');
+	$totalaset = 0;
+	
+	foreach ($laststokstan as $value1) {
+		$totalaset = $totalaset + ($value1->stok_sisa*$value1->harga_bahan_jadi);
+	}
+  	$gudang = array(
+  		'keterangan' => 'Warehouse Teabreak',
+  		'total_nominal_aset' => $totalaset
+  	);
+
+  	array_push($array, $gudang);
+
+  	echo json_encode($array);
+
+  }
+
+  public function pengeluaranstan()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/pengeluaranstan');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function datapengeluaranstan()
+  {
+  	$stan = $this->input->post('stan');
+  	$tanggalawal = $this->input->post('tanggalawal');
+  	$tanggalakhir = $this->input->post('tanggalakhir');
+
+  	if ($tanggalawal == '') {
+  		$tanggalawal = '1970-01-01';
+  	}
+
+  	if ($tanggalakhir == '') {
+  		$tanggalakhir = '1970-01-01';
+  	}
+
+  	$where = array(
+  		'id_stan' => $stan,
+  		'tanggal>=' => $tanggalawal,
+  		'tanggal<=' => $tanggalakhir
+  	);
+
+  	$
   }
 }

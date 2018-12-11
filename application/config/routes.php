@@ -95,8 +95,12 @@ $route['lappengeluaranstok'] = 'superadminfranchise/lappengeluaranstok';
 $route['lapsisastok'] = 'superadminfranchise/lapsisastok';
 $route['presensi'] = 'superadminfranchise/presensi';
 $route['masterdataprodukkemasan'] = 'superadminfranchise/masterdataprodukkemasan';
-
-
+$route['lappengeluaranwh'] = 'superadminfranchise/lappengeluaranwh';
+$route['lapasetstokwh'] = 'superadminfranchise/lapasetstokwh';
+$route['lapasetstokstan'] = 'superadminfranchise/lapasetstokstan';
+$route['lapasetstokglobal'] = 'superadminfranchise/lapasetstokglobal';
+$route['lapsisastokwh'] = 'superadminfranchise/lapsisastokwh';
+$route['pengeluaranstan'] = 'superadminfranchise/pengeluaranstan';
 
 
 

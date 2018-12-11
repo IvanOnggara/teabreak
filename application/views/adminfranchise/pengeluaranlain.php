@@ -66,6 +66,7 @@
                             <strong class="card-title">Data Pengeluaran</strong>
                         </div>
                         <div class="card-body">
+                              <h3 id="sisamodal" style="margin-bottom: 10px;">Sisa Modal : Rp. -</h3>
                           <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                             <thead>
                               <tr>
@@ -144,10 +145,35 @@
 
     <script type="text/javascript">
 
+
         var tabeldata;
         $('.numeric').on('input', function (event) { 
             this.value = this.value.replace(/[^0-9]/g, '');
         });
+
+        updateModalNow();
+        function updateModalNow() {
+          $.post({
+            url: "<?php echo base_url('adminfranchise/getmodal')?>/",
+            success:function(response) {
+              $("#sisamodal").html("Sisa Modal : Rp. "+currency(response)+" ,-");
+            },
+            error:function(argument) {
+              $("#sisamodal").html("Sisa Modal : *Data Error (Silahkan Refresh Halaman)");
+              $("#sisamodal").css("color","red");
+            }
+          });
+        }
+
+        
+
+        function currency(x) {
+          var retVal=x.toString().replace(/[^\d]/g,'');
+          while(/(\d+)(\d{3})/.test(retVal)) {
+            retVal=retVal.replace(/(\d+)(\d{3})/,'$1'+'.'+'$2');
+          }
+          return retVal;
+        }
 
         function tambahpengeluaran() {
 
@@ -175,7 +201,7 @@
                             reload_table();
 
                           if(response == 'Berhasil Ditambahkan'){
-                            
+                            updateModalNow();
                             
                             if($('#keterangan').has("is-invalid")){
                               $('#keterangan').removeClass("is-invalid");
@@ -352,7 +378,8 @@
                       reload_table();
 
                       if(response == 'Berhasil Diupdate'){
-                        
+                        updateModalNow();
+
                         
                         if($('#editket').has("is-invalid")){
                           $('#editket').removeClass("is-invalid");
