@@ -197,7 +197,7 @@
             $("#process").addClass('teal');
             $("#process").removeClass('red');
             $("#process").removeClass('green');
-            $("#process").html('<i class="fa fa-spin fa-refresh"></i> <b>Loading...</b>')
+            $("#process").html('<i class="fa fa-spin fa-refresh"></i> <b>Loading...</b>');
             
             $("#buttontopup").prop('disabled',true);
             // alert(argument);

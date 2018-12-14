@@ -32,6 +32,12 @@
                                         <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control">
                                     </div>
                                 </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label"> </label>
+                                        <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
+                                    </div>
+                                </div>
                             </div>
                             <br>
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">

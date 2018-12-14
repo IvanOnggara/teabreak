@@ -101,6 +101,9 @@ $route['lapasetstokstan'] = 'superadminfranchise/lapasetstokstan';
 $route['lapasetstokglobal'] = 'superadminfranchise/lapasetstokglobal';
 $route['lapsisastokwh'] = 'superadminfranchise/lapsisastokwh';
 $route['pengeluaranstan'] = 'superadminfranchise/pengeluaranstan';
+$route['inputpenjualanstan'] = 'superadminfranchise/inputpenjualanstan';
+$route['manajemenshift'] = 'superadminfranchise/manajemenshift';
+
 
 
 

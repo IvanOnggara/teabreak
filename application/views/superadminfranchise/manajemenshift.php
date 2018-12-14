@@ -2,7 +2,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Laporan Pengeluaran Stan</h1>
+                        <h1>Laporan Penjualan Stan dari Super Admin</h1>
                     </div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
                   <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Tambah Data Pengeluaran</strong>
+                            <strong class="card-title">Tambah Data Penjualan</strong>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -29,23 +29,17 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="id" class=" form-control-label">Tanggal</label>
-                                        <input type="text" id="tanggal" placeholder="Masukkan Tanggal" class="form-control">
+                                        <label for="id" class=" form-control-label">Bulan, Tahun</label>
+                                        <input type="text" id="tanggal" placeholder="Masukkan Bulan Tahun" class="form-control">
 
                                     </div>
                                     
                                     
                                 </div>
-                                <div class="col-lg-7">
-                                    <div class="form-group">
-                                        <label for="id" class=" form-control-label">Keterangan</label>
-                                        <input type="text" id="keterangan" placeholder="Masukkan Keterangan" class="form-control">
-                                    </div>
-                                </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="id" class=" form-control-label">Biaya</label>
-                                        <input type="text" id="biaya" placeholder="Masukkan Biaya" class="form-control numeric">
+                                        <label for="id" class=" form-control-label">Total Penjualan</label>
+                                        <input type="text" id="penjualan" placeholder="Masukkan Penjualan" class="form-control numeric">
 
                                     </div>
                                     
@@ -81,11 +75,11 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Data Laporan Pengeluaran Stan</strong>
+                            <strong class="card-title">Data Laporan Penjualan Stan</strong>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-3">
+                                <!-- <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Nama Stan</label>
                                         <select name="select" id="select_stan" class="form-control" onchange="reload_table()">
@@ -98,14 +92,14 @@
                                         <label for="id" class=" form-control-label">Tanggal Awal</label>
                                         <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control">
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="id" class=" form-control-label">Tanggal Akhir</label>
-                                        <input type="text" id="tanggal_akhir" placeholder="Masukkan Tanggal" class="form-control">
+                                        <label for="id" class=" form-control-label">Bulan Tahun</label>
+                                        <input type="text" id="tanggal2" placeholder="Masukkan Bulan Tahun" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label"> </label>
                                         <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
@@ -117,10 +111,9 @@
                                     <thead class="">
                                       <tr>
                                         <th>Tanggal</th>
-                                        <th>Keterangan</th>
-                                        <th>Jumlah Pengeluaran</th>
+                                        <th>Nama Stan</th>
+                                        <th>Penjualan</th>
                                         <th>Edit</th>
-                                        <th>Delete</th>
                                       </tr>
                                     </thead>
                                 </table>
@@ -141,26 +134,13 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
+
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="editid" class=" form-control-label">Keterangan</label>
-                            <textarea class="form-control" rows="5" id="editket" placeholder="Keterangan"></textarea>
+                            <label for="editid" class=" form-control-label">Penjualan</label>
                             <input type="hidden" name="id_lama" id="id_lama">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="editid" class=" form-control-label">Pengeluaran</label>
-                            <input type="text" id="editpeng" placeholder="Masukkan Pengeluaran" class="form-control numeric">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="editshift" class=" form-control-label">Tanggal</label>
-                            <input type="text" id="edittanggal" placeholder="Masukkan Pengeluaran" class="form-control">
+                            <input type="text" id="editpen" placeholder="Masukkan Pengeluaran" class="form-control numeric">
                         </div>
                     </div>
                 </div>
@@ -203,32 +183,36 @@
     <script type="text/javascript">
         // alert($("#tanggal_awal").val());
         //TAMBAH DATA
-        $('#tanggal_awal').datetimepicker({
-            format: 'DD/MM/YYYY',
-            useCurrent: false
-        });
+        // $('#tanggal_awal').datetimepicker({
+        //     format: 'DD/MM/YYYY',
+        //     useCurrent: false
+        // });
 
-        $('#tanggal_akhir').datetimepicker({
-            format: 'DD/MM/YYYY',
-            useCurrent: false
-        });
+        // $('#tanggal_akhir').datetimepicker({
+        //     format: 'DD/MM/YYYY',
+        //     useCurrent: false
+        // });
 
         $('#tanggal').datetimepicker({
-            format: 'DD/MM/YYYY',
+            format: 'MM/YYYY',
             useCurrent: false
         });
 
-        $("#tanggal_awal").on("dp.change", function(e) {
+        $('#tanggal2').datetimepicker({
+            format: 'MM/YYYY',
+            useCurrent: false
+        });
+
+        $("#tanggal2").on("dp.change", function(e) {
             
-            $('#tanggal_akhir').data("DateTimePicker").minDate(e.date);
             reload_table();
         });
 
-        $("#tanggal_akhir").on("dp.change", function(e) {
+        // $("#tanggal_akhir").on("dp.change", function(e) {
             
-            $('#tanggal_awal').data("DateTimePicker").maxDate(e.date);
-            reload_table();
-        });
+        //     $('#tanggal_awal').data("DateTimePicker").maxDate(e.date);
+        //     reload_table();
+        // });
 
         var tanggalfull = new Date();
           var tanggal = tanggalfull.getDate();
@@ -283,6 +267,50 @@
         
         var tabeldata;
 
+
+         tabeldata = $("#mytable").DataTable({
+              initComplete: function() {
+                var api = this.api();
+                $('#mytable_filter input')
+                .on('.DT')
+                .on('keyup.DT', function(e) {
+                  if (e.keyCode == 13) {
+                    api.search(this.value).draw();
+                  }
+                });
+              },
+              oLanguage: {
+                sProcessing: "loading..."
+              },
+              responsive: true,
+              ajax: {
+            "type"   : "POST",
+            "url"    : "<?php echo base_url('superadminfranchise/datapenjualanstan');?>",
+            "data": function(d){
+                var datt = $('#tanggal2').val();
+                d.tanggal = datt;
+            },
+            "dataSrc": function (json) {
+              var return_data = new Array();
+              for(var i=0;i< json.length; i++){
+                return_data.push({
+                  'bulan_tahun': json[i].bulan_tahun,
+                  'nama_stan'  : json[i].nama_stan,
+                  'penjualan' : json[i].penjualan,
+                  'edit' : '<button onclick="editpenjualan(\''+json[i].id_penjualan+'\',\''+json[i].penjualan+'\')" class="btn btn-warning" >Edit</button> '
+                })
+              }
+              return return_data;
+            }
+          },
+          columns: [
+            {'data': 'bulan_tahun'},
+            {'data': 'nama_stan'},
+            {'data': 'penjualan'},
+            {'data': 'edit'}
+          ]
+        });
+
         $.ajax({
           type:"post",
           url: "<?php echo base_url('superadminfranchise/get_list_stan')?>/",
@@ -302,55 +330,6 @@
                 $("#select_stan").html(htmlinsideselect);
                 $("#stan").html(htmlinsideselect);
 
-                 tabeldata = $("#mytable").DataTable({
-                      initComplete: function() {
-                        var api = this.api();
-                        $('#mytable_filter input')
-                        .on('.DT')
-                        .on('keyup.DT', function(e) {
-                          if (e.keyCode == 13) {
-                            api.search(this.value).draw();
-                          }
-                        });
-                      },
-                      oLanguage: {
-                        sProcessing: "loading..."
-                      },
-                      responsive: true,
-                      ajax: {
-                    "type"   : "POST",
-                    "url"    : "<?php echo base_url('superadminfranchise/datapengeluaranstan');?>",
-                    "data": function(d){
-                        var datt = $('#tanggal_awal').val();
-                        datt = datt.split("/");
-                        var dattakhir = $('#tanggal_akhir').val();
-                        dattakhir = dattakhir.split("/");
-                        d.tanggalawal = datt[2]+"-"+datt[1]+"-"+datt[0];
-                        d.tanggalakhir = dattakhir[2]+"-"+dattakhir[1]+"-"+dattakhir[0];
-                        d.stan = $("#select_stan").val();
-                    },
-                    "dataSrc": function (json) {
-                      var return_data = new Array();
-                      for(var i=0;i< json.length; i++){
-                        return_data.push({
-                          'tanggal': json[i].tanggal,
-                          'keterangan'  : json[i].keterangan,
-                          'pengeluaran' : json[i].pengeluaran,
-                          'edit' : '<button onclick="editpengeluaran(\''+json[i].id_pengeluaran+'\',\''+json[i].tanggal+'\',\''+json[i].keterangan+'\',\''+json[i].pengeluaran+'\')" class="btn btn-warning" >Edit</button> ',
-                          'delete' : '<button onclick="deletepengeluaran(\''+json[i].id_pengeluaran+'\')" class="btn btn-danger">Delete</button> '
-                        })
-                      }
-                      return return_data;
-                    }
-                  },
-                  columns: [
-                    {'data': 'tanggal'},
-                    {'data': 'keterangan'},
-                    {'data': 'pengeluaran'},
-                    {'data': 'edit'},
-                    {'data': 'delete'}
-                  ]
-                });
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
@@ -378,16 +357,15 @@
                 $("#process").removeClass('green');
                 $("#process").html('<i class="fa fa-spin fa-refresh"></i> <b>Loading...</b>');
                 var tanggal = $("#tanggal").val();
-                var keterangan = $("#keterangan").val();
-                var biaya = $("#biaya").val();
                 var stan = $("#stan").val();
+                var penjualan = $("#penjualan").val();
 
-                if (tanggal.replace(/\s/g, '').length>0&&keterangan.replace(/\s/g, '').length>0&&biaya.replace(/\s/g, '').length>0) {
+                if (tanggal.replace(/\s/g, '').length>0&&penjualan.replace(/\s/g, '').length>0) {
 
                     $.ajax({
                       type:"post",
-                      url: "<?php echo base_url('superadminfranchise/adddatapengeluaranstan')?>/",
-                      data:{stan:stan, tanggal:tanggal,keterangan:keterangan,biaya:biaya},
+                      url: "<?php echo base_url('superadminfranchise/adddatapenjualanstan')?>/",
+                      data:{stan:stan, tanggal:tanggal,penjualan:penjualan},
                       success:function(response)
                       {
                         if(response == 'Berhasil Ditambahkan'){
@@ -395,17 +373,13 @@
                           if($('#tanggal').has("error")){
                             $('#tanggal').removeClass("error");
                           }
-                          if($('#keterangan').has("error")){
-                            $('#keterangan').removeClass("error");
-                          }
-                          if($('#biaya').has("error")){
-                            $('#biaya').removeClass("error");
+                          if($('#penjualan').has("error")){
+                            $('#penjualan').removeClass("error");
                           }
 
                             $("#tanggal").val('');
-                            $("#keterangan").val('');
-                            $("#biaya").val('');
-                            $('#keterangan').focus();
+                            $("#penjualan").val('');
+                            $('#stan').focus();
 
                             $("#process").html('<i class="fa fa-check"></i> <b>Sukses Ditambahkan</b>');
                             $("#process").addClass('green');
@@ -444,18 +418,11 @@
                       $('#tanggal').removeClass("error");
                     }
                   }
-                  if (keterangan.replace(/\s/g, '').length<=0) {
-                    $('#keterangan').addClass("error");
+                  if (penjualan.replace(/\s/g, '').length<=0) {
+                    $('#penjualan').addClass("error");
                   }else{
-                    if($('#keterangan').has("error")){
-                      $('#keterangan').removeClass("error");
-                    }
-                  }
-                  if (biaya.replace(/\s/g, '').length<=0) {
-                    $('#biaya').addClass("error");
-                  }else{
-                    if($('#biaya').has("error")){
-                      $('#biaya').removeClass("error");
+                    if($('#penjualan').has("error")){
+                      $('#penjualan').removeClass("error");
                     }
                   }
                   alert("Silahkan periksa kembali inputan anda!");
@@ -465,63 +432,21 @@
             }
         }
 
-        function editpengeluaran(id,tanggal,keterangan,pengeluaran) {
+        function editpenjualan(id,penjualan) {
           $('#modal_edit').modal('toggle');
-          $('#editket').val(keterangan.split('-').join('\n'));
-          $('#edittanggal').val(tanggal);
-          $('#editpeng').val(pengeluaran);
+          $('#editpen').val(penjualan);
           $('#id_lama').val(id);
         }
 
-        function deletepengeluaran(id) {
-          if(confirm('Apakah anda yakin ingin menghapus data ini??')){
-            $.ajax({
-                    type:"post",
-                    url: "<?php echo base_url('superadminfranchise/delete_pengeluaran_stan')?>/",
-                    data:{ id:id,sst:'sinkron'},
-                    success:function(response)
-                    {
-                        if (response == 'CANTCONNECT') {
-                          alert('Pastikan anda terhubung dengan internet!');
-                        }else if (response == 'SUCCESSSAVE') {
-                          alert('Data Berhasil Dihapus!');
-                          reload_table();
-                        }else{
-                          alert('Error! Coba lagi nanti!');
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown)
-                    {
-                      alert(errorThrown);
-                    }
-                }
-            );
-          }
-        }
-
         function simpanedit() {
-          var keteranganbaru = $('#editket').val().split('\n').join('-');
-          var pengeluaranbaru = $('#editpeng').val();
-          var id_pengeluaran = $('#id_lama').val();
-          var tanggalbaru = $('#edittanggal').val();
+          var penjualanbaru = $('#editpen').val();
+          var id_penjualan = $('#id_lama').val();
 
-          if (keteranganbaru == '' || pengeluaranbaru == '' || tanggalbaru == '') {
-            if (keteranganbaru == '') {
-              $('#editket').addClass('is-invalid');
+          if (penjualanbaru == '') {
+            if (penjualanbaru == '') {
+              $('#editpen').addClass('is-invalid');
             }else{
-              $("#editket").removeClass('is-invalid');
-            }
-
-            if (pengeluaranbaru == '') {
-              $('#editpeng').addClass('is-invalid');
-            }else{
-              $("#editpeng").removeClass('is-invalid');
-            }
-
-            if (tanggalbaru == '') {
-              $('#edittanggal').addClass('is-invalid');
-            }else{
-              $("#edittanggal").removeClass('is-invalid');
+              $("#editpen").removeClass('is-invalid');
             }
 
             alert('Periksa Kembali inputan anda');
@@ -530,25 +455,16 @@
             $.ajax(
                 {
                     type:"post",
-                    url: "<?php echo base_url('superadminfranchise/edit_pengeluaran_lain_stan')?>/",
-                    data:{ keteranganbaru:keteranganbaru,pengeluaranbaru:pengeluaranbaru,id_pengeluaran:id_pengeluaran,tanggalbaru:tanggalbaru},
+                    url: "<?php echo base_url('superadminfranchise/edit_penjualan_stan')?>/",
+                    data:{ penjualanbaru:penjualanbaru,id_penjualan:id_penjualan},
                     success:function(response)
                     {
                       reload_table();
 
                       if(response == 'Berhasil Diupdate'){
-                        
-                        
-                        if($('#editket').has("is-invalid")){
-                          $('#editket').removeClass("is-invalid");
-                        }
 
-                        if($('#editpeng').has("is-invalid")){
-                          $('#editpeng').removeClass("is-invalid");
-                        }
-
-                        if($('#edittanggal').has("is-invalid")){
-                          $('#edittanggal').removeClass("is-invalid");
+                        if($('#editpen').has("is-invalid")){
+                          $('#editpen').removeClass("is-invalid");
                         }
 
                         $('#modal_edit').modal('toggle');

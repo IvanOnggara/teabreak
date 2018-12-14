@@ -120,6 +120,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="pengeluaranstan">
                         <a href="pengeluaranstan"> <i class="menu-icon fa fa-money"></i>Pengeluaran Stan </a>
                     </li>
+                    <li id="inputpenjualanstan">
+                        <a href="inputpenjualanstan"> <i class="menu-icon fa fa-tasks"></i>Input Hasil Penjualan Stan</a>
+                    </li>
                     <li id="rekapharianstan">
                         <a href="rekapharianstan"> <i class="menu-icon ti-book"></i>Rekap Harian Stan </a>
                     </li>
@@ -131,6 +134,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <h3 class="menu-title">KARYAWAN</h3><!-- /.menu-title -->
                     <li id="masterdatakaryawan">
                         <a href="masterdatakaryawan"> <i class="menu-icon fa fa-users"></i>Data Karyawan </a>
+                    </li>
+                    <li id="manajemenshift">
+                        <a href="manajemenshift"> <i class="menu-icon ti-layers-alt"></i>Manajemen Shift </a>
                     </li>
 
                     <h3 class="menu-title">LAPORAN</h3><!-- /.menu-title -->

@@ -1727,6 +1727,232 @@ class SuperAdminFranchise extends CI_Controller {
   		'tanggal<=' => $tanggalakhir
   	);
 
-  	$
+  	$datapengeluaranstan = $this->Produk->getData($where,'pengeluaran_lain_stan_superadmin');
+
+  	echo json_encode($datapengeluaranstan);
+  }
+
+  public function adddatapengeluaranstan()
+  {
+  	$stan = $this->input->post('stan');
+  	$tanggal = $this->input->post('tanggal');
+  	$keterangan = $this->input->post('keterangan');
+  	$biaya = $this->input->post('biaya');
+
+  	$tanggal = explode('/', $tanggal);
+  	$tanggal = $tanggal[2]."-".$tanggal[1]."-".$tanggal[0];
+
+  	$data = array(
+  		'id_stan' => $stan,
+  		'tanggal' => $tanggal,
+  		'keterangan' => $keterangan,
+  		'pengeluaran' => $biaya
+  	);
+
+  	$insert = $this->Produk->insert('pengeluaran_lain_stan_superadmin',$data);
+
+  	if ($insert) {
+  		echo "Berhasil Ditambahkan";
+  	}else{
+  		echo "Gagal Ditambahkan";
+  	}
+  }
+
+  public function delete_pengeluaran_stan()
+  {
+  	$id = $this->input->post('id');
+  	$where = array('id_pengeluaran' => $id);
+
+  	$del = $this->Produk->DeleteWhere('pengeluaran_lain_stan_superadmin',$where);
+
+  	if ($del) {
+  		echo "SUCCESSSAVE";
+  	}else{
+  		echo "CANTCONNECT";
+  	}
+  }
+
+  public function edit_pengeluaran_lain_stan()
+  {
+  	$keteranganbaru = $this->input->post('keteranganbaru');
+  	$pengeluaranbaru = $this->input->post('pengeluaranbaru');
+  	$id_pengeluaran = $this->input->post('id_pengeluaran');
+  	$tanggalbaru = $this->input->post('tanggalbaru');
+
+  	$databaru = array(
+  		'tanggal' => $tanggalbaru,
+  		'pengeluaran' => $pengeluaranbaru,
+  		'keterangan' => $keteranganbaru 
+  	);
+
+  	$where = array('id_pengeluaran' => $id_pengeluaran);
+
+  	$update = $this->Produk->update('pengeluaran_lain_stan_superadmin', $databaru, $where);
+
+  	if ($update) {
+  		echo "Berhasil Diupdate";
+  	}else{
+  		echo "Gagal Diupdate";
+  	}
+  }
+
+  public function inputpenjualanstan()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/inputpenjualanstan');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function adddatapenjualanstan()
+  {
+  	$stan = $this->input->post('stan');
+  	$tanggal = $this->input->post('tanggal');
+  	$penjualan = $this->input->post('penjualan');
+  	$insert = false;
+  	$update = false;
+
+  	// $tanggal = explode('/', $tanggal);
+  	// $tanggal = $tanggal[2]."-".$tanggal[1]."-".$tanggal[0];
+
+  	$where = array('id_stan' => $stan);
+  	$nama_stan = $this->Produk->getData($where,'stan');
+
+  	$where1 = array(
+  		'id_stan' => $stan,
+  		'bulan_tahun' => $tanggal
+  	);
+  	$cek = $this->Produk->checkExist('penjualan_stan_by_superadmin',$where1);
+
+  	if ($cek) {
+  		$data = array(
+	  		'nama_stan' => $nama_stan[0]->nama_stan,
+	  		'penjualan' => $penjualan
+	  	);
+
+	  	$getdataupdate = $this->Produk->getData($where1,'penjualan_stan_by_superadmin');
+	  	// var_dump($getdataupdate);
+
+	  	if ($getdataupdate[0]->penjualan == $penjualan && $getdataupdate[0]->nama_stan == $nama_stan[0]->nama_stan ) {
+	  		$update = true;
+
+	  	}else{
+	  		$update = $this->Produk->update('penjualan_stan_by_superadmin', $data, $where1);
+	  	}
+
+  		
+  	}else{
+  		$data = array(
+	  		'id_stan' => $stan,
+	  		'nama_stan' => $nama_stan[0]->nama_stan,
+	  		'bulan_tahun' => $tanggal,
+	  		'penjualan' => $penjualan
+	  	);
+
+  		$insert = $this->Produk->insert('penjualan_stan_by_superadmin',$data);
+  	}
+
+  	if ($insert || $update) {
+  		echo "Berhasil Ditambahkan";
+  	}else{
+  		echo "Gagal Ditambahkan";
+  	}
+  }
+
+  public function datapenjualanstan()
+  {
+  	$tanggal = $this->input->post('tanggal');
+
+  	if ($tanggal == '') {
+  		$tanggal = '01/1970';
+  	}
+
+  	$where = array(
+  		'bulan_tahun' => $tanggal
+  	);
+
+  	$datapenjualanstan = $this->Produk->getData($where,'penjualan_stan_by_superadmin');
+
+  	echo json_encode($datapenjualanstan);
+  }
+
+  public function edit_penjualan_stan()
+  {
+  	$penjualanbaru = $this->input->post('penjualanbaru');
+  	$id_penjualan = $this->input->post('id_penjualan');
+
+  	$databaru = array(
+  		'penjualan' => $penjualanbaru
+  	);
+
+  	$where = array('id_penjualan' => $id_penjualan);
+  	$datatoup = $this->Produk->getData($where,'penjualan_stan_by_superadmin');
+
+  	$update = $this->Produk->update('penjualan_stan_by_superadmin', $databaru, $where);
+
+  	if ($datatoup[0]->penjualan == $penjualanbaru) {
+  		$update = true;
+  	}
+
+  	if ($update) {
+  		echo "Berhasil Diupdate";
+  	}else{
+  		echo "Gagal Diupdate";
+  	}
+  }
+
+  public function datapegawai()
+  {
+  	$id_stan = $this->input->post('id_stan');
+
+  	$where = array(
+  		'id_stan' => $id_stan
+  	);
+
+  	$datapegawai = $this->Produk->getData($where,'karyawan_fingerspot');
+
+  	echo json_encode($datapegawai);
+  }
+
+  public function edit_pegawai()
+  {
+  	$gajibaru = $this->input->post('gajibaru');
+  	$pin = $this->input->post('pin');
+  	$stan = $this->input->post('stan');
+
+  	$databaru = array(
+  		'gaji_tetap' => $gajibaru
+  	);
+
+  	$where = array('pin' => $pin,'id_stan' => $stan);
+  	$datatoup = $this->Produk->getData($where,'karyawan_fingerspot');
+
+  	$update = $this->Produk->update('karyawan_fingerspot', $databaru, $where);
+
+  	if ($datatoup[0]->gaji_tetap == $gajibaru) {
+  		$update = true;
+  	}
+
+  	if ($update) {
+  		echo "Berhasil Diupdate";
+  	}else{
+  		echo "Gagal Diupdate";
+  	}
+  }
+
+  public function manajemenshift()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/manajemenshift');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
   }
 }
