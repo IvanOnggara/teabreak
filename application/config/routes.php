@@ -103,6 +103,7 @@ $route['lapsisastokwh'] = 'superadminfranchise/lapsisastokwh';
 $route['pengeluaranstan'] = 'superadminfranchise/pengeluaranstan';
 $route['inputpenjualanstan'] = 'superadminfranchise/inputpenjualanstan';
 $route['manajemenshift'] = 'superadminfranchise/manajemenshift';
+$route['lapgajikaryawan'] = 'superadminfranchise/lapgajikaryawan';
 
 
 
@@ -116,6 +117,7 @@ $route['distribusi'] = 'adminfranchise/distribusi';
 $route['stokkeluar'] = 'adminfranchise/stokkeluar';
 $route['orderstan'] = 'adminfranchise/orderstan';
 $route['supply'] = 'adminfranchise/orderstan';
+$route['sinkronisasidata'] = 'adminfranchise/sinkronisasidata';
 
 $route['json'] = 'superadminfranchise/json';
 $route['translate_uri_dashes'] = FALSE;

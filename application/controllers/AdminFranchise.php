@@ -708,5 +708,175 @@ class AdminFranchise extends CI_Controller {
 
   }
 
+  public function sinkronisasidata()
+  {
+    $akses = $this->session->userdata('aksesadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+      $this->load->view('adminfranchise/navigationbar');
+      $this->load->view('adminfranchise/sinkronisasidata');
+    }
+  }
+
+  public function sinkronpresensi()
+  {
+    $getdata = $this->Produk->getDataLimit('device_finger',1);
+    $parameter = "sn=".$getdata[0]->sn."&limit=100";
+    $port = $getdata[0]->port;
+    $where = array('id_stan' => 'warehouse');
+
+    if ($this->ModelKasir->getRowCount('presensi_karyawan',$where) > 0) {
+      $urlscan = $getdata[0]->ip."/scanlog/new";
+      // $alluserdatabase = $this->ModelKasir->getAllData('presensi_karyawan');
+    }else{
+      $urlscan1 = $getdata[0]->ip."/scanlog/new";
+      $a = $this->webservice($port,$urlscan1,$parameter);
+
+      $urlscan = $getdata[0]->ip."/scanlog/all/paging";
+        
+    }
+
+    $server_output_scan = $this->webservice($port,$urlscan,$parameter);   
+    $content_allnewscan = json_decode($server_output_scan);
+
+    if ($content_allnewscan == NULL) {
+      echo "CANTCONNECT";
+    }else{
+      if ($content_allnewscan->Result == false) {
+        echo "string";
+      }else{
+        foreach ($content_allnewscan->Data as $scan) {
+          $data = array(
+            'scan_date'=>$scan->ScanDate,
+            'id_stan' => 'warehouse',
+            'pin' => $scan->PIN,
+            'verify_mode' => $scan->VerifyMode,
+            'io_mode' => $scan->IOMode,
+            'work_code' => $scan->WorkCode
+          );
+
+          $this->ModelKasir->insert('presensi_karyawan',$data);
+        }
+        echo "SUCCESSSAVE";
+      }
+    }
+
+    
+  }
+
+  public function sinkronlistpegawai()
+  {
+    
+    $statkosong = true;
+    $getdata = $this->Produk->getDataLimit('device_finger',1);
+    $parameter = "sn=".$getdata[0]->sn."&limit=100";
+    $port = $getdata[0]->port;
+      
+    $url = $getdata[0]->ip."/user/all/paging";
+    $server_output = $this->webservice($port,$url,$parameter);    
+    $content_alluser = json_decode($server_output);
+
+    $where = array('id_stan' => 'warehouse');
+
+    $alluserdatabase = $this->Produk->getData($where,'karyawan_fingerspot');
+
+    if ($this->Produk->getRowCount('karyawan_fingerspot',$where) > 0) {
+      $statkosong = false;
+    }
+
+    if ($content_alluser == NULL) {
+      echo "CANTCONNECT";
+    }else{
+      if ($content_alluser->Result == false) {
+        echo "NONEWDATA";
+      }else{
+        if ($statkosong) {
+          foreach ($content_alluser->Data as $user) {
+            $data = array(
+              'id_stan' => 'warehouse',
+              'pin' => $user->PIN,
+              'nama' => $user->Name
+            );
+
+            $this->Produk->insert('karyawan_fingerspot',$data);
+          }
+        }else{
+          $listdata_user_finger = array();
+          $adauser = false;
+          foreach ($content_alluser->Data as $user) {
+            foreach ($alluserdatabase as $peruserdatabase) {
+              if ($user->PIN == $peruserdatabase->pin) {
+                if ($user->Name != $peruserdatabase->nama) {
+                  $where = array(
+                    'id_stan' => 'warehouse',
+                    'pin' => $peruserdatabase->pin
+                  );
+
+                  $data = array(
+                    'nama' => $user->Name
+                  );
+
+                  $this->Produk->update('karyawan_fingerspot', $data, $where);
+                }
+                $adauser = true;
+              }
+            }
+
+            if (!$adauser) {
+              $data = array(
+                'id_stan' => 'warehouse',
+                'pin' => $user->PIN,
+                'nama' => $user->Name
+              );
+
+              $this->ModelKasir->insert('karyawan_fingerspot',$data);
+            }
+            array_push($listdata_user_finger,$user->PIN);
+          }
+
+          foreach ($alluserdatabase as $peruserdatabase) {
+            if (!in_array($peruserdatabase->pin, $listdata_user_finger)) {
+              $where = array('id_stan' => 'warehouse', 'pin' => $peruserdatabase->pin);
+              $this->ModelKasir->deleteWhere('karyawan_fingerspot',$where);
+            }
+          }
+        }
+        echo "SUCCESSSAVE";
+      }
+    }
+  }
+
+  public function webservice($port,$url,$parameter){
+    $curl = curl_init();
+    set_time_limit(0);
+    curl_setopt_array($curl, array(
+      CURLOPT_PORT => $port,
+      CURLOPT_URL => "http://".$url,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "POST",
+      CURLOPT_POSTFIELDS => $parameter,
+      CURLOPT_HTTPHEADER => array(
+        "cache-control: no-cache",
+        "content-type: application/x-www-form-urlencoded"
+        ),
+      )
+    );
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+    if ($err) {
+      $response = ("Error #:" . $err);
+    }
+    else
+    {
+      $response;
+    }
+    return $response;
+  }
 }
 ?>

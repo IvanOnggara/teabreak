@@ -62,7 +62,7 @@
                                         </div>
                                         
                                     </div>
-                                    <div class="col-md-3">
+                                    <!-- <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="nama" class=" form-control-label">Jumlah Pegawai</label>
                                             
@@ -70,9 +70,55 @@
                                             <input type="text" style="display: none">
                                         </div>
                                         
+                                    </div> -->
+                                    
+                                </div>
+                                <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Pinalti Terlambat</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="pinalti_terlambat" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+                                        
                                     </div>
                                     
                                 </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Pinalti Bolos</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="pinalti_bolos" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Uang Makan</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="uang_makan" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Uang Lembur</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="uang_lembur" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
                                 <div class="row">
                                     <div class="col-md-10">
                                         <div class="form-group">
@@ -111,7 +157,10 @@
                                 <th>Nama Stan</th>
                                 <th>Alamat</th>
                                 <th>Password</th>
-                                <th>Jumlah Pegawai</th>
+                                <th>Uang Makan</th>
+                                <th>Uang Lembur</th>
+                                <th>Denda Terlambat</th>
+                                <th>Denda Bolos</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                               </tr>
@@ -163,13 +212,59 @@
                                 </div>
                                 
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nama" class=" form-control-label">Jumlah Pegawai</label>
                                     <input type="text" id="editjumlahpgw" placeholder="Masukkan Jumlah Pegawai" class="form-control numeric">
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
+                        <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Pinalti Terlambat</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="editpinalti_terlambat" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Pinalti Bolos</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="editpinalti_bolos" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Uang Makan</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="edituang_makan" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Uang Lembur</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="edituang_lembur" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="form-group">

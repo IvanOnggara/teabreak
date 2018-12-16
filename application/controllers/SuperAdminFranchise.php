@@ -268,8 +268,9 @@ class SuperAdminFranchise extends CI_Controller {
 
 	public function datastan(){
 		$this->load->library('datatables');
-		$this->datatables->select('id_stan,nama_stan,alamat,password,jumlah_pegawai');
+		$this->datatables->select('stan.id_stan,nama_stan,alamat,password,uang_makan,uang_lembur,pinalti_terlambat,pinalti_bolos');
 		$this->datatables->from('stan');
+		$this->datatables->join('data_detail_stan','stan.id_stan = data_detail_stan.id_stan');
 		echo$this->datatables->generate();
 	}
 
@@ -285,11 +286,20 @@ class SuperAdminFranchise extends CI_Controller {
 		        'id_stan' => $this->input->post('id'),
 		        'nama_stan' => $this->input->post('nama'),
 		        'alamat' => $this->input->post('alamat'),
-		        'password' => $this->input->post('password'),
-		        'jumlah_pegawai' => $this->input->post('jumlahpegawai'),
+		        'password' => $this->input->post('password')
 		    );
 
 			$this->Produk->insert('stan',$data);
+
+			$data = array(
+				'id_stan' => $this->input->post('id'),
+				'uang_makan' => $this->input->post('uang_makan'),
+		        'uang_lembur' => $this->input->post('uang_lembur'),
+		        'pinalti_terlambat' => $this->input->post('pinalti_terlambat'),
+		        'pinalti_bolos' => $this->input->post('pinalti_bolos')
+		    );
+
+		    $this->Produk->insert('data_detail_stan',$data);
 			echo "Berhasil Ditambahkan";
 		}
 	}
@@ -299,10 +309,9 @@ class SuperAdminFranchise extends CI_Controller {
 		$this->Produk->delete('stan',$id);
 	}
 
-
 	public function select_edit_stan(){
 		$id = $this->input->post('id');
-		$data = $this->Produk->getData("id_stan='".$id."'",'stan');
+		$data = $this->Produk->getDataJoin("stan.id_stan='".$id."'",'stan','data_detail_stan','id_stan','id_stan');
 		echo json_encode($data);
 	}
 
@@ -322,10 +331,17 @@ class SuperAdminFranchise extends CI_Controller {
 				'id_stan' => $idbaru,
 		        'nama_stan' => $this->input->post('nama'),
 		        'alamat' => $this->input->post('alamat'),
-		        'password' => $this->input->post('password'),
-		        'jumlah_pegawai' => $this->input->post('jumlahpegawai')
+		        'password' => $this->input->post('password')
 		    );
 			$this->Post->Update('stan',$data,$where);
+
+			$data = array(
+				'uang_makan' => $this->input->post('uang_makan'),
+		        'uang_lembur' => $this->input->post('uang_lembur'),
+		        'pinalti_terlambat' => $this->input->post('pinalti_terlambat'),
+		        'pinalti_bolos' => $this->input->post('pinalti_bolos')
+		    );
+			$this->Post->Update('data_detail_stan',$data,$where);
 			echo "Berhasil Diupdate";
 		}
 	}
@@ -1954,5 +1970,108 @@ class SuperAdminFranchise extends CI_Controller {
         $this->load->view('superadminfranchise/manajemenshift');
 		// $this->load->view('superadminfranchise/datatable_produk');
     }
+  }
+
+  public function adddatashift()
+  {
+  	$id_stan = $this->input->post('id_stan');
+  	$nama_shift = $this->input->post('nama_shift');
+  	$jam_awal = $this->input->post('jam_awal');
+  	$jam_akhir = $this->input->post('jam_akhir');
+  	$batasdatangcepat = $this->input->post('batasdatangcepat');
+  	$batastelatlembur = $this->input->post('batastelatlembur');
+  	$standarlembur = $this->input->post('standarlembur');
+
+  	$data = array(
+  		'id_stan' => $id_stan,
+  		'nama_shift' => $nama_shift,
+  		'jam_awal' => $jam_awal,
+  		'jam_akhir' => $jam_akhir,
+  		'batas_datang_cepat' => $batasdatangcepat,
+  		'batas_telat_lembur' => $batastelatlembur,
+  		'standar_lembur' => $standarlembur
+  	);
+
+  	$insert = $this->Produk->insert('manajemen_shift',$data);
+
+  	if ($insert) {
+  		echo "Berhasil Ditambahkan";
+  	}else{
+  		echo "Gagal Ditambahkan";
+  	}
+  }
+
+  public function datamanajemenshift()
+  {
+  	$id_stan = $this->input->post('id_stan');
+
+  	$where = array(
+  		'id_stan' => $id_stan
+  	);
+
+  	$datashift = $this->Produk->getData($where,'manajemen_shift');
+  	// $datashift = $this->Produk->getAllData('manajemen_shift');
+
+  	echo json_encode($datashift);
+  }
+
+  public function lapgajikaryawan()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lapgajikaryawan');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function changestatuskaryawan()
+  {
+  	$pin = $this->input->post('pin');
+  	$to = $this->input->post('to');
+
+  	if ($to = 'toactive') {
+  		$data = array(
+  			'status' => 'active' 
+  		);
+  	}else{
+  		$data = array(
+  			'status' => 'inactive' 
+  		);
+  	}
+
+  	$update = $this->Produk->update('karyawan_fingerspot',$data);
+
+  	if ($update) {
+  		echo "success";
+  	}else{
+  		echo "fail";
+  	}
+  }
+
+  public function edit_manajemenshift()
+  {
+  	$nama_shift = $this->input->post('nama_shift');
+  	$jam_awal = $this->input->post('jam_awal');
+  	$jam_akhir = $this->input->post('jam_akhir');
+  	$batasdatangcepat = $this->input->post('batasdatangcepat');
+  	$batastelatlembur = $this->input->post('batastelatlembur');
+  	$standarlembur = $this->input->post('standarlembur');
+  	$id_manajemen_shift = $this->input->post('id_manajemen_shift');
+
+	$where = array('id_manajemen_shift' => $id_manajemen_shift);
+ 	 	 	 	 	 
+	$data = array(
+		'nama_shift' => $nama_shift,
+        'jam_awal' => $jam_awal,
+        'jam_akhir' => $jam_akhir,
+        'batas_datang_cepat' => $batasdatangcepat,
+		'batas_telat_lembur' => $batastelatlembur,
+		'standar_lembur' => $standarlembur
+    );
+	$this->Produk->update('manajemen_shift',$data,$where);
+	echo "Berhasil Diupdate";
   }
 }

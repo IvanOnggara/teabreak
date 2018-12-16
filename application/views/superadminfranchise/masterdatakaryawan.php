@@ -32,10 +32,11 @@
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                                     <thead class="">
                                       <tr>
-                                        <th width="20%">ID Karyawan</th>
-                                        <th width="40%">Nama</th>
+                                        <th width="15%">ID Karyawan</th>
+                                        <th width="35%">Nama</th>
                                         <th width="30%">Gaji Tetap</th>
                                         <th width="10%">Edit</th>
+                                        <th width="10%">Status</th>
                                       </tr>
                                     </thead>
                                 </table>
@@ -205,11 +206,20 @@
                       var return_data = new Array();
                       var total_harga_akhir = 0;
                       for(var i=0;i< json.length; i++){
+                        var buttonstat;
+
+                        if (json[i].status == 'active') {
+                          buttonstat = '<button onclick="changestatus(\''+json[i].pin+'\',\'toinactive\')" class="btn btn-success" >Active</button> '
+                        }else{
+                          buttonstat = '<button onclick="changestatus(\''+json[i].pin+'\',\'toactive\')" class="btn btn-danger" >Inactive</button> '
+                        }
+
                         return_data.push({
                           'pin': json[i].pin,
                           'nama'  : json[i].nama,
                           'gaji_tetap' : json[i].gaji_tetap,
-                          'edit' : '<button onclick="editpegawai(\''+json[i].pin+'\',\''+json[i].gaji_tetap+'\')" class="btn btn-warning" >Edit</button> '
+                          'edit' : '<button onclick="editpegawai(\''+json[i].pin+'\',\''+json[i].gaji_tetap+'\')" class="btn btn-warning" >Edit</button> ',
+                          'status' : buttonstat
                         });
                       }
                       return return_data;
@@ -220,7 +230,8 @@
                         {'data': 'pin'},
                         {'data': 'nama'},
                         {'data': 'gaji_tetap'},
-                        {'data': 'edit'}
+                        {'data': 'edit'},
+                        {'data': 'status'}
                       ]
                 });
               },
@@ -237,6 +248,30 @@
 
         function gettanggal() {
             return $("#tanggal_awal").val()
+        }
+
+        function changestatus(pin,to) {
+          $.ajax({
+              type:"post",
+              url: "<?php echo base_url('superadminfranchise/changestatuskaryawan')?>/",
+              data:{pin:pin,to:to},
+              dataType:"json",
+              success:function(response)
+              {
+                if (response == 'success') {
+                  alert('Sukses Ubah Data');
+                }else{
+                  alert('Gagal Ubah Data, Coba Lagi');
+                }
+                reload_table();
+                
+              },
+                  error: function (jqXHR, textStatus, errorThrown)
+                  {
+                    alert(errorThrown);
+                  }
+              }
+            );
         }
 
         function editpegawai(pin,gaji) {

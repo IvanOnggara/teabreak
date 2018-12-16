@@ -2,7 +2,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Laporan Penjualan Stan dari Super Admin</h1>
+                        <h1>Manajemen Shift Karyawan</h1>
                     </div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
                   <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Tambah Data Penjualan</strong>
+                            <strong class="card-title">Tambah Shift Baru</strong>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -27,37 +27,118 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="id" class=" form-control-label">Bulan, Tahun</label>
-                                        <input type="text" id="tanggal" placeholder="Masukkan Bulan Tahun" class="form-control">
+                                        <label for="id" class=" form-control-label">Nama Shift</label>
+                                        <input type="text" id="shift" placeholder="Masukkan Nama Shift" class="form-control">
 
                                     </div>
                                     
                                     
                                 </div>
+                                <div class="col-lg-1">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Jam Awal</label>
+                                        <input type="text" id="jam_awal" placeholder="Masukkan Jam" class="form-control">
+
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="col-lg-1">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Jam Akhir</label>
+                                        <input type="text" id="jam_akhir" placeholder="Masukkan Jam" class="form-control">
+
+                                    </div>
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                            <!-- <div class="row">
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="id" class=" form-control-label">Total Penjualan</label>
-                                        <input type="text" id="penjualan" placeholder="Masukkan Penjualan" class="form-control numeric">
+                                        <label for="id" class=" form-control-label">Pinalti Terlambat</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="pinalti_terlambat" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Pinalti Bolos</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="pinalti_bolos" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
 
                                     </div>
                                     
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="id" class=" form-control-label"> </label>
-                                        <button id="buttontoadd" onclick="adddata('addcode')" class="btn btn-success form-control">Tambah Data</button>
+                                        <label for="id" class=" form-control-label">Uang Makan</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Rp. </div>
+                                            <input type="text" id="uang_makan" placeholder="ex: 25000" class="form-control numeric">
+                                        </div>
 
-                                    </div>   
-
-                                    
+                                    </div>
                                     
                                 </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Batas Datang Cepat</label>
+                                        
+                                        <div class="input-group">
+                                            
+                                            <input type="text" id="batasdatangcepat" placeholder="ex: 2" class="form-control numeric_hour">
+                                            <div class="input-group-addon"> Jam</div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label"> Waktu Minimal Lembur</label>
+                                        
+                                        <div class="input-group">
+                                            
+                                            <input type="text" id="batastelatlembur" placeholder="ex: 2" class="form-control numeric_hour">
+                                            <div class="input-group-addon"> Jam</div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label"> Standard Lembur</label>
+                                        
+                                        <div class="input-group">
+                                            
+                                            <input type="text" id="standarlembur" placeholder="ex: 2" class="form-control numeric_hour">
+                                            <div class="input-group-addon"> Jam</div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                
                             </div>
                             <div class="row">
-                              <div class="col-lg-12">
-                                <p id="process" class="teal" ><i class="fa fa-spin fa-refresh"></i> <b>Loading...</b></p>
+                                <div class="col-lg-8">
+                                        <button id="buttontoadd" onclick="adddata('addcode')" class="btn btn-success">Tambah Data</button> 
+                                        <p id="process" class="teal" ><i class="fa fa-spin fa-refresh"></i> <b>Loading...</b></p>
+                                </div>
+                              <div class="col-lg-10">
+                                
                               </div>
                             </div>
                             
@@ -75,11 +156,11 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Data Laporan Penjualan Stan</strong>
+                            <strong class="card-title">Semua Shift</strong>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <!-- <div class="col-lg-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Nama Stan</label>
                                         <select name="select" id="select_stan" class="form-control" onchange="reload_table()">
@@ -87,12 +168,12 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <!-- <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Tanggal Awal</label>
                                         <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control">
                                     </div>
-                                </div> -->
+                                </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Bulan Tahun</label>
@@ -104,16 +185,19 @@
                                         <label for="id" class=" form-control-label"> </label>
                                         <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <br>
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                                     <thead class="">
                                       <tr>
-                                        <th>Tanggal</th>
-                                        <th>Nama Stan</th>
-                                        <th>Penjualan</th>
-                                        <th>Edit</th>
+                                        <th width="29%">Nama Shift</th>
+                                        <th width="15%">Jam Awal</th>
+                                        <th width="15%">Jam Akhir</th>
+                                        <th width="11%">Batas Datang cepat</th>
+                                        <th width="11%">Minimal Lembur</th>
+                                        <th width="11%">Standar Lembur</th>
+                                        <th width="8%">Edit</th>
                                       </tr>
                                     </thead>
                                 </table>
@@ -136,13 +220,75 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="col-md-6">
+                    
+                    <input type="hidden" name="id_lama" id="id_lama">
+                    <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="editid" class=" form-control-label">Penjualan</label>
-                            <input type="hidden" name="id_lama" id="id_lama">
-                            <input type="text" id="editpen" placeholder="Masukkan Pengeluaran" class="form-control numeric">
+                            <label for="id" class=" form-control-label">Nama Shift</label>
+                            <input type="text" id="editshift" placeholder="Masukkan Nama Shift" class="form-control">
+
                         </div>
+                        
+                        
                     </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="id" class=" form-control-label">Jam Awal</label>
+                            <input type="text" id="editjam_awal" placeholder="Masukkan Jam" class="form-control">
+
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="id" class=" form-control-label">Jam Akhir</label>
+                            <input type="text" id="editjam_akhir" placeholder="Masukkan Jam" class="form-control">
+
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="id" class=" form-control-label">Batas Datang Cepat</label>
+                            
+                            <div class="input-group">
+                                
+                                <input type="text" id="editbatasdatangcepat" placeholder="ex: 2" class="form-control numeric_hour">
+                                <div class="input-group-addon"> Jam</div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="id" class=" form-control-label"> Waktu Minimal Lembur</label>
+                            
+                            <div class="input-group">
+                                
+                                <input type="text" id="editbatastelatlembur" placeholder="ex: 2" class="form-control numeric_hour">
+                                <div class="input-group-addon"> Jam</div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="id" class=" form-control-label"> Waktu Standard Lembur</label>
+                            
+                            <div class="input-group">
+                                
+                                <input type="text" id="editstandarlembur" placeholder="ex: 2" class="form-control numeric_hour">
+                                <div class="input-group-addon"> Jam</div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    
                 </div>
                 
             </div>
@@ -193,20 +339,30 @@
         //     useCurrent: false
         // });
 
-        $('#tanggal').datetimepicker({
-            format: 'MM/YYYY',
+        $('#jam_awal').datetimepicker({
+            format: 'HH:mm',
             useCurrent: false
         });
 
-        $('#tanggal2').datetimepicker({
-            format: 'MM/YYYY',
+        $('#jam_akhir').datetimepicker({
+            format: 'HH:mm',
             useCurrent: false
         });
 
-        $("#tanggal2").on("dp.change", function(e) {
+        $('#editjam_awal').datetimepicker({
+            format: 'HH:mm',
+            useCurrent: false
+        });
+
+        $('#editjam_akhir').datetimepicker({
+            format: 'HH:mm',
+            useCurrent: false
+        });
+
+        // $("#tanggal2").on("dp.change", function(e) {
             
-            reload_table();
-        });
+        //     reload_table();
+        // });
 
         // $("#tanggal_akhir").on("dp.change", function(e) {
             
@@ -263,53 +419,33 @@
                 this.value = 0;
             }
         });
+
+        $('.numeric_hour').on('input', function (event) { 
+
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            if ($(this).val().length > 1) {
+                if ($(this).val().charAt(0) == '0') {
+                    if ($(this).val().charAt(1) != '.') {
+                        this.value = $(this).val().charAt(1);
+                    }else{
+                        // this.value = $(this).val().charAt(1);
+                    }
+                }
+            }
+
+            if ($(this).val() > 24) {
+                this.value = 24;
+            }
+
+            if ($(this).val()=='') {
+                this.value = 0;
+            }
+        });
+
         $("#process").hide();
         
         var tabeldata;
-
-
-         tabeldata = $("#mytable").DataTable({
-              initComplete: function() {
-                var api = this.api();
-                $('#mytable_filter input')
-                .on('.DT')
-                .on('keyup.DT', function(e) {
-                  if (e.keyCode == 13) {
-                    api.search(this.value).draw();
-                  }
-                });
-              },
-              oLanguage: {
-                sProcessing: "loading..."
-              },
-              responsive: true,
-              ajax: {
-            "type"   : "POST",
-            "url"    : "<?php echo base_url('superadminfranchise/datapenjualanstan');?>",
-            "data": function(d){
-                var datt = $('#tanggal2').val();
-                d.tanggal = datt;
-            },
-            "dataSrc": function (json) {
-              var return_data = new Array();
-              for(var i=0;i< json.length; i++){
-                return_data.push({
-                  'bulan_tahun': json[i].bulan_tahun,
-                  'nama_stan'  : json[i].nama_stan,
-                  'penjualan' : json[i].penjualan,
-                  'edit' : '<button onclick="editpenjualan(\''+json[i].id_penjualan+'\',\''+json[i].penjualan+'\')" class="btn btn-warning" >Edit</button> '
-                })
-              }
-              return return_data;
-            }
-          },
-          columns: [
-            {'data': 'bulan_tahun'},
-            {'data': 'nama_stan'},
-            {'data': 'penjualan'},
-            {'data': 'edit'}
-          ]
-        });
 
         $.ajax({
           type:"post",
@@ -329,6 +465,57 @@
                 }
                 $("#select_stan").html(htmlinsideselect);
                 $("#stan").html(htmlinsideselect);
+
+                tabeldata = $("#mytable").DataTable({
+                      initComplete: function() {
+                        var api = this.api();
+                        $('#mytable_filter input')
+                        .on('.DT')
+                        .on('keyup.DT', function(e) {
+                          if (e.keyCode == 13) {
+                            api.search(this.value).draw();
+                          }
+                        });
+                      },
+                      oLanguage: {
+                        sProcessing: "loading..."
+                      },
+                      responsive: true,
+                      ajax: {
+                    "type"   : "POST",
+                    "url"    : "<?php echo base_url('superadminfranchise/datamanajemenshift');?>",
+                    "data": function(d){
+                        var id_stan = $('#select_stan').val();
+                        d.id_stan = id_stan;
+                    },
+                    "dataSrc": function (json) {
+                      var return_data = new Array();
+                      for(var i=0;i< json.length; i++){
+                        return_data.push({
+                            // 'id_stan':json[i].id_stan,
+                            'nama_shift':json[i].nama_shift,
+                            'jam_awal':json[i].jam_awal,
+                            'jam_akhir':json[i].jam_akhir,
+                            'batas_datang_cepat':json[i].batas_datang_cepat,
+                            'batas_telat_lembur':json[i].batas_telat_lembur,
+                            'standar_lembur':json[i].standar_lembur,
+                          'edit' : '<button onclick="editpenjualan(\''+json[i].id_manajemen_shift+'\',\''+json[i].nama_shift+'\',\''+json[i].jam_awal+'\',\''+json[i].jam_akhir+'\',\''+json[i].batas_datang_cepat+'\',\''+json[i].batas_telat_lembur+'\',\''+json[i].standar_lembur+'\')" class="btn btn-warning" >Edit</button> '
+                        });
+                      }
+                      return return_data;
+                    }
+                  },
+                  columns: [
+                    // {'data': 'id_stan'},
+                    {'data': 'nama_shift'},
+                    {'data': 'jam_awal'},
+                    {'data': 'jam_akhir'},
+                    {'data': 'batas_datang_cepat'},
+                    {'data': 'batas_telat_lembur'},
+                    {'data': 'standar_lembur'},
+                    {'data': 'edit'}
+                  ]
+                });
 
               },
               error: function (jqXHR, textStatus, errorThrown)
@@ -356,30 +543,56 @@
                 $("#process").removeClass('red');
                 $("#process").removeClass('green');
                 $("#process").html('<i class="fa fa-spin fa-refresh"></i> <b>Loading...</b>');
-                var tanggal = $("#tanggal").val();
-                var stan = $("#stan").val();
-                var penjualan = $("#penjualan").val();
+                var id_stan = $("#stan").val();
+                var nama_shift = $("#shift").val();
+                var jam_awal = $("#jam_awal").val();
+                var jam_akhir = $("#jam_akhir").val();
+                var batasdatangcepat = $("#batasdatangcepat").val();
+                var batastelatlembur = $("#batastelatlembur").val();
+                var standarlembur = $("#standarlembur").val();
 
-                if (tanggal.replace(/\s/g, '').length>0&&penjualan.replace(/\s/g, '').length>0) {
+                if (nama_shift.replace(/\s/g, '').length>0&&jam_awal.replace(/\s/g, '').length>0&&jam_akhir.replace(/\s/g, '').length>0&&batasdatangcepat.replace(/\s/g, '').length>0&&batastelatlembur.replace(/\s/g, '').length>0&&standarlembur.replace(/\s/g, '').length>0) {
 
                     $.ajax({
                       type:"post",
-                      url: "<?php echo base_url('superadminfranchise/adddatapenjualanstan')?>/",
-                      data:{stan:stan, tanggal:tanggal,penjualan:penjualan},
+                      url: "<?php echo base_url('superadminfranchise/adddatashift')?>/",
+                      data:{id_stan:id_stan,nama_shift:nama_shift,jam_awal:jam_awal,jam_akhir:jam_akhir,batasdatangcepat:batasdatangcepat,batastelatlembur:batastelatlembur,standarlembur:standarlembur},
                       success:function(response)
                       {
                         if(response == 'Berhasil Ditambahkan'){
 
-                          if($('#tanggal').has("error")){
-                            $('#tanggal').removeClass("error");
-                          }
-                          if($('#penjualan').has("error")){
-                            $('#penjualan').removeClass("error");
-                          }
+                            if($('#shift').has("is-invalid")){
+                                $('#shift').removeClass("is-invalid");
+                            }
 
-                            $("#tanggal").val('');
-                            $("#penjualan").val('');
-                            $('#stan').focus();
+                            if($('#jam_awal').has("is-invalid")){
+                              $('#jam_awal').removeClass("is-invalid");
+                            }
+
+                            if($('#jam_akhir').has("is-invalid")){
+                              $('#jam_akhir').removeClass("is-invalid");
+                            }
+
+                            if($('#batasdatangcepat').has("is-invalid")){
+                              $('#batasdatangcepat').removeClass("is-invalid");
+                            }
+
+                            if($('#batastelatlembur').has("is-invalid")){
+                              $('#batastelatlembur').removeClass("is-invalid");
+                            }
+
+                            if($('#standarlembur').has("is-invalid")){
+                              $('#standarlembur').removeClass("is-invalid");
+                            }
+
+                            $("#shift").val('');
+                            $("#jam_awal").val('');
+                            $("#jam_akhir").val('');
+                            $("#batasdatangcepat").val('');
+                            $("#batastelatlembur").val('');
+                            $("#standarlembur").val('');
+
+                            $('#shift').focus();
 
                             $("#process").html('<i class="fa fa-check"></i> <b>Sukses Ditambahkan</b>');
                             $("#process").addClass('green');
@@ -411,20 +624,49 @@
                   $("#process").removeClass('teal');
                   $("#process").removeClass('green');
 
-                  if (tanggal.replace(/\s/g, '').length<=0) {
-                    $('#tanggal').addClass("error");
+                  if (nama_shift.replace(/\s/g, '').length<=0) {
+                    $('#shift').addClass("is-invalid");
                   }else{
-                    if($('#tanggal').has("error")){
-                      $('#tanggal').removeClass("error");
+                    if($('#shift').has("is-invalid")){
+                      $('#shift').removeClass("is-invalid");
                     }
                   }
-                  if (penjualan.replace(/\s/g, '').length<=0) {
-                    $('#penjualan').addClass("error");
+                  if (jam_awal.replace(/\s/g, '').length<=0) {
+                    $('#jam_awal').addClass("is-invalid");
                   }else{
-                    if($('#penjualan').has("error")){
-                      $('#penjualan').removeClass("error");
+                    if($('#jam_awal').has("is-invalid")){
+                      $('#jam_awal').removeClass("is-invalid");
                     }
                   }
+                  if (jam_akhir.replace(/\s/g, '').length<=0) {
+                    $('#jam_akhir').addClass("is-invalid");
+                  }else{
+                    if($('#jam_akhir').has("is-invalid")){
+                      $('#jam_akhir').removeClass("is-invalid");
+                    }
+                  }
+                  if (batasdatangcepat.replace(/\s/g, '').length<=0) {
+                    $('#batasdatangcepat').addClass("is-invalid");
+                  }else{
+                    if($('#batasdatangcepat').has("is-invalid")){
+                      $('#batasdatangcepat').removeClass("is-invalid");
+                    }
+                  }
+                  if (batastelatlembur.replace(/\s/g, '').length<=0) {
+                    $('#batastelatlembur').addClass("is-invalid");
+                  }else{
+                    if($('#batastelatlembur').has("is-invalid")){
+                      $('#batastelatlembur').removeClass("is-invalid");
+                    }
+                  }
+                  if (standarlembur.replace(/\s/g, '').length<=0) {
+                    $('#standarlembur').addClass("is-invalid");
+                  }else{
+                    if($('#standarlembur').has("is-invalid")){
+                      $('#standarlembur').removeClass("is-invalid");
+                    }
+                  }
+
                   alert("Silahkan periksa kembali inputan anda!");
                 }
             }else{
@@ -432,56 +674,116 @@
             }
         }
 
-        function editpenjualan(id,penjualan) {
+        function editpenjualan(id,shift,jam_awal,jam_akhir,batasdatangcepat,batastelatlembur,standarlembur) {
           $('#modal_edit').modal('toggle');
-          $('#editpen').val(penjualan);
+            $('#editshift').val(shift);
+            $('#editjam_awal').val(jam_awal);
+            $('#editjam_akhir').val(jam_akhir);
+            $('#editbatasdatangcepat').val(batasdatangcepat);
+            $('#editbatastelatlembur').val(batastelatlembur);
+            $('#editstandarlembur').val(standarlembur);
           $('#id_lama').val(id);
         }
 
         function simpanedit() {
-          var penjualanbaru = $('#editpen').val();
-          var id_penjualan = $('#id_lama').val();
+          var nama_shift = $('#editshift').val();
+          var jam_awal = $('#editjam_awal').val();
+          var jam_akhir = $('#editjam_akhir').val();
+          var batasdatangcepat = $('#editbatasdatangcepat').val();
+          var batastelatlembur = $('#editbatastelatlembur').val();
+          var standarlembur = $('#editstandarlembur').val();
+          var id_manajemen_shift = $('#id_lama').val();
 
-          if (penjualanbaru == '') {
-            if (penjualanbaru == '') {
-              $('#editpen').addClass('is-invalid');
-            }else{
-              $("#editpen").removeClass('is-invalid');
-            }
-
-            alert('Periksa Kembali inputan anda');
-          }else{
-            // console.log(id_pengeluaran);
-            $.ajax(
-                {
-                    type:"post",
-                    url: "<?php echo base_url('superadminfranchise/edit_penjualan_stan')?>/",
-                    data:{ penjualanbaru:penjualanbaru,id_penjualan:id_penjualan},
-                    success:function(response)
-                    {
-                      reload_table();
-
-                      if(response == 'Berhasil Diupdate'){
-
-                        if($('#editpen').has("is-invalid")){
-                          $('#editpen').removeClass("is-invalid");
-                        }
-
-                        $('#modal_edit').modal('toggle');
-
-                        alert(response);
-                      }else{
-                        alert('unknown error is happen! try again.');
+          if (nama_shift.replace(/\s/g, '').length>0&&jam_awal.replace(/\s/g, '').length>0&&jam_akhir.replace(/\s/g, '').length>0&&batasdatangcepat.replace(/\s/g, '').length>0&&batastelatlembur.replace(/\s/g, '').length>0&&standarlembur.replace(/\s/g, '').length>0) {
+      // &&jumlahpegawai.replace(/\s/g, '').length>0
+            $.ajax({
+                  type:"post",
+                  url: "<?php echo base_url('superadminfranchise/edit_manajemenshift')?>/",
+                  data:{ nama_shift:nama_shift,jam_awal:jam_awal,jam_akhir:jam_akhir,batasdatangcepat:batasdatangcepat,batastelatlembur:batastelatlembur,standarlembur:standarlembur,id_manajemen_shift:id_manajemen_shift},
+                  success:function(response)
+                  {
+                    if(response == 'Berhasil Diupdate'){
+                      $("#modal_edit").modal('hide');
+                      if($('#editshift').has("error")){
+                        $('#editshift').removeClass("error");
                       }
-                      
-                    },
-                    error: function (jqXHR, textStatus, errorThrown)
-                    {
-                      alert(errorThrown);
+                      if($('#editjam_awal').has("error")){
+                        $('#editjam_awal').removeClass("error");
+                      }
+                      if($('#editjam_akhir').has("error")){
+                        $('#editjam_akhir').removeClass("error");
+                      }
+                      if($('#editbatasdatangcepat').has("error")){
+                        $('#editbatasdatangcepat').removeClass("error");
+                      }
+
+                      if($('#editbatastelatlembur').has("error")){
+                        $('#editbatastelatlembur').removeClass("error");
+                      }
+                      if($('#editstandarlembur').has("error")){
+                        $('#editstandarlembur').removeClass("error");
+                      }
+                      // if($('#editjumlahpgw').has("error")){
+                      //   $('#editjumlahpgw').removeClass("error");
+                      // }
+                      reload_table();
+                    }else{
+                        alert('error, coba lagi.');
+                      // $('#editid').addClass("error");
                     }
+                    alert(response);
+                  },
+                  error: function (jqXHR, textStatus, errorThrown)
+                  {
+                    alert(errorThrown);
+                  }
+              });
+            }else{
+              if (nama_shift.replace(/\s/g, '').length<=0) {
+                $('#editshift').addClass("error");
+              }else{
+                if($('#editshift').has("error")){
+                  $('#editshift').removeClass("error");
                 }
-            );
-          }
+              }
+              if (jam_awal.replace(/\s/g, '').length<=0) {
+                $('#editjam_awal').addClass("error");
+              }else{
+                if($('#editjam_awal').has("error")){
+                  $('#editjam_awal').removeClass("error");
+                }
+              }
+            
+              if (jam_akhir.replace(/\s/g, '').length<=0) {
+                $('#editjam_akhir').addClass("error");
+              }else{
+                if($('#editjam_akhir').has("error")){
+                  $('#editjam_akhir').removeClass("error");
+                }
+              }
+              if (batasdatangcepat.replace(/\s/g, '').length<=0) {
+                $('#editbatasdatangcepat').addClass("error");
+              }else{
+                if($('#editbatasdatangcepat').has("error")){
+                  $('#editbatasdatangcepat').removeClass("error");
+                }
+              }
+              if (batastelatlembur.replace(/\s/g, '').length<=0) {
+                $('#editbatastelatlembur').addClass("error");
+              }else{
+                if($('#editbatastelatlembur').has("error")){
+                  $('#editbatastelatlembur').removeClass("error");
+                }
+              }
+              if (standarlembur.replace(/\s/g, '').length<=0) {
+                $('#editstandarlembur').addClass("error");
+              }else{
+                if($('#editstandarlembur').has("error")){
+                  $('#editstandarlembur').removeClass("error");
+                }
+              }
+              alert("Silahkan periksa kembali inputan anda!");
+            }
 
         }
         
