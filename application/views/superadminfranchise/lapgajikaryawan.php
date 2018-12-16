@@ -157,6 +157,7 @@
                     }
                     
                 }
+                htmlinsideselect = htmlinsideselect + '<option value="warehouse">Warehouse</option>';
                 $("#select_stan").html(htmlinsideselect);
                 $("#stan").html(htmlinsideselect);
 
@@ -221,4 +222,8 @@
               }
           }
         );
+
+        function detailgaji(pin) {
+            // body...
+        }
     </script>

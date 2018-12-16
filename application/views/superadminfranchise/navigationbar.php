@@ -164,7 +164,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="lapgajikaryawan">
                         <a href="lapgajikaryawan"> <i class="menu-icon ti-agenda"></i>Laporan Gaji Karyawan</a>
                     </li>
-                    <li id="">
+                    <!-- <li id="">
                         <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Laporan Pembelian</a>
                     </li>
                     <li id="">
@@ -175,7 +175,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </li>
                     <li id="">
                         <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Laporan Keuntungan Stand</a>
-                    </li>
+                    </li> -->
                     
                 </ul>
             </div><!-- /.navbar-collapse -->

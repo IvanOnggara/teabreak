@@ -91,6 +91,7 @@ class SuperAdminFranchise extends CI_Controller {
   		if ($this->Produk->getRowCount('alluser',$where) > 0) {
   			if ($data[0]->usertype == 'superadminfranchise') {
   				$this->session->set_userdata('aksessupadmin', 'granted');
+
   			}else if ($data[0]->usertype == 'adminfranchise') {
   				$this->session->set_userdata('aksesadmin', 'granted');
   			}
@@ -108,6 +109,64 @@ class SuperAdminFranchise extends CI_Controller {
         if(empty($akses)){
             redirect('login');
         }else{
+        	$countlapgaji = $this->Produk->getRowCountAll('laporan_gaji_karyawan');
+
+        	if ($countlapgaji > 0) {
+        		
+        	}else{
+        		$alldatakaryawan = $this->Produk->getAllData('karyawan_fingerspot');
+        		$getfirstmonth = $this->Produk->getSpecificColumn('presensi_karyawan','MIN(scan_date) as scan_date');
+        		$getfirstmonth = $getfirstmonth[0]->scan_date;
+        		$getfirstmonth = explode('-', $getfirstmonth);
+        		$getfirstmonth = $getfirstmonth[1];
+        		$getfirstyear = $getfirstmonth[0];
+
+        		$monthnow = date("n");
+        		$yearnow = date("Y");
+
+        		if ($yearnow - $getfirstyear == 0) {
+        			$banyakbulan = $monthnow-$getfirstmonth;
+        		}else{
+        			$differenceyear = $yearnow-$getfirstyear;
+
+        			$banyakbulan = ((($differenceyear*12) - ($getfirstmonth-1)) + $monthnow);
+        		}
+
+        		foreach ($alldatakaryawan as $perkaryawan) {
+        			for ($i=0; $i < $banyakbulan; $i++) { 
+        				$bulan = $getfirstmonth;
+        				$tahun = $getfirstyear;
+
+        				$where = array(
+        					'pin' => $perkaryawan->pin,
+        					'MONTH(scan_date)' => $bulan,
+        					'YEAR(scan_date)' => $tahun
+        				);
+        				$allpresensikaryawan = $this->Produk->getData($where,'presensi_karyawan');
+ 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 
+        				$datatosave = array(
+	        				'pin' => ,
+	        				'nama' => ,
+	        				'bulan_tahun' => ,
+	        				'masuk' => ,
+	        				'lembur' => ,
+	        				'terlambat' => ,
+	        				'tidak_masuk' => ,
+	        				'potongan_lain' => ,
+	        				'keterangan_potongan_lain' => ,
+	        				'gaji_tambahan' => ,
+	        				'keterangan_gaji_tambahan' => ,
+	        				'bonus_omset' => ,
+	        				'uang_makan' => ,
+	        				'uang_lembur' => ,
+	        				'potongan_terlambat' => ,
+	        				'potongan_cuti' => ,
+	        				'gaji_akhir' => ,
+	        			);
+        			}
+        		}
+        	}
+
         	$this->load->view('superadminfranchise/navigationbar');
             $this->load->view('superadminfranchise/dashboard');
         }
@@ -2073,5 +2132,21 @@ class SuperAdminFranchise extends CI_Controller {
     );
 	$this->Produk->update('manajemen_shift',$data,$where);
 	echo "Berhasil Diupdate";
+  }
+
+  public function datalaporangaji()
+  {
+  	$id_stan = $this->input->post('id_stan');
+  	$bulan_tahun = $this->input->post('bulan_tahun');
+
+  	$where = array('karyawan_fingerspot.id_stan' => $id_stan);
+
+  	$this->load->library('datatables');
+	$this->datatables->select('laporan_gaji_karyawan.pin,karyawan_fingerspot.nama,masuk,lembur,terlambat,tidak_masuk,gaji_akhir');
+	$this->datatables->from('laporan_gaji_karyawan');
+	$this->datatables->join('karyawan_fingerspot','karyawan_fingerspot.pin = laporan_gaji_karyawan.pin');
+	$this->datatables->where($where);
+	
+	echo $this->datatables->generate();
   }
 }
