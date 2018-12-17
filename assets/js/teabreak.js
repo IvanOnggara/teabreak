@@ -63,3 +63,19 @@ function currency(x) {
 	}
 	return retVal;
 }
+
+function currency_special(x) {
+	var all = x.toString().split('.');
+	var awal = all[0];
+	var koma='';
+	if (all[1] == null) {
+		koma = '-';
+	}else{
+		koma = all[1]+'';
+	}
+	var retVal=awal.replace(/[^\d]/g,'');
+	while(/(\d+)(\d{3})/.test(retVal)) {
+	  retVal=retVal.replace(/(\d+)(\d{3})/,'$1'+'.'+'$2');
+	}
+	return retVal+","+koma;
+}

@@ -293,8 +293,14 @@
             "dataSrc": function (json) {
               var return_data = new Array();
               for(var i=0;i< json.length; i++){
+                var tahun_bulan = json[i].bulan_tahun.split("/");
+                tahun_bulan = tahun_bulan[1]+"/"+tahun_bulan[0];
                 return_data.push({
-                  'bulan_tahun': json[i].bulan_tahun,
+                  'bulan_tahun'  : {
+                    "display" : json[i].bulan_tahun,
+                    "real" : tahun_bulan
+                  },
+
                   'nama_stan'  : json[i].nama_stan,
                   'penjualan' : json[i].penjualan,
                   'edit' : '<button onclick="editpenjualan(\''+json[i].id_penjualan+'\',\''+json[i].penjualan+'\')" class="btn btn-warning" >Edit</button> '
@@ -304,12 +310,13 @@
             }
           },
           columns: [
-            {'data': 'bulan_tahun'},
+            {'data': 'bulan_tahun',render: {_: 'display',sort: 'real'}},
             {'data': 'nama_stan'},
             {'data': 'penjualan'},
             {'data': 'edit'}
           ]
         });
+
 
         $.ajax({
           type:"post",

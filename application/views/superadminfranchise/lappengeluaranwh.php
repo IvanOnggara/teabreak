@@ -280,7 +280,11 @@
                 return_data.push({
                   'tanggal': uidate(json.data[i].tanggal),
                   'keterangan': json.data[i].keterangan,
-                  'pengeluaran'  : "Rp. "+currency(json.data[i].pengeluaran)+",-"
+
+                    'pengeluaran'  : {
+                        "display" : "Rp. "+currency(json.data[i].pengeluaran)+",-",
+                        "real" : json.data[i].pengeluaran
+                    },
                 })
               }
               return return_data;
@@ -327,7 +331,7 @@
               columns: [
                 {'data': 'tanggal','orderable':false},
                 {'data': 'keterangan','orderable':false},
-                {'data': 'pengeluaran','orderable':false}
+                {'data': 'pengeluaran',render: {_: 'display',sort: 'real'}},
               ],
         });
 

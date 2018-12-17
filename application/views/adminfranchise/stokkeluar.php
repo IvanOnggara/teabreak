@@ -202,7 +202,10 @@
                     tanggal = (tanggal_all.split(" "))[0];
                     jam = (tanggal_all.split(" "))[1];
                     return_data.push({
-                      'tanggal_jam': uidate(tanggal),
+                      'tanggal_jam'  : {
+                        "display" : uidate(tanggal),
+                        "real" : tanggal
+                      },
                       'waktu' : jam,
                       'id_bahan_jadi'  : json.data[i].id_bahan_jadi,
                       'nama_bahan_jadi' : json.data[i].nama_bahan_jadi,
@@ -253,7 +256,7 @@
                 ],
                 "lengthChange": true,
                   columns: [
-                    {'data': 'tanggal_jam'},
+                    {'data': 'tanggal_jam',render: {_: 'display',sort: 'real'}},
                     {'data': 'waktu'},
                     {'data': 'id_bahan_jadi'},
                     {'data': 'nama_bahan_jadi'},

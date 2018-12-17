@@ -183,7 +183,10 @@
               for(var i=0;i< json.length; i++){
                 return_data.push({
                   'keterangan': json[i].keterangan,
-                  'total_nominal_aset' : json[i].total_nominal_aset,
+                  'total_nominal_aset'  : {
+                        "display" : "Rp. "+currency_special(json[i].total_nominal_aset),
+                        "real" : Number(json[i].total_nominal_aset)
+                    },
                 })
                 totalaset = totalaset+json[i].total_nominal_aset;
               }
@@ -195,7 +198,7 @@
           },
           columns: [
             {'data': 'keterangan'},
-            {'data': 'total_nominal_aset'}
+            {'data': 'total_nominal_aset',render: {_: 'display',sort: 'real'}},
           ]
         });
     </script>

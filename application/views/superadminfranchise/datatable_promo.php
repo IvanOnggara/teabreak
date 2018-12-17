@@ -80,8 +80,15 @@
         return_data.push({
           'nama_diskon': json.data[i].nama_diskon,
           'jenis_diskon' : jenis_diskon,
-          'tanggal_mulai' : json.data[i].tanggal_mulai,
-          'tanggal_akhir' : json.data[i].tanggal_akhir,
+
+          'tanggal_mulai'  : {
+            "display" : uidate(json.data[i].tanggal_mulai),
+            "real" : json.data[i].tanggal_mulai
+          },
+          'tanggal_akhir'  : {
+            "display" : uidate(json.data[i].tanggal_akhir),
+            "real" : json.data[i].tanggal_akhir
+          },
           'hari' : json.data[i].hari,
           'waktu' : json.data[i].jam_mulai+' - '+json.data[i].jam_akhir,
           'edit' : '<button onclick=edit_promo("'+json.data[i].id_diskon+'") class="btn btn-warning" style="color:white;">Edit</button> ',
@@ -91,6 +98,8 @@
       return return_data;
     }
   },
+
+
   dom: 'Bfrtlip',
         buttons: [
             {
@@ -132,8 +141,8 @@
   columns    : [
     {'data': 'nama_diskon'},
     {'data': 'jenis_diskon'},
-    {'data': 'tanggal_mulai'},
-    {'data': 'tanggal_akhir'},
+    {'data': 'tanggal_mulai',render: {_: 'display',sort: 'real'}},
+    {'data': 'tanggal_akhir',render: {_: 'display',sort: 'real'}},
     {'data': 'hari'},
     {'data': 'waktu','orderable':false,'searchable':false},
     {'data': 'edit','orderable':false,'searchable':false},

@@ -333,7 +333,10 @@
                       var return_data = new Array();
                       for(var i=0;i< json.length; i++){
                         return_data.push({
-                          'tanggal': json[i].tanggal,
+                          'tanggal'  : {
+                            "display" : uidate(json[i].tanggal),
+                            "real" : json[i].tanggal
+                          },
                           'keterangan'  : json[i].keterangan,
                           'pengeluaran' : json[i].pengeluaran,
                           'edit' : '<button onclick="editpengeluaran(\''+json[i].id_pengeluaran+'\',\''+json[i].tanggal+'\',\''+json[i].keterangan+'\',\''+json[i].pengeluaran+'\')" class="btn btn-warning" >Edit</button> ',
@@ -344,7 +347,7 @@
                     }
                   },
                   columns: [
-                    {'data': 'tanggal'},
+                    {'data': 'tanggal',render: {_: 'display',sort: 'real'}},
                     {'data': 'keterangan'},
                     {'data': 'pengeluaran'},
                     {'data': 'edit'},

@@ -118,21 +118,21 @@
 
             $.ajax({
                   type:"post",
-                  url: "<?php echo base_url('adminstand/sinkronpresensi')?>/",
+                  url: "<?php echo base_url('adminfranchise/sinkronpresensi')?>/",
                   data:{ sst:"sinkron"},
                   dataType:"text",
                   success:function(response)
                   {
-                    $('#labelsinkronpresensi').removeClass('orange');
+                    $('#process2').removeClass('teal');
                     if (response == 'CANTCONNECT') {
-                        $('#labelsinkronpresensi').html('KONEKSI ERROR!');
-                        $('#labelsinkronpresensi').addClass('red');
+                        $('#process2').html('KONEKSI ERROR!');
+                        $('#process2').addClass('red');
                     }else if (response == 'SUCCESSSAVE') {
-                        $('#labelsinkronpresensi').html('SINKRONISASI SUKSES!');
-                        $('#labelsinkronpresensi').addClass('green');
+                        $('#process2').html('SINKRONISASI SUKSES!');
+                        $('#process2').addClass('green');
                     }else{
-                        $('#labelsinkronpresensi').html('TIDAK ADA PERUBAHAN DATA!');
-                        $('#labelsinkronpresensi').addClass('red');
+                        $('#process2').html('TIDAK ADA PERUBAHAN DATA!');
+                        $('#process2').addClass('red');
                     }
                     console.log(response);
                   },

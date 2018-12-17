@@ -57,7 +57,10 @@
 			        return_data.push({
 			        	'no': no,
 			          'id_nota': json[i].id_nota,
-			          'tanggal_nota'  : uidate(json[i].tanggal_nota),
+			          'tanggal_nota'  : {
+                            "display" : uidate(json[i].tanggal_nota),
+                            "real" : json[i].tanggal_nota
+                          },
 			          'waktu_nota' : json[i].waktu_nota,
 			          'shift' : json[i].shift.charAt(0).toUpperCase() + json[i].shift.slice(1),
 			          'total_harga_jual' : "Rp "+currency(json[i].total_harga),
@@ -121,7 +124,7 @@
 				  columns: [
 				  {'data' : 'no'},
 				    {'data': 'id_nota'},
-				    {'data': 'tanggal_nota'},
+				    {'data': 'tanggal_nota',render: {_: 'display',sort: 'real'}},
 				    {'data' : 'waktu_nota'},
 				    {'data': 'shift'},
 				    {'data': 'total_harga_jual'},

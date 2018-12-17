@@ -256,7 +256,11 @@
               var shift;
               for(var i=0;i< json.data.length; i++){
                 return_data.push({
-                  'tanggal': uidate(json.data[i].tanggal),
+                  
+                  'tanggal'  : {
+                    "display" : uidate(json.data[i].tanggal),
+                    "real" : json.data[i].tanggal
+                  },
                   'keterangan': json.data[i].keterangan,
                   'pengeluaran'  : "Rp. "+currency(json.data[i].pengeluaran)+",-",
                   'edit' : '<button onclick="editpengeluaran(\''+json.data[i].id_pengeluaran+'\',\''+json.data[i].keterangan+'\',\''+json.data[i].pengeluaran+'\')" class="btn btn-warning" >Edit</button> ',
@@ -305,7 +309,7 @@
             ],
             "lengthChange": true,
               columns: [
-                {'data': 'tanggal'},
+                {'data': 'tanggal',render: {_: 'display',sort: 'real'}},
                 {'data': 'keterangan'},
                 {'data': 'pengeluaran'},
                 {'data': 'edit','orderable':false,'searchable':false},
