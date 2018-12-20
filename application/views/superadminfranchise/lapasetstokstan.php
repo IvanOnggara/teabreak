@@ -216,6 +216,56 @@
                       return return_data;
                     }
                   },
+    dom: 'Bfrtlip',
+        buttons: [
+            {
+                extend: 'copyHtml5',
+                text: 'Copy',
+                filename: 'Data Stan',
+                exportOptions: {
+                  columns:[0,1,2,3,4]
+                }
+            },{
+                extend: 'excelHtml5',
+                customize: function ( xlsx ){
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+ 
+                // jQuery selector to add a border
+                    $('row c[r*="2"]', sheet).attr( 's', '27' );
+                    $('row c[r*="3"]', sheet).attr( 's', [25,51]);
+                    $('row c[r*="4"]', sheet).attr( 's', '25' );
+                    $('row c[r*="5"]', sheet).attr( 's', '25' );
+                    $('row c[r*="6"]', sheet).attr( 's', '25' );
+                    $('row c[r*="7"]', sheet).attr( 's', '25' );
+                    $('row c[r*="8"]', sheet).attr( 's', '25' );
+                },
+                text: 'Excel',
+                className: 'exportExcel',
+                filename: 'Data Stan222sad',
+                exportOptions: {
+                  columns:[0,1,2,3,4]
+                }
+            },{
+                extend: 'csvHtml5',
+                filename: 'Data Stan',
+                exportOptions: {
+                  columns:[0,1,2,3,4]
+                }
+            },{
+                extend: 'pdfHtml5',
+                filename: 'Data Stan',
+                exportOptions: {
+                  columns:[0,1,2,3,4]
+                }
+            },{
+                extend: 'print',
+                filename: 'Data Stan',
+                exportOptions: {
+                  columns:[0,1,2,3,4]
+                }
+            }
+        ],
+        "lengthChange": true,
                   columns: [
                     {'data': 'id_bahan_jadi'},
                     {'data': 'nama_bahan_jadi'},

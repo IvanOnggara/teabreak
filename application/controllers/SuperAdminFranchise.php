@@ -2149,4 +2149,10 @@ class SuperAdminFranchise extends CI_Controller {
 	
 	echo $this->datatables->generate();
   }
+
+  public function downloadexcel1()
+  {
+  	$this->load->library("DownloadExcel");
+  	$this->downloadexcel->download();
+  }
 }

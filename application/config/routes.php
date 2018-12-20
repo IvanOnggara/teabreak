@@ -121,3 +121,8 @@ $route['sinkronisasidata'] = 'adminfranchise/sinkronisasidata';
 
 $route['json'] = 'superadminfranchise/json';
 $route['translate_uri_dashes'] = FALSE;
+
+
+
+//try
+$route['downloadexcel'] = 'superadminfranchise/downloadexcel1';
