@@ -79,3 +79,31 @@ function currency_special(x) {
 	}
 	return retVal+","+koma;
 }
+
+function strtobln(bln) {
+	if (bln == "01") {
+        return 'Januari';
+    }else if (bln == '02'){
+        return 'Februari';
+    }else if (bln == '03'){
+        return 'Maret';
+    }else if (bln == '04'){
+        return 'April';
+    }else if (bln == '05'){
+        return 'Mei';
+    }else if (bln == '06'){
+        return 'Juni';
+    }else if (bln == '07'){
+        return 'Juli';
+    }else if (bln == '08'){
+        return 'Agustus';
+    }else if (bln == '09'){
+        return 'September';
+    }else if (bln == '10'){
+        return 'Oktober';
+    }else if (bln == '11'){
+        return 'November';
+    }else if (bln == '12'){
+        return 'Desember';
+    }
+}

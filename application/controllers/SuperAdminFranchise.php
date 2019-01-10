@@ -110,12 +110,16 @@ class SuperAdminFranchise extends CI_Controller {
             redirect('login');
         }else{
         	$countlapgaji = $this->Produk->getRowCountAll('laporan_gaji_karyawan');
+        	$bulantahunlalu = date("n-Y", strtotime("-1 months"));
+    		$bulantahunlaluarray = explode('-', $bulantahunlalu);
+    		$bulanlalu = $bulantahunlaluarray[0];
+    		$tahunlalu = $bulantahunlaluarray[1];
 
-        	if ($countlapgaji >= 0) {
-        		$bulantahunlalu = date("n-Y", strtotime("-1 months"));
-        		$bulantahunlaluarray = explode('-', $bulantahunlalu);
-        		$bulanlalu = $bulantahunlaluarray[0];
-        		$tahunlalu = $bulantahunlaluarray[1];
+        	$where = array('bulan_tahun' => $bulanlalu."-".$tahunlalu);
+        	$countlapgajiwithcase = $this->Produk->getRowCount('laporan_gaji_karyawan',$where);
+
+        	if ($countlapgajiwithcase <= 0) {
+        		
 
         		$haribulanitu = cal_days_in_month(CAL_GREGORIAN, intval($bulanlalu),intval($tahunlalu) );
 
@@ -300,7 +304,7 @@ class SuperAdminFranchise extends CI_Controller {
 						);
 
 						$banyakpegawai = $this->Produk->getRowCount('karyawan_fingerspot',$whereforbonus);
-						$data_gaji_bonus = ($data_gaji_bonus[0]->persentase_bonus*$data_omset)/$banyakpegawai;
+						$data_gaji_bonus = (($data_gaji_bonus[0]->persentase_bonus/100)*$data_omset)/$banyakpegawai;
 					}
 
 					$uang_makan_akhir = ($masuk-$terlambat)*$data_detail_stan[0]->uang_makan;
@@ -333,64 +337,71 @@ class SuperAdminFranchise extends CI_Controller {
         				'gaji_akhir' => $gaji_akhir,
         			);
 
-        			if ($perkaryawan->pin == '1') {
-        				var_dump($datatosave);
+        			//save data
+
+        			if ($perkaryawan->status == 'active') {
+        				$insert_lap_gaji = $this->Produk->insert('laporan_gaji_karyawan',$datatosave);
         			}
+        			
+
+        			// if ($perkaryawan->pin == '1') {
+        				// var_dump($datatosave);
+        			// }
 				}
 
         		// CREATE LAPORAN GAJI BULAN TAHUN SEBELUMNYA
         	}else{
-        		$alldatakaryawan = $this->Produk->getAllData('karyawan_fingerspot');
-        		$getfirstmonth = $this->Produk->getSpecificColumn('presensi_karyawan','MIN(scan_date) as scan_date');
-        		$getfirstmonth = $getfirstmonth[0]->scan_date;
-        		$getfirstmonth = explode('-', $getfirstmonth);
-        		$getfirstmonth = $getfirstmonth[1];
-        		$getfirstyear = $getfirstmonth[0];
+        		// $alldatakaryawan = $this->Produk->getAllData('karyawan_fingerspot');
+        		// $getfirstmonth = $this->Produk->getSpecificColumn('presensi_karyawan','MIN(scan_date) as scan_date');
+        		// $getfirstmonth = $getfirstmonth[0]->scan_date;
+        		// $getfirstmonth = explode('-', $getfirstmonth);
+        		// $getfirstmonth = $getfirstmonth[1];
+        		// $getfirstyear = $getfirstmonth[0];
 
-        		$monthnow = date("n");
-        		$yearnow = date("Y");
+        		// $monthnow = date("n");
+        		// $yearnow = date("Y");
 
-        		if ($yearnow - $getfirstyear == 0) {
-        			$banyakbulan = $monthnow-$getfirstmonth;
-        		}else{
-        			$differenceyear = $yearnow-$getfirstyear;
+        		// if ($yearnow - $getfirstyear == 0) {
+        		// 	$banyakbulan = $monthnow-$getfirstmonth;
+        		// }else{
+        		// 	$differenceyear = $yearnow-$getfirstyear;
 
-        			$banyakbulan = ((($differenceyear*12) - ($getfirstmonth-1)) + $monthnow);
-        		}
+        		// 	$banyakbulan = ((($differenceyear*12) - ($getfirstmonth-1)) + $monthnow);
+        		// }
 
-        		foreach ($alldatakaryawan as $perkaryawan) {
-        			for ($i=0; $i < $banyakbulan; $i++) { 
-        				$bulan = $getfirstmonth;
-        				$tahun = $getfirstyear;
+        		// foreach ($alldatakaryawan as $perkaryawan) {
+        		// 	for ($i=0; $i < $banyakbulan; $i++) { 
+        		// 		$bulan = $getfirstmonth;
+        		// 		$tahun = $getfirstyear;
 
-        				$where = array(
-        					'pin' => $perkaryawan->pin,
-        					'MONTH(scan_date)' => $bulan,
-        					'YEAR(scan_date)' => $tahun
-        				);
-        				$allpresensikaryawan = $this->Produk->getData($where,'presensi_karyawan');
+        		// 		$where = array(
+        		// 			'pin' => $perkaryawan->pin,
+        		// 			'MONTH(scan_date)' => $bulan,
+        		// 			'YEAR(scan_date)' => $tahun
+        		// 		);
+        		// 		$allpresensikaryawan = $this->Produk->getData($where,'presensi_karyawan');
  	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 
-        				// $datatosave = array(
-	        			// 	'pin' => ,
-	        			// 	'nama' => ,
-	        			// 	'bulan_tahun' => ,
-	        			// 	'masuk' => ,
-	        			// 	'lembur' => ,
-	        			// 	'terlambat' => ,
-	        			// 	'tidak_masuk' => ,
-	        			// 	'potongan_lain' => ,
-	        			// 	'keterangan_potongan_lain' => ,
-	        			// 	'gaji_tambahan' => ,
-	        			// 	'keterangan_gaji_tambahan' => ,
-	        			// 	'bonus_omset' => ,
-	        			// 	'uang_makan' => ,
-	        			// 	'uang_lembur' => ,
-	        			// 	'potongan_terlambat' => ,
-	        			// 	'potongan_cuti' => ,
-	        			// 	'gaji_akhir' => ,
-	        			// );
-        			}
-        		}
+        		// 		// $datatosave = array(
+	        	// 		// 	'pin' => ,
+	        	// 		// 	'nama' => ,
+	        	// 		// 	'bulan_tahun' => ,
+	        	// 		// 	'masuk' => ,
+	        	// 		// 	'lembur' => ,
+	        	// 		// 	'terlambat' => ,
+	        	// 		// 	'tidak_masuk' => ,
+	        	// 		// 	'potongan_lain' => ,
+	        	// 		// 	'keterangan_potongan_lain' => ,
+	        	// 		// 	'gaji_tambahan' => ,
+	        	// 		// 	'keterangan_gaji_tambahan' => ,
+	        	// 		// 	'bonus_omset' => ,
+	        	// 		// 	'uang_makan' => ,
+	        	// 		// 	'uang_lembur' => ,
+	        	// 		// 	'potongan_terlambat' => ,
+	        	// 		// 	'potongan_cuti' => ,
+	        	// 		// 	'gaji_akhir' => ,
+	        	// 		// );
+        		// 	}
+        		// }
         	}
 
         	$this->load->view('superadminfranchise/navigationbar');
@@ -2374,11 +2385,15 @@ class SuperAdminFranchise extends CI_Controller {
   {
   	$id_stan = $this->input->post('id_stan');
   	$bulan_tahun = $this->input->post('bulan_tahun');
+  	$bulan_tahun = str_replace("/","-",$bulan_tahun);
 
-  	$where = array('karyawan_fingerspot.id_stan' => $id_stan);
+  	$where = array(
+  		'karyawan_fingerspot.id_stan' => $id_stan,
+  		'bulan_tahun' => $bulan_tahun
+  	);
 
   	$this->load->library('datatables');
-	$this->datatables->select('laporan_gaji_karyawan.pin,karyawan_fingerspot.nama,masuk,lembur,terlambat,tidak_masuk,gaji_akhir');
+	$this->datatables->select('id_gaji,laporan_gaji_karyawan.pin,karyawan_fingerspot.nama,gaji_tetap,karyawan_fingerspot.id_stan,masuk,lembur,terlambat,terlambatlembur,tidak_masuk,gaji_akhir,bonus_omset,potongan_lain,keterangan_potongan_lain,gaji_tambahan,keterangan_gaji_tambahan');
 	$this->datatables->from('laporan_gaji_karyawan');
 	$this->datatables->join('karyawan_fingerspot','karyawan_fingerspot.pin = laporan_gaji_karyawan.pin');
 	$this->datatables->where($where);
@@ -2453,5 +2468,43 @@ class SuperAdminFranchise extends CI_Controller {
 
   	$this->load->library("DownloadExcel");
   	$this->downloadexcel->download('stan',$alldataforwarehouse,$bulan,$year,'Warehouse');
+  }
+
+  public function getdetailstan()
+  {
+  	$id_stan = $this->input->post('id_stan');
+  	$where = array('id_stan' => $id_stan );
+
+  	$detail = $this->Produk->getData($where,'data_detail_stan');
+
+  	echo json_encode($detail);
+  }
+
+  public function edit_gaji_karyawan()
+  {
+  	$potongan_lain = $this->input->post('potonganlain');
+  	$keterangan_potongan_lain = $this->input->post('keterangan_potongan_lain');
+  	$gaji_tambahan = $this->input->post('gaji_tambahan');
+  	$keterangan_gaji_tambahan = $this->input->post('keterangan_gaji_tambahan');
+	$id_gaji = $this->input->post('id_gaji');
+	$gaji_akhir = $this->input->post('gaji_akhir');
+	$potongan_lainawal = $this->input->post('potongan_lainawal');
+	$gaji_tambahanawal = $this->input->post('gaji_tambahanawal');
+
+  	//save
+  	$data = array(
+  		'potongan_lain' => $potongan_lain,
+  		'keterangan_potongan_lain' => $keterangan_potongan_lain,
+  		'gaji_tambahan' => $gaji_tambahan,
+  		'keterangan_gaji_tambahan' => $keterangan_gaji_tambahan,
+  		'gaji_akhir' => (((($gaji_akhir+$potongan_lainawal)-$gaji_tambahanawal) - $potongan_lain) + $gaji_tambahan)
+  	);
+
+  	$where = array(
+  		'id_gaji' => $id_gaji
+  	);
+
+  	$save = $this->Produk->update('laporan_gaji_karyawan',$data,$where);
+  	echo "Berhasil Diupdate";
   }
 }

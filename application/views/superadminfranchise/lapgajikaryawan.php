@@ -39,24 +39,25 @@
                                         <input type="text" id="tanggal2" placeholder="Masukkan Bulan Tahun" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
+                                <!-- <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label"> </label>
                                         <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <br>
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                                     <thead class="">
                                       <tr>
-                                        <th width="10%">ID Karyawan</th>
-                                        <th width="22%">Nama</th>
-                                        <th width="11%">Masuk</th>
-                                        <th width="11%">Lembur</th>
-                                        <th width="11%">Terlambat</th>
-                                        <th width="11%">Tidak Masuk</th>
-                                        <th width="16%">Gaji Akhir</th>
+                                        <th width="14%">ID Karyawan</th>
+                                        <th width="15%">Nama</th>
+                                        <th width="9%">Masuk</th>
+                                        <th width="9%">Lembur</th>
+                                        <th width="10%">Terlambat</th>
+                                        <th width="11%">Terlambat Lembur</th>
+                                        <th width="14%">Tidak Masuk</th>
+                                        <th width="10%">Gaji Akhir</th>
                                         <th width="8%">Detail</th>
                                       </tr>
                                     </thead>
@@ -71,24 +72,150 @@
     <!-- Right Panel -->
 
     <div class="modal fade" id="modal_edit" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="header modal-header">
-                <h4 class="modal-title">Edit</h4>
+                <h4 class="modal-title">Detail and Edit</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
+                <h4 class="pb-2 display-5" id="datakaryawan" style="font-weight: bold;">ID : 0000 - Name Here</h4>
+                <h6 class="pb-2 display-5" id="bulantahun"></h6>
+                <h6 class="pb-2 display-5" id="tempatkerja"></h6>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-8">
+                        <h5 style="font-weight: bold">Data Absen Karyawan</h5>
+                        <hr>
+                       <!--  <div class="form-group">
                             <label for="editid" class=" form-control-label">Penjualan</label>
                             <input type="hidden" name="id_lama" id="id_lama">
                             <input type="text" id="editpen" placeholder="Masukkan Pengeluaran" class="form-control numeric">
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h5>
+                            <span class="badge badge-success" id="masukkerja">Masuk : - Hari</span>
+                        </h5>
+                        
+                    </div>
+                    <div class="col-lg-4">
+                        <h5>
+                            <span class="badge badge-danger" id="tidakmasukkerja">Tidak Masuk : - Hari</span>
+                        </h5>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h5>
+                            <span class="badge badge-warning" id="terlambat">Terlambat : - Hari</span>
+                        </h5>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <h5>
+                            <span class="badge badge-warning" id="lembur">Lembur : - Hari</span>
+                        </h5>
+                    </div>
+                    <!-- <div class="col-lg-43">
+                        <h5>
+                            <span class="badge badge-warning" id="terlambatlembur">Lembur Terlambat : - Hari</span>
+                        </h5>
+                    </div> -->
+                </div>
+                
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-8">
+                        <h5 style="font-weight: bold">Potongan Gaji Karyawan</h5>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6 class="pb-2 display-5" id="potongantidakmasuk">Tidak Masuk : -</h6>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                         <div class="form-group">
+                            <label for="editid" class=" form-control-label">Potongan Lain</label>
+                            <input type="hidden" name="id_lama" id="id_gaji">
+                            <input type="hidden" name="id_lama" id="editpotonganlainawal">
+                            <input type="text" id="editpotonganlain" placeholder="Masukkan Potongan Lain" class="form-control numeric">
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                         <div class="form-group">
+                            <label for="editid" class=" form-control-label">Keterangan</label>
+                            <input type="text" id="editketpotonganlain" placeholder="Masukkan Keterangan" class="form-control">
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-8">
+                        <h5 style="font-weight: bold">Total Gaji Karyawan</h5>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6 class="pb-2 display-5" id="gajipokok">Gaji Pokok : -</h6>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6 class="pb-2 display-5" id="uangmakan">Uang Makan : -</h6>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6 class="pb-2 display-5" id="bonusomset">Bonus Omset : -</h6>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6 class="pb-2 display-5" id="uanglembur">Uang Lembur : -</h6>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                         <div class="form-group">
+                            <label for="editid" class=" form-control-label">Gaji Tambahan</label>
+                            <input type="hidden" name="id_lama" id="editgajitambahanawal">
+                            <input type="text" id="editgajitambahan" placeholder="Masukkan Gaji Tambahan" class="form-control numeric">
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                         <div class="form-group">
+                            <label for="editid" class=" form-control-label">Keterangan</label>
+                            <input type="text" id="editketgajitambahan" placeholder="Masukkan Keterangan" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6 style="font-weight: bold" class="pb-2 display-5" id="gajiakhir">Gaji Akhir : -</h6>
+                        <input type="hidden" name="" id="gajiakhirdata">
+                    </div>
+                    
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Batal</button>
@@ -125,9 +252,11 @@
     <!-- bootstrap-datetimepicker -->    
     <script src=<?php echo base_url("assets/vendors/Date-Time-Picker-Bootstrap-4/build/js/bootstrap-datetimepicker.min.js")?>></script>
     <script type="text/javascript">
+        var howmuch = 0;
         $('#tanggal2').datetimepicker({
             format: 'MM/YYYY',
-            useCurrent: false
+            useCurrent: false,
+            defaultDate: moment(new Date()).subtract(1,'months')
         });
 
         $("#tanggal2").on("dp.change", function(e) {
@@ -186,22 +315,61 @@
                     },
                     "dataSrc": function (json) {
                       var return_data = new Array();
-                      for(var i=0;i< json.length; i++){
+                      howmuch = 0;
+                      for(var i=0;i< json.data.length; i++){
+                        howmuch++;
                         return_data.push({
                             // 'id_stan':json[i].id_stan,
-                            'pin':json[i].pin,
-                            'nama':json[i].nama,
-                            'masuk':json[i].masuk,
-                            'lembur':json[i].lembur,
-                            'terlambat':json[i].terlambat,
-                            'tidak_masuk':json[i].tidak_masuk,
-                            'gaji_akhir':json[i].gaji_akhir,
-                          'detail' : '<button onclick="detailgaji(\''+json[i].pin+'\')" class="btn btn-default" >Detail</button> '
+                            'pin':json.data[i].pin,
+                            'nama':json.data[i].nama,
+                            'masuk':json.data[i].masuk,
+                            'lembur':json.data[i].lembur,
+                            'terlambat':json.data[i].terlambat,
+                            'terlambatlembur':json.data[i].terlambatlembur,
+                            'tidak_masuk':json.data[i].tidak_masuk,
+                            'gaji_akhir':json.data[i].gaji_akhir,
+                          'detail' : '<button onclick="detailgaji(\''+json.data[i].id_gaji+'\',\''+json.data[i].pin+'\',\''+json.data[i].id_stan+'\',\''+json.data[i].nama+'\',\''+json.data[i].masuk+'\',\''+json.data[i].lembur+'\',\''+json.data[i].terlambat+'\',\''+json.data[i].terlambatlembur+'\',\''+json.data[i].tidak_masuk+'\',\''+json.data[i].gaji_akhir+'\',\''+json.data[i].gaji_tetap+'\',\''+json.data[i].bonus_omset+'\',\''+json.data[i].potongan_lain+'\',\''+json.data[i].keterangan_potongan_lain+'\',\''+json.data[i].gaji_tambahan+'\',\''+json.data[i].keterangan_gaji_tambahan+'\')" class="btn btn-primary" >Detail</button> '
                         });
                       }
                       return return_data;
                     }
                   },
+                dom: 'Bfrtlip',
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            title:function(argument) {
+                                return 'Data Gaji Karyawan '+$("#select_stan option:selected").text();
+                            } ,
+                            messageTop: function (argument) {
+                                return $("#tanggal2").val();
+                            },
+                            customize: function ( xlsx ){
+                                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                                // jQuery selector to add a border
+                                $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                                for (var i = 0; i < howmuch; i++) {
+                                  var row = i + 4;
+                                  $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                                }
+
+                            },
+                            text: '<i class="fa fa-download"></i> Download Excel',
+                            className: 'exportExcel',
+                            filename: function (argument) {
+                                  var tanggall = $("#tanggal2").val();
+                                  var stan = $("#select_stan option:selected").text();
+
+                                  return 'Gaji Karyawan '+stan+" bulantahun "+tanggall ;
+                            } ,
+                            exportOptions: {
+                              columns:[0,1,2,3,4,5,6,7]
+                            }
+                        }
+                    ],
+                    "lengthChange": true,
                   columns: [
                     // {'data': 'id_stan'},
                     {'data': 'pin'},
@@ -209,6 +377,7 @@
                     {'data': 'masuk'},
                     {'data': 'lembur'},
                     {'data': 'terlambat'},
+                    {'data': 'terlambatlembur'},
                     {'data': 'tidak_masuk'},
                     {'data': 'gaji_akhir'},
                     {'data': 'detail'}
@@ -223,7 +392,104 @@
           }
         );
 
-        function detailgaji(pin) {
-            // body...
+        function detailgaji(id_gaji,pin,id_stan,nama,masuk,lembur,terlambat,terlambatlembur,tidakmasuk,gajiakhir,gajitetap,bonusomset,potongan_lain,keterangan_potongan_lain,gaji_tambahan,keterangan_gaji_tambahan) {
+            $('#modal_edit').modal('toggle');
+            $("#datakaryawan").text("ID : "+pin+" - "+nama);
+            var blnthn = $("#tanggal2").val().split("/");
+            var bln = blnthn[0];
+            var thn = blnthn[1];
+            terlambat =parseInt(terlambat) +parseInt(terlambatlembur);
+            lembur = parseInt(lembur)+parseInt(terlambatlembur);
+
+            bln = strtobln(bln);
+            $("#bulantahun").text(bln+" "+thn);
+            $("#tempatkerja").text("Tempat Kerja : "+$("#select_stan option:selected").text());
+
+            $("#masukkerja").text("Masuk : "+parseInt(masuk) +" Hari");
+            $("#tidakmasukkerja").text("Tidak Masuk : "+parseInt(tidakmasuk) +" Hari");
+            $("#terlambat").text("Terlambat : "+parseInt(terlambat) +" Hari");
+            $("#lembur").text("Lembur : "+ parseInt(lembur)+" Hari");
+            $("#id_gaji").val(id_gaji);
+            // $("#terlambatlembur").text("Lembur Terlambat : "+ +" Hari");
+
+            $.post({
+                url: "<?php echo base_url('superadminfranchise/getdetailstan')?>/",
+                data:{
+                    id_stan : id_stan 
+                },
+                success:function(response) {
+                    response = JSON.parse(response);
+                    console.log(response);
+                    var potongantidakmasuk = tidakmasuk*response[0].pinalti_bolos;
+                    var uangmakan = (masuk-terlambat)*response[0].uang_makan;
+                    var uanglembur = lembur*response[0].uang_lembur;
+                    $("#potongantidakmasuk").text("Tidak Masuk : Rp. "+currency(potongantidakmasuk)+" ( "+ tidakmasuk+" * "+response[0].pinalti_bolos+" )");
+                    $("#uangmakan").text("Uang Makan : Rp. "+currency(uangmakan) +" ( "+ (masuk-terlambat)+" * "+response[0].uang_makan+" )");
+                    $("#uanglembur").text("Uang Lembur : Rp. "+currency(uanglembur) +" ( "+ lembur+" * "+response[0].uang_lembur+" )");
+                    $("#potongantidakmasuk").css("color", "black");
+                    $("#uangmakan").css("color", "black");
+                    $("#uanglembur").css("color", "black");
+                },
+                error:function(argument) {
+                    $("#potongantidakmasuk").text("Jaringan Bermasalah! Coba Lagi");
+                    $("#uangmakan").text("Jaringan Bermasalah! Coba Lagi");
+                    $("#uanglembur").text("Jaringan Bermasalah! Coba Lagi");
+                    $("#potongantidakmasuk").css("color", "red");
+                    $("#uangmakan").css("color", "red");
+                    $("#uanglembur").css("color", "red");
+                }
+            });
+
+            $("#editpotonganlain").val(potongan_lain);
+            $("#editpotonganlainawal").val(potongan_lain);
+
+            $("#editketpotonganlain").val(keterangan_potongan_lain);
+            $("#gajipokok").text("Gaji Pokok : Rp. "+ currency(gajitetap)+"");
+            
+            $("#bonusomset").text("Bonus Omset : Rp. "+currency(bonusomset) +"");
+            
+            $("#editgajitambahan").val(gaji_tambahan);
+            $("#editgajitambahanawal").val(gaji_tambahan);
+            $("#editketgajitambahan").val(keterangan_gaji_tambahan);
+            $("#gajiakhir").text("Gaji Akhir : Rp. "+currency(gajiakhir) );
+            $("#gajiakhirdata").val(gajiakhir);
+        }
+
+        function simpanedit() {
+            var potonganlain = $("#editpotonganlain").val();
+            var gaji_tambahan = $("#editgajitambahan").val();
+            var keterangan_potongan_lain = $("#editketpotonganlain").val();
+            var keterangan_gaji_tambahan = $("#editketgajitambahan").val();
+            var id_gaji = $("#id_gaji").val();
+            var potongan_lainawal = $("#editpotonganlainawal").val();
+            var gaji_tambahanawal = $("#editgajitambahanawal").val();
+            var gaji_akhir = $("#gajiakhirdata").val();
+
+            if (potonganlain != '' && gaji_tambahan != '') {
+                $("#editpotonganlain").removeClass('is-invalid');
+                $("#editgajitambahan").removeClass('is-invalid');
+                //ajax save
+
+                $.ajax({
+                  type:"post",
+                  url: "<?php echo base_url('superadminfranchise/edit_gaji_karyawan')?>/",
+                  data:{ potonganlain:potonganlain,keterangan_potongan_lain:keterangan_potongan_lain,gaji_tambahan:gaji_tambahan,keterangan_gaji_tambahan:keterangan_gaji_tambahan,id_gaji:id_gaji,potongan_lainawal:potongan_lainawal,gaji_tambahanawal:gaji_tambahanawal,gaji_akhir:gaji_akhir},
+                  success:function(response)
+                  {
+                    $("#modal_edit").modal('hide');
+                    if(response == 'Berhasil Diupdate'){
+                      reload_table();
+                    }
+                    alert(response);
+                  },
+                  error: function (jqXHR, textStatus, errorThrown)
+                  {
+                    alert(errorThrown);
+                  }
+                });
+            }else{
+                $("#editpotonganlain").addClass('is-invalid');
+                $("#editgajitambahan").addClass('is-invalid');
+            }
         }
     </script>

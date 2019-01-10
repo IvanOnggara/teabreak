@@ -164,6 +164,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="lapgajikaryawan">
                         <a href="lapgajikaryawan"> <i class="menu-icon ti-agenda"></i>Laporan Gaji Karyawan</a>
                     </li>
+                    <li id="">
+                        <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Keuntungan Stand</a>
+                    </li>
+                    <li id="">
+                        <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Keuntungan Global</a>
+                    </li>
                     <!-- <li id="">
                         <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Laporan Pembelian</a>
                     </li>
