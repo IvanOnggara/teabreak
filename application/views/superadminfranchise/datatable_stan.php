@@ -1,5 +1,18 @@
 <script type="text/javascript">
   var tabeldata ;
+  var date = new Date();
+  var bulan = date.getMonth()+1;
+  var hari = date.getDate();
+  if (hari < 10) {
+    hari = "0"+hari;
+  }
+
+  if (bulan < 10) {
+    bulan = "0"+bulan;
+  }
+
+  var tanggal = hari+"-"+bulan+"-"+date.getFullYear();
+  var howmuch = 0;
 
   function edit_stan(id){
     $.ajax({
@@ -17,6 +30,9 @@
             $("#editpinalti_bolos").val(response[0].pinalti_bolos);
             $("#edituang_makan").val(response[0].uang_makan);
             $("#edituang_lembur").val(response[0].uang_lembur);
+
+            $("#editbatastelatlembur").val(response[0].batas_telat_lembur);
+            $("#editstandarlembur").val(response[0].standar_lembur);
             // $("#editjumlahpgw").val(response[0].jumlah_pegawai)
             $("#editpassword").val(response[0].password);
             $("#modal_edit").modal('show');
@@ -39,13 +55,15 @@
     var pinalti_bolos = $("#editpinalti_bolos").val();
     var uang_makan = $("#edituang_makan").val();
     var uang_lembur = $("#edituang_lembur").val();
+    var batas_telat_lembur = $("#editbatastelatlembur").val();
+    var standar_lembur = $("#editstandarlembur").val();
     // var jumlahpegawai = $("#editjumlahpgw").val();
-    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_terlambat.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0) {
+    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_terlambat.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0&&batas_telat_lembur.replace(/\s/g, '').length>0&&standar_lembur.replace(/\s/g, '').length>0) {
       // &&jumlahpegawai.replace(/\s/g, '').length>0
     $.ajax({
           type:"post",
           url: "<?php echo base_url('superadminfranchise/edit_stan')?>/",
-          data:{ id_lama:id_lama,id:id,alamat:alamat,nama:nama,password:password,pinalti_terlambat:pinalti_terlambat,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur},
+          data:{ id_lama:id_lama,id:id,alamat:alamat,nama:nama,password:password,pinalti_terlambat:pinalti_terlambat,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur,batas_telat_lembur:batas_telat_lembur,standar_lembur:standar_lembur},
           success:function(response)
           {
             if(response == 'Berhasil Diupdate'){
@@ -74,6 +92,13 @@
               }
               if($('#edituang_lembur').has("error")){
                 $('#edituang_lembur').removeClass("error");
+              }
+
+              if($('#editbatastelatlembur').has("error")){
+                $('#editbatastelatlembur').removeClass("error");
+              }
+              if($('#editstandarlembur').has("error")){
+                $('#editstandarlembur').removeClass("error");
               }
               // if($('#editjumlahpgw').has("error")){
               //   $('#editjumlahpgw').removeClass("error");
@@ -154,6 +179,21 @@
           $('#editpassword').removeClass("error");
         }
       }
+
+      if (batas_telat_lembur.replace(/\s/g, '').length<=0) {
+        $('#editbatastelatlembur').addClass("error");
+      }else{
+        if($('#editbatastelatlembur').has("error")){
+          $('#editbatastelatlembur').removeClass("error");
+        }
+      }
+      if (standar_lembur.replace(/\s/g, '').length<=0) {
+        $('#editstandarlembur').addClass("error");
+      }else{
+        if($('#editstandarlembur').has("error")){
+          $('#editstandarlembur').removeClass("error");
+        }
+      }
       alert("Silahkan periksa kembali inputan anda!");
     }
   }
@@ -200,13 +240,16 @@ function tambahstan(){
     var pinalti_bolos = $("#pinalti_bolos").val();
     var uang_makan = $("#uang_makan").val();
     var uang_lembur = $("#uang_lembur").val();
+    var batas_telat_lembur = $("#batastelatlembur").val();
+    var standar_lembur = $("#standarlembur").val();
     // var jumlahpegawai = $("#jumlahpgw").val();
-    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_terlambat.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0) {
+    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_terlambat.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0&&batas_telat_lembur.replace(/\s/g, '').length>0&&standar_lembur.replace(/\s/g, '').length>0) {
+
         $.ajax(
             {
                 type:"post",
                 url: "<?php echo base_url('superadminfranchise/tambah_stan')?>/",
-                data:{ id:id,nama:nama,alamat:alamat,password:password,pinalti_terlambat:pinalti_terlambat,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur},
+                data:{ id:id,nama:nama,alamat:alamat,password:password,pinalti_terlambat:pinalti_terlambat,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur,batas_telat_lembur:batas_telat_lembur,standar_lembur:standar_lembur},
                 success:function(response)
                 {
 
@@ -238,6 +281,13 @@ function tambahstan(){
                     }
                     if($('#uang_lembur').has("error")){
                       $('#uang_lembur').removeClass("error");
+                    }
+
+                    if($('#batastelatlembur').has("error")){
+                      $('#batastelatlembur').removeClass("error");
+                    }
+                    if($('#standarlembur').has("error")){
+                      $('#standarlembur').removeClass("error");
                     }
 
                     $("#id").val('');
@@ -322,6 +372,21 @@ function tambahstan(){
           }
         }
 
+        if (batas_telat_lembur.replace(/\s/g, '').length<=0) {
+          $('#batastelatlembur').addClass("error");
+        }else{
+          if($('#batastelatlembur').has("error")){
+            $('#batastelatlembur').removeClass("error");
+          }
+        }
+        if (standar_lembur.replace(/\s/g, '').length<=0) {
+          $('#standarlembur').addClass("error");
+        }else{
+          if($('#standarlembur').has("error")){
+            $('#standarlembur').removeClass("error");
+          }
+        }
+
         // if (jumlahpegawai.replace(/\s/g, '').length<=0) {
         //     $('#jumlahpgw').addClass("error");
         // }else{
@@ -368,6 +433,7 @@ function tambahstan(){
       ajax: {"url": "<?php echo base_url('superadminfranchise/datastan');?>", "type": "POST",
     "dataSrc": function (json) {
       var return_data = new Array();
+      howmuch = json.data.length;
       for(var i=0;i< json.data.length; i++){
         return_data.push({
           'id_stan': json.data[i].id_stan,
@@ -378,6 +444,8 @@ function tambahstan(){
           'pinalti_bolos' : json.data[i].pinalti_bolos,
           'uang_makan' : json.data[i].uang_makan,
           'uang_lembur' : json.data[i].uang_lembur,
+          'batas_telat_lembur' : json.data[i].batas_telat_lembur,
+          'standar_lembur' : json.data[i].standar_lembur,
           // 'jumlah_pegawai' : json.data[i].jumlah_pegawai,
           'edit' : '<button onclick=edit_stan("'+json.data[i].id_stan+'") class="btn btn-warning" style="color:white;">Edit</button> ',
           'delete' : '<button onclick=delete_stan("'+json.data[i].id_stan+'") class="btn btn-info" style="color:white;">Delete</button>'
@@ -388,37 +456,25 @@ function tambahstan(){
     dom: 'Bfrtlip',
         buttons: [
             {
-                extend: 'copyHtml5',
-                text: 'Copy',
-                filename: 'Data Stan',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5,6,7]
-                }
-            },{
                 extend: 'excelHtml5',
-                text: 'Excel',
+                title: 'Data Seluruh Stan',
+                messageTop: 'Tanggal : '+tanggal,
+                customize: function ( xlsx ){
+                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                    // jQuery selector to add a border
+                    $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                    for (var i = 0; i < howmuch; i++) {
+                      var row = i + 4;
+                      $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                    }
+                },
+                text: '<i class="fa fa-download"></i> Download Excel',
                 className: 'exportExcel',
-                filename: 'Data Stan',
+                filename: 'Data Seluruh Stan '+tanggal,
                 exportOptions: {
-                  columns:[0,1,2,3,4,5,6,7]
-                }
-            },{
-                extend: 'csvHtml5',
-                filename: 'Data Stan',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5,6,7]
-                }
-            },{
-                extend: 'pdfHtml5',
-                filename: 'Data Stan',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5,6,7]
-                }
-            },{
-                extend: 'print',
-                filename: 'Data Stan',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5,6,7]
+                  columns:[0,1,2,3,4,5,6,7,8,9]
                 }
             }
         ],
@@ -433,6 +489,8 @@ function tambahstan(){
         {"data": "uang_lembur"},
         {"data": "pinalti_terlambat"},
         {"data": "pinalti_bolos"},
+        {"data": "batas_telat_lembur"},
+        {"data": "standar_lembur"},
         // {"data": "jumlah_pegawai"},
         {"data": "edit","orderable": false,"searchable": false},
         {"data": "delete","orderable": false,"searchable": false},

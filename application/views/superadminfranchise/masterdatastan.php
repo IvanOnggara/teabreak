@@ -118,7 +118,33 @@
                                     </div>
                                     
                                 </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Batas Telat Lembur</label>
+                                        <div class="input-group">
+                                            
+                                            <input type="text" id="batastelatlembur" placeholder="ex: 12" class="form-control numerichour">
+                                            <div class="input-group-addon"> Jam</div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Standard Lembur</label>
+                                        <div class="input-group">
+                                            
+                                            <input type="text" id="standarlembur" placeholder="ex: 12" class="form-control numerichour">
+                                            <div class="input-group-addon"> Jam</div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
                             </div>
+
+
                                 <div class="row">
                                     <div class="col-md-10">
                                         <div class="form-group">
@@ -161,6 +187,8 @@
                                 <th>Uang Lembur</th>
                                 <th>Denda Terlambat</th>
                                 <th>Denda Bolos</th>
+                                <th>Batas Lembur</th>
+                                <th>Standar Lembur</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                               </tr>
@@ -264,6 +292,30 @@
                                     </div>
                                     
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Batas Telat Lembur</label>
+                                        <div class="input-group">
+                                            
+                                            <input type="text" id="editbatastelatlembur" placeholder="ex: 12" class="form-control numerichour">
+                                            <div class="input-group-addon"> Jam</div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Standard Lembur</label>
+                                        <div class="input-group">
+                                            
+                                            <input type="text" id="editstandarlembur" placeholder="ex: 12" class="form-control numerichour">
+                                            <div class="input-group-addon"> Jam</div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
                             </div>
                         <div class="row">
                             <div class="col-md-10">
@@ -309,6 +361,23 @@
                         }else{
                             $(this).val($(this).val().substring(1));
                         }
+                    }
+                }
+            });
+
+        $('.numerichour').on('input', function (event) { 
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if ($(this).val().length > 1) {
+                    if ($(this).val().charAt(0) == '0') {
+                        if ($(this).val().charAt(1) == '0') {
+                            $(this).val(0);
+                        }else{
+                            $(this).val($(this).val().substring(1));
+                        }
+                    }
+
+                    if ($(this).val()>24) {
+                        this.value = 24;
                     }
                 }
             });

@@ -126,3 +126,5 @@ $route['translate_uri_dashes'] = FALSE;
 
 //try
 $route['downloadexcel'] = 'superadminfranchise/downloadexcel1';
+$route['downloadexcelstan'] = 'superadminfranchise/downloadexcelstan';
+$route['downloadexcelwarehouse'] = 'superadminfranchise/downloadexcelwarehouse';

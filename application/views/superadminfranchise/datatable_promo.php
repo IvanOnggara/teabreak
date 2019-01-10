@@ -1,4 +1,5 @@
 <script type="text/javascript">
+  var howmuch = 0;
   var jenis = document.getElementById("jenispromo");
   var valjenis = jenis.options[jenis.selectedIndex].value;
   if (valjenis == 'buy1get1' || valjenis == 'buy2get1') {
@@ -59,6 +60,7 @@
     "url"    : "<?php echo base_url('superadminfranchise/promo_data');?>",
     "dataSrc": function (json) {
       var return_data = new Array();
+      howmuch = json.data.length;
       var jenis_diskon = '';
       var statuss = '';
       for(var i=0;i< json.data.length; i++){
@@ -98,46 +100,36 @@
       return return_data;
     }
   },
+            dom: 'Bfrtlip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Data Promo',
+                        messageTop: '',
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
+                            // jQuery selector to add a border
+                            $('row c[r*="2"]', sheet).attr( 's', '27' );
 
-  dom: 'Bfrtlip',
-        buttons: [
-            {
-                extend: 'copyHtml5',
-                text: 'Copy',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'excelHtml5',
-                text: 'Excel',
-                className: 'exportExcel',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'csvHtml5',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'pdfHtml5',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'print',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            }
-        ],
-        "lengthChange": true,
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 3;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'exportExcel',
+                        filename: function (argument) {
+
+                              return 'Data Seluruh Promo' ;
+                        } ,
+                        exportOptions: {
+                          columns:[0,1,2,3,4,5]
+                        }
+                    }
+                ],
+                "lengthChange": true,
   columns    : [
     {'data': 'nama_diskon'},
     {'data': 'jenis_diskon'},

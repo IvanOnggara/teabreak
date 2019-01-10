@@ -100,10 +100,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="id" class=" form-control-label"> </label>
                                         <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <br>
@@ -192,6 +192,7 @@
         //     format: 'DD/MM/YYYY',
         //     useCurrent: false
         // });
+        var howmuch = 0;
 
         $('#tanggal').datetimepicker({
             format: 'MM/YYYY',
@@ -292,8 +293,10 @@
             },
             "dataSrc": function (json) {
               var return_data = new Array();
+              howmuch = json.length;
               for(var i=0;i< json.length; i++){
                 var tahun_bulan = json[i].bulan_tahun.split("/");
+
                 tahun_bulan = tahun_bulan[1]+"/"+tahun_bulan[0];
                 return_data.push({
                   'bulan_tahun'  : {
@@ -309,6 +312,37 @@
               return return_data;
             }
           },
+            dom: 'Bfrtlip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Data Input Hasil Penjualan Stan',
+                        messageTop: '',
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // jQuery selector to add a border
+                            $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 4;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'exportExcel',
+                        filename: function (argument) {
+                              tanggal_2 = $("#tanggal2").val();
+
+                              return 'Data Input Hasil Penjualan Stan bulan tahun '+tanggal_2 ;
+                        } ,
+                        exportOptions: {
+                          columns:[0,1,2]
+                        }
+                    }
+                ],
+                "lengthChange": true,
           columns: [
             {'data': 'bulan_tahun',render: {_: 'display',sort: 'real'}},
             {'data': 'nama_stan'},

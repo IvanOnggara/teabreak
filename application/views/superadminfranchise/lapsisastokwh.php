@@ -28,20 +28,24 @@
                                 <strong class="card-title">Laporan Sisa Stok Warehouse</strong>
                             </div>
                             <div class="card-body">
+                                <form method="post" action="downloadexcelwarehouse" >
                                 <div class="row">
+                                    
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="" class=" form-control-label">Tanggal</label>
-                                            <input type="text" id="tanggal" placeholder="Masukkan Tanggal" class="form-control">
+                                            <input type="text" name="tanggal" required="true" id="tanggal" placeholder="Masukkan Tanggal" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label for="id" class=" form-control-label"> </label>
-                                            <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
+                                            <button class="form-control btn btn-success" type="submit"><i class="fa fa-save"></i> Download Excel</button>
                                         </div>
                                     </div>
+                                    
                                 </div>
+                                </form>
                               <table style="width: 100%" width="100%" id="mytable" class="table table-striped table-bordered">
                                 <thead>
                                   <tr>
@@ -87,6 +91,7 @@
 </body>
 </html>
 <script type="text/javascript">
+    var howmuch = 0;
     var tanggalfull = new Date();
     var tanggal = tanggalfull.getDate();
     var bulan = tanggalfull.getMonth()+1;
@@ -136,6 +141,7 @@
                 "url"    : "<?php echo base_url('adminfranchise/datatablestokbahanjadigudang');?>",
                 "dataSrc": function (json) {
                   var return_data = new Array();
+                  howmuch = json.data.length;
 
                   for(var i=0;i< json.data.length; i++){
 
@@ -151,44 +157,44 @@
                   return return_data;
                 }
               },
-        dom: 'Bfrtlip',
-        buttons: [
-            {
-                extend: 'copyHtml5',
-                text: 'Copy',
-                filename: 'Data Stock Gudang',
-                exportOptions: {
-                  columns:[0,1,2,3,4]
-                }
-            },{
-                extend: 'excelHtml5',
-                text: 'Excel',
-                className: 'exportExcel',
-                filename: 'Data Stock Gudang',
-                exportOptions: {
-                  columns:[0,1,2,3,4]
-                }
-            },{
-                extend: 'csvHtml5',
-                filename: 'Data Stock Gudang',
-                exportOptions: {
-                  columns:[0,1,2,3,4]
-                }
-            },{
-                extend: 'pdfHtml5',
-                filename: 'Data Stock Gudang',
-                exportOptions: {
-                  columns:[0,1,2,3,4]
-                }
-            },{
-                extend: 'print',
-                filename: 'Data Stock Gudang',
-                exportOptions: {
-                  columns:[0,1,2,3,4]
-                }
-            }
-        ],
-        "lengthChange": true,
+        // dom: 'Bfrtlip',
+        // buttons: [
+        //     {
+        //         extend: 'copyHtml5',
+        //         text: 'Copy',
+        //         filename: 'Data Stock Gudang',
+        //         exportOptions: {
+        //           columns:[0,1,2,3,4]
+        //         }
+        //     },{
+        //         extend: 'excelHtml5',
+        //         text: 'Excel',
+        //         className: 'exportExcel',
+        //         filename: 'Data Stock Gudang',
+        //         exportOptions: {
+        //           columns:[0,1,2,3,4]
+        //         }
+        //     },{
+        //         extend: 'csvHtml5',
+        //         filename: 'Data Stock Gudang',
+        //         exportOptions: {
+        //           columns:[0,1,2,3,4]
+        //         }
+        //     },{
+        //         extend: 'pdfHtml5',
+        //         filename: 'Data Stock Gudang',
+        //         exportOptions: {
+        //           columns:[0,1,2,3,4]
+        //         }
+        //     },{
+        //         extend: 'print',
+        //         filename: 'Data Stock Gudang',
+        //         exportOptions: {
+        //           columns:[0,1,2,3,4]
+        //         }
+        //     }
+        // ],
+        // "lengthChange": true,
           columns: [
             {'data': 'id_bahan_jadi'},
             {'data': 'nama_bahan_jadi'},
@@ -200,6 +206,10 @@
 
     function reload_table(){
       tabeldata.ajax.reload();
+    }
+
+    function downloadexcel() {
+        alert("development process");
     }
 
     // function hapus(id)

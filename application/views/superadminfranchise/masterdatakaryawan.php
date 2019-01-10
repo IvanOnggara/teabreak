@@ -111,7 +111,7 @@
     <script src=<?php echo base_url("assets/vendors/Date-Time-Picker-Bootstrap-4/build/js/bootstrap-datetimepicker.min.js")?>></script>
     <script type="text/javascript">
         
-
+      var howmuch = 0;
         var tanggalfull = new Date();
           var tanggal = tanggalfull.getDate();
           var bulan = tanggalfull.getMonth()+1;
@@ -205,6 +205,7 @@
                     "dataSrc": function (json) {
                       var return_data = new Array();
                       var total_harga_akhir = 0;
+                      howmuch = json.length;
                       for(var i=0;i< json.length; i++){
                         var buttonstat;
 
@@ -225,7 +226,39 @@
                       return return_data;
                     }
                   },
-                    "lengthChange": true,
+            dom: 'Bfrtlip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Data Karyawan',
+                        messageTop: function(argument) {
+                          return 'Nama Stan : '+$("#select_stan option:selected").text();
+                        },
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // jQuery selector to add a border
+                            $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 4;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'exportExcel',
+                        filename: function (argument) {
+                              var standd = $("#select_stan option:selected").text();
+
+                              return 'Data Karyawan '+standd ;
+                        } ,
+                        exportOptions: {
+                          columns:[0,1,2,4]
+                        }
+                    }
+                ],
+                "lengthChange": true,
                       columns: [
                         {'data': 'pin'},
                         {'data': 'nama'},
@@ -254,8 +287,8 @@
           $.ajax({
               type:"post",
               url: "<?php echo base_url('superadminfranchise/changestatuskaryawan')?>/",
-              data:{pin:pin,to:to},
-              dataType:"json",
+              data:{pin:pin,to:to,id_stan:$("#select_stan").val()},
+              // dataType:"json",
               success:function(response)
               {
                 if (response == 'success') {

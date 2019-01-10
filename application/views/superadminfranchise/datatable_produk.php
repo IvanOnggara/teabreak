@@ -1,6 +1,19 @@
 
 <script type="text/javascript">
   var tabeldata ;
+  var date = new Date();
+  var bulan = date.getMonth()+1;
+  var hari = date.getDate();
+  if (hari < 10) {
+    hari = "0"+hari;
+  }
+
+  if (bulan < 10) {
+    bulan = "0"+bulan;
+  }
+
+  var tanggal = hari+"-"+bulan+"-"+date.getFullYear();
+  var howmuch = 0;
 
   $('#harga').on('input propertychange paste', function (e) {
     var reg = /^0+/gi;
@@ -257,6 +270,7 @@ jQuery( document ).ready(function( $ ) {
     "url"    : "<?php echo base_url('superadminfranchise/produk_data');?>",
     "dataSrc": function (json) {
       var return_data = new Array();
+      howmuch = json.data.length;
       for(var i=0;i< json.data.length; i++){
         return_data.push({
           'id_produk': json.data[i].id_produk,
@@ -272,36 +286,58 @@ jQuery( document ).ready(function( $ ) {
   },
    dom: 'Bfrtlip',
         buttons: [
+        // {
+        //         extend: 'copyHtml5',
+        //         text: 'Copy',
+        //         filename: 'Produk Data',
+        //         exportOptions: {
+        //           columns:[0,1,2,3]
+        //         }
+        //     },{
+        //         extend: 'excelHtml5',
+        //         text: 'Excel',
+        //         className: 'exportExcel',
+        //         filename: 'Produk Data',
+        //         exportOptions: {
+        //           columns:[0,1,2,3]
+        //         }
+        //     },{
+        //         extend: 'csvHtml5',
+        //         filename: 'Produk Data',
+        //         exportOptions: {
+        //           columns:[0,1,2,3]
+        //         }
+        //     },{
+        //         extend: 'pdfHtml5',
+        //         filename: 'Produk Data',
+        //         exportOptions: {
+        //           columns:[0,1,2,3]
+        //         }
+        //     },{
+        //         extend: 'print',
+        //         filename: 'Produk Data',
+        //         exportOptions: {
+        //           columns:[0,1,2,3]
+        //         }
+        //     }
             {
-                extend: 'copyHtml5',
-                text: 'Copy',
-                filename: 'Produk Data',
-                exportOptions: {
-                  columns:[0,1,2,3]
-                }
-            },{
                 extend: 'excelHtml5',
-                text: 'Excel',
+                title: 'Data Seluruh Produk',
+                messageTop: 'Tanggal : '+tanggal,
+                customize: function ( xlsx ){
+                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+ 
+                    // jQuery selector to add a border
+                    $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                    for (var i = 0; i < howmuch; i++) {
+                      var row = i + 4;
+                      $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                    }
+                },
+                text: '<i class="fa fa-download"></i> Download Excel',
                 className: 'exportExcel',
-                filename: 'Produk Data',
-                exportOptions: {
-                  columns:[0,1,2,3]
-                }
-            },{
-                extend: 'csvHtml5',
-                filename: 'Produk Data',
-                exportOptions: {
-                  columns:[0,1,2,3]
-                }
-            },{
-                extend: 'pdfHtml5',
-                filename: 'Produk Data',
-                exportOptions: {
-                  columns:[0,1,2,3]
-                }
-            },{
-                extend: 'print',
-                filename: 'Produk Data',
+                filename: 'Data Produk '+tanggal,
                 exportOptions: {
                   columns:[0,1,2,3]
                 }

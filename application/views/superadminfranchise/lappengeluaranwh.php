@@ -118,6 +118,7 @@
     <script type="text/javascript">
         // alert($("#tanggal_awal").val());
         //TAMBAH DATA
+        var howmuch = 0;
         $('#tanggal_awal').datetimepicker({
             format: 'DD/MM/YYYY',
             useCurrent: false
@@ -276,6 +277,7 @@
             "dataSrc": function (json) {
               var return_data = new Array();
               var shift;
+              howmuch = json.data.length;
               for(var i=0;i< json.data.length; i++){
                 return_data.push({
                   'tanggal': uidate(json.data[i].tanggal),
@@ -291,43 +293,40 @@
             }
           },
             dom: 'Bfrtlip',
-            buttons: [
-                {
-                    extend: 'copyHtml5',
-                    text: 'Copy',
-                    filename: 'Pengeluaran Lain Gudang',
-                    exportOptions: {
-                      columns:[0,1,2]
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title:function(argument) {
+                            return 'Data Pengeluaran Warehouse ';
+                        } ,
+                        messageTop: function (argument) {
+                            return $("#tanggal_awal").val();
+                        },
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // jQuery selector to add a border
+                            $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 4;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'exportExcel',
+                        filename: function (argument) {
+                              var tanggall = $("#tanggal_awal").val();
+
+                              return 'Pengeluaran Warehouse '+tanggall ;
+                        } ,
+                        exportOptions: {
+                          columns:[0,1,2]
+                        }
                     }
-                },{
-                    extend: 'excelHtml5',
-                    text: 'Excel',
-                    className: 'exportExcel',
-                    filename: 'Pengeluaran Lain Gudang',
-                    exportOptions: {
-                      columns:[0,1,2]
-                    }
-                },{
-                    extend: 'csvHtml5',
-                    filename: 'Pengeluaran Lain Gudang',
-                    exportOptions: {
-                      columns:[0,1,2]
-                    }
-                },{
-                    extend: 'pdfHtml5',
-                    filename: 'Pengeluaran Lain Gudang',
-                    exportOptions: {
-                      columns:[0,1,2]
-                    }
-                },{
-                    extend: 'print',
-                    filename: 'Pengeluaran Lain Gudang',
-                    exportOptions: {
-                      columns:[0,1,2]
-                    }
-                }
-            ],
-            "lengthChange": true,
+                ],
+                "lengthChange": true,
               columns: [
                 {'data': 'tanggal','orderable':false},
                 {'data': 'keterangan','orderable':false},

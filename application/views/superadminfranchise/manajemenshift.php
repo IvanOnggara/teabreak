@@ -104,7 +104,7 @@
                                     </div>
                                     
                                 </div>
-                                <div class="col-lg-2">
+                                <!-- <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label"> Waktu Minimal Lembur</label>
                                         
@@ -129,7 +129,7 @@
 
                                     </div>
                                     
-                                </div>
+                                </div> -->
                                 
                             </div>
                             <div class="row">
@@ -191,12 +191,10 @@
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                                     <thead class="">
                                       <tr>
-                                        <th width="29%">Nama Shift</th>
+                                        <th width="45%">Nama Shift</th>
                                         <th width="15%">Jam Awal</th>
                                         <th width="15%">Jam Akhir</th>
-                                        <th width="11%">Batas Datang cepat</th>
-                                        <th width="11%">Minimal Lembur</th>
-                                        <th width="11%">Standar Lembur</th>
+                                        <th width="17%">Batas Datang cepat</th>
                                         <th width="8%">Edit</th>
                                       </tr>
                                     </thead>
@@ -262,7 +260,7 @@
                         </div>
                         
                     </div>
-                    <div class="col-lg-4">
+                   <!--  <div class="col-lg-4">
                         <div class="form-group">
                             <label for="id" class=" form-control-label"> Waktu Minimal Lembur</label>
                             
@@ -287,7 +285,7 @@
 
                         </div>
                         
-                    </div>
+                    </div> -->
                     
                 </div>
                 
@@ -338,6 +336,7 @@
         //     format: 'DD/MM/YYYY',
         //     useCurrent: false
         // });
+        var howmuch = 0;
 
         $('#jam_awal').datetimepicker({
             format: 'HH:mm',
@@ -490,29 +489,65 @@
                     },
                     "dataSrc": function (json) {
                       var return_data = new Array();
+                      howmuch = json.length;
                       for(var i=0;i< json.length; i++){
                         return_data.push({
                             // 'id_stan':json[i].id_stan,
                             'nama_shift':json[i].nama_shift,
                             'jam_awal':json[i].jam_awal,
                             'jam_akhir':json[i].jam_akhir,
-                            'batas_datang_cepat':json[i].batas_datang_cepat,
-                            'batas_telat_lembur':json[i].batas_telat_lembur,
-                            'standar_lembur':json[i].standar_lembur,
+                            'batas_datang_cepat':json[i].batas_datang_cepat+" Jam",
+                            // 'batas_telat_lembur':json[i].batas_telat_lembur,
+                            // 'standar_lembur':json[i].standar_lembur,
                           'edit' : '<button onclick="editpenjualan(\''+json[i].id_manajemen_shift+'\',\''+json[i].nama_shift+'\',\''+json[i].jam_awal+'\',\''+json[i].jam_akhir+'\',\''+json[i].batas_datang_cepat+'\',\''+json[i].batas_telat_lembur+'\',\''+json[i].standar_lembur+'\')" class="btn btn-warning" >Edit</button> '
                         });
                       }
                       return return_data;
                     }
                   },
+            dom: 'Bfrtlip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title:function(argument) {
+                            return 'Data Manajemen Shift ';
+                        } ,
+                        messageTop: function (argument) {
+                            return $("#select_stan option:selected").text();
+                        },
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // jQuery selector to add a border
+                            $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 4;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'exportExcel',
+                        filename: function (argument) {
+                              var standd = $("#select_stan option:selected").text();
+
+                              return 'Manajemen Shift '+standd ;
+                        } ,
+                        exportOptions: {
+                          columns:[0,1,2,3]
+                        }
+                    }
+                ],
+                "lengthChange": true,
                   columns: [
                     // {'data': 'id_stan'},
                     {'data': 'nama_shift'},
                     {'data': 'jam_awal'},
                     {'data': 'jam_akhir'},
                     {'data': 'batas_datang_cepat'},
-                    {'data': 'batas_telat_lembur'},
-                    {'data': 'standar_lembur'},
+                    // {'data': 'batas_telat_lembur'},
+                    // {'data': 'standar_lembur'},
                     {'data': 'edit'}
                   ]
                 });
@@ -548,15 +583,15 @@
                 var jam_awal = $("#jam_awal").val();
                 var jam_akhir = $("#jam_akhir").val();
                 var batasdatangcepat = $("#batasdatangcepat").val();
-                var batastelatlembur = $("#batastelatlembur").val();
-                var standarlembur = $("#standarlembur").val();
+                // var batastelatlembur = $("#batastelatlembur").val();
+                // var standarlembur = $("#standarlembur").val();
 
-                if (nama_shift.replace(/\s/g, '').length>0&&jam_awal.replace(/\s/g, '').length>0&&jam_akhir.replace(/\s/g, '').length>0&&batasdatangcepat.replace(/\s/g, '').length>0&&batastelatlembur.replace(/\s/g, '').length>0&&standarlembur.replace(/\s/g, '').length>0) {
+                if (nama_shift.replace(/\s/g, '').length>0&&jam_awal.replace(/\s/g, '').length>0&&jam_akhir.replace(/\s/g, '').length>0&&batasdatangcepat.replace(/\s/g, '').length>0) {
 
                     $.ajax({
                       type:"post",
                       url: "<?php echo base_url('superadminfranchise/adddatashift')?>/",
-                      data:{id_stan:id_stan,nama_shift:nama_shift,jam_awal:jam_awal,jam_akhir:jam_akhir,batasdatangcepat:batasdatangcepat,batastelatlembur:batastelatlembur,standarlembur:standarlembur},
+                      data:{id_stan:id_stan,nama_shift:nama_shift,jam_awal:jam_awal,jam_akhir:jam_akhir,batasdatangcepat:batasdatangcepat},
                       success:function(response)
                       {
                         if(response == 'Berhasil Ditambahkan'){
@@ -577,20 +612,20 @@
                               $('#batasdatangcepat').removeClass("is-invalid");
                             }
 
-                            if($('#batastelatlembur').has("is-invalid")){
-                              $('#batastelatlembur').removeClass("is-invalid");
-                            }
+                            // if($('#batastelatlembur').has("is-invalid")){
+                            //   $('#batastelatlembur').removeClass("is-invalid");
+                            // }
 
-                            if($('#standarlembur').has("is-invalid")){
-                              $('#standarlembur').removeClass("is-invalid");
-                            }
+                            // if($('#standarlembur').has("is-invalid")){
+                            //   $('#standarlembur').removeClass("is-invalid");
+                            // }
 
                             $("#shift").val('');
                             $("#jam_awal").val('');
                             $("#jam_akhir").val('');
                             $("#batasdatangcepat").val('');
-                            $("#batastelatlembur").val('');
-                            $("#standarlembur").val('');
+                            // $("#batastelatlembur").val('');
+                            // $("#standarlembur").val('');
 
                             $('#shift').focus();
 
@@ -652,20 +687,20 @@
                       $('#batasdatangcepat').removeClass("is-invalid");
                     }
                   }
-                  if (batastelatlembur.replace(/\s/g, '').length<=0) {
-                    $('#batastelatlembur').addClass("is-invalid");
-                  }else{
-                    if($('#batastelatlembur').has("is-invalid")){
-                      $('#batastelatlembur').removeClass("is-invalid");
-                    }
-                  }
-                  if (standarlembur.replace(/\s/g, '').length<=0) {
-                    $('#standarlembur').addClass("is-invalid");
-                  }else{
-                    if($('#standarlembur').has("is-invalid")){
-                      $('#standarlembur').removeClass("is-invalid");
-                    }
-                  }
+                  // if (batastelatlembur.replace(/\s/g, '').length<=0) {
+                  //   $('#batastelatlembur').addClass("is-invalid");
+                  // }else{
+                  //   if($('#batastelatlembur').has("is-invalid")){
+                  //     $('#batastelatlembur').removeClass("is-invalid");
+                  //   }
+                  // }
+                  // if (standarlembur.replace(/\s/g, '').length<=0) {
+                  //   $('#standarlembur').addClass("is-invalid");
+                  // }else{
+                  //   if($('#standarlembur').has("is-invalid")){
+                  //     $('#standarlembur').removeClass("is-invalid");
+                  //   }
+                  // }
 
                   alert("Silahkan periksa kembali inputan anda!");
                 }
@@ -680,8 +715,8 @@
             $('#editjam_awal').val(jam_awal);
             $('#editjam_akhir').val(jam_akhir);
             $('#editbatasdatangcepat').val(batasdatangcepat);
-            $('#editbatastelatlembur').val(batastelatlembur);
-            $('#editstandarlembur').val(standarlembur);
+            // $('#editbatastelatlembur').val(batastelatlembur);
+            // $('#editstandarlembur').val(standarlembur);
           $('#id_lama').val(id);
         }
 
@@ -690,16 +725,16 @@
           var jam_awal = $('#editjam_awal').val();
           var jam_akhir = $('#editjam_akhir').val();
           var batasdatangcepat = $('#editbatasdatangcepat').val();
-          var batastelatlembur = $('#editbatastelatlembur').val();
-          var standarlembur = $('#editstandarlembur').val();
+          // var batastelatlembur = $('#editbatastelatlembur').val();
+          // var standarlembur = $('#editstandarlembur').val();
           var id_manajemen_shift = $('#id_lama').val();
 
-          if (nama_shift.replace(/\s/g, '').length>0&&jam_awal.replace(/\s/g, '').length>0&&jam_akhir.replace(/\s/g, '').length>0&&batasdatangcepat.replace(/\s/g, '').length>0&&batastelatlembur.replace(/\s/g, '').length>0&&standarlembur.replace(/\s/g, '').length>0) {
+          if (nama_shift.replace(/\s/g, '').length>0&&jam_awal.replace(/\s/g, '').length>0&&jam_akhir.replace(/\s/g, '').length>0&&batasdatangcepat.replace(/\s/g, '').length>0) {
       // &&jumlahpegawai.replace(/\s/g, '').length>0
             $.ajax({
                   type:"post",
                   url: "<?php echo base_url('superadminfranchise/edit_manajemenshift')?>/",
-                  data:{ nama_shift:nama_shift,jam_awal:jam_awal,jam_akhir:jam_akhir,batasdatangcepat:batasdatangcepat,batastelatlembur:batastelatlembur,standarlembur:standarlembur,id_manajemen_shift:id_manajemen_shift},
+                  data:{ nama_shift:nama_shift,jam_awal:jam_awal,jam_akhir:jam_akhir,batasdatangcepat:batasdatangcepat,id_manajemen_shift:id_manajemen_shift},
                   success:function(response)
                   {
                     if(response == 'Berhasil Diupdate'){
@@ -717,12 +752,12 @@
                         $('#editbatasdatangcepat').removeClass("error");
                       }
 
-                      if($('#editbatastelatlembur').has("error")){
-                        $('#editbatastelatlembur').removeClass("error");
-                      }
-                      if($('#editstandarlembur').has("error")){
-                        $('#editstandarlembur').removeClass("error");
-                      }
+                      // if($('#editbatastelatlembur').has("error")){
+                      //   $('#editbatastelatlembur').removeClass("error");
+                      // }
+                      // if($('#editstandarlembur').has("error")){
+                      //   $('#editstandarlembur').removeClass("error");
+                      // }
                       // if($('#editjumlahpgw').has("error")){
                       //   $('#editjumlahpgw').removeClass("error");
                       // }
@@ -768,20 +803,20 @@
                   $('#editbatasdatangcepat').removeClass("error");
                 }
               }
-              if (batastelatlembur.replace(/\s/g, '').length<=0) {
-                $('#editbatastelatlembur').addClass("error");
-              }else{
-                if($('#editbatastelatlembur').has("error")){
-                  $('#editbatastelatlembur').removeClass("error");
-                }
-              }
-              if (standarlembur.replace(/\s/g, '').length<=0) {
-                $('#editstandarlembur').addClass("error");
-              }else{
-                if($('#editstandarlembur').has("error")){
-                  $('#editstandarlembur').removeClass("error");
-                }
-              }
+              // if (batastelatlembur.replace(/\s/g, '').length<=0) {
+              //   $('#editbatastelatlembur').addClass("error");
+              // }else{
+              //   if($('#editbatastelatlembur').has("error")){
+              //     $('#editbatastelatlembur').removeClass("error");
+              //   }
+              // }
+              // if (standarlembur.replace(/\s/g, '').length<=0) {
+              //   $('#editstandarlembur').addClass("error");
+              // }else{
+              //   if($('#editstandarlembur').has("error")){
+              //     $('#editstandarlembur').removeClass("error");
+              //   }
+              // }
               alert("Silahkan periksa kembali inputan anda!");
             }
 

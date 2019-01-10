@@ -106,10 +106,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="id" class=" form-control-label"> </label>
                                         <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <br>
@@ -201,6 +201,19 @@
     <!-- bootstrap-datetimepicker -->    
     <script src=<?php echo base_url("assets/vendors/Date-Time-Picker-Bootstrap-4/build/js/bootstrap-datetimepicker.min.js")?>></script>
     <script type="text/javascript">
+        var date = new Date();
+          var bulan = date.getMonth()+1;
+          var hari = date.getDate();
+          if (hari < 10) {
+            hari = "0"+hari;
+          }
+
+          if (bulan < 10) {
+            bulan = "0"+bulan;
+          }
+
+          var tanggal = hari+"-"+bulan+"-"+date.getFullYear();
+          var howmuch = 0;
         // alert($("#tanggal_awal").val());
         //TAMBAH DATA
         $('#tanggal_awal').datetimepicker({
@@ -282,7 +295,9 @@
         $("#process").hide();
         
         var tabeldata;
-
+        var standata = "";
+        var tanggal_awaldata = "";
+        var tanggal_akhirdata = "";
         $.ajax({
           type:"post",
           url: "<?php echo base_url('superadminfranchise/get_list_stan')?>/",
@@ -331,6 +346,8 @@
                     },
                     "dataSrc": function (json) {
                       var return_data = new Array();
+                      howmuch = json.length;
+                      
                       for(var i=0;i< json.length; i++){
                         return_data.push({
                           'tanggal'  : {
@@ -346,6 +363,39 @@
                       return return_data;
                     }
                   },
+                    dom: 'Bfrtlip',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                title: 'Data Pengeluaran Stan',
+                                messageTop: 'Tanggal : '+tanggal,
+                                customize: function ( xlsx ){
+                                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                                    // jQuery selector to add a border
+                                    $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                                    for (var i = 0; i < howmuch; i++) {
+                                      var row = i + 4;
+                                      $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                                    }
+
+                                },
+                                text: '<i class="fa fa-download"></i> Download Excel',
+                                className: 'exportExcel',
+                                filename: function (argument) {
+                                    standata = $("#select_stan option:selected").text();
+                                      tanggal_awaldata = $("#tanggal_awal").val();
+                                      tanggal_akhirdata = $("#tanggal_akhir").val();
+
+                                      return 'Data Pengeluaran Stan '+standata+' tanggal '+tanggal_awaldata +" sampai "+tanggal_akhirdata;
+                                } ,
+                                exportOptions: {
+                                  columns:[0,1,2]
+                                }
+                            }
+                        ],
+                        "lengthChange": true,
                   columns: [
                     {'data': 'tanggal',render: {_: 'display',sort: 'real'}},
                     {'data': 'keterangan'},

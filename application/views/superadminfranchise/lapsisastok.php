@@ -18,11 +18,14 @@
                             <strong class="card-title">Data Laporan Sisa Stok Stan</strong>
                         </div>
                         <div class="card-body">
+                            <form method="post" action="downloadexcelstan" >
+                                
+                            
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Stan</label>
-                                        <select name="select" id="select_stan" class="form-control" onchange="refreshTable()">
+                                        <select name="select" name="select_stan" required="" id="select_stan" class="form-control" onchange="refreshTable()">
 
                                         </select>
                                     </div>
@@ -30,13 +33,13 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Tanggal</label>
-                                        <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control">
+                                        <input type="text" name="tanggal_awal" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control" required="true">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label"> </label>
-                                        <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
+                                        <button type="submit" class="form-control btn btn-success"><i class="fa fa-save"></i> Download Excel</button>
                                     </div>
                                 </div>
                                 <!-- <div class="col-md-3">
@@ -46,6 +49,7 @@
                                     </div>
                                 </div> -->
                             </div>
+                            </form>
                             <br>
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                                     <thead class="">
@@ -133,6 +137,25 @@
         //         $('#tanggal_akhir').data("DateTimePicker").minDate($('#tanggal_awal').data('date'));
         //     }
         // });
+
+        function downloadexcel() {
+            alert('Development Process');
+
+            $.post(
+              "downloadexcelstan",
+              {
+                tanggal: function (argument) {
+                    return $("#tanggal_awal").val();
+                },
+                idstan : function (argument) {
+                    return $("#select_stan").val();
+                }
+              },
+              function(data, status){
+                // alert("Data: " + data + "\nStatus: " + status);
+              }
+            );
+        }
 
     </script>
 </body>

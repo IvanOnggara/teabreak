@@ -24,12 +24,12 @@
                                         <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <!-- <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label"> </label>
                                         <button class="form-control btn btn-success" disabled="" onclick="downloadexcel()"><i class="fa fa-save"></i> Download Excel</button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <br>
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
@@ -81,6 +81,7 @@
     <script type="text/javascript">
         // alert($("#tanggal_awal").val());
         //TAMBAH DATA
+        var howmuch = 0;
         $('#tanggal_awal').datetimepicker({
             format: 'DD/MM/YYYY',
             useCurrent: false
@@ -177,6 +178,7 @@
                     },
                     "dataSrc": function (json) {
                       var return_data = new Array();
+                      howmuch = json.data.length;
                       for(var i=0;i< json.data.length; i++){
                         return_data.push({
                           'id_bahan_jadi': json.data[i].id_bahan_jadi,
@@ -189,6 +191,42 @@
                       return return_data;
                     }
                   },
+            dom: 'Bfrtlip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title:function(argument) {
+                            return 'Data Aset Stok Warehouse ';
+                        } ,
+                        messageTop: function (argument) {
+                            return ' Tanggal : '+$("#tanggal_awal").val();
+                        },
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // jQuery selector to add a border
+                            $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 4;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'exportExcel',
+                        filename: function (argument) {
+                              // var standdd = $("#select_stan option:selected").text();
+                              var tgl = $("#tanggal_awal").val();
+
+                              return 'Laporan Aset Stock Warehouse tanggal '+tgl ;
+                        } ,
+                        exportOptions: {
+                          columns:[0,1,2,3,4]
+                        }
+                    }
+                ],
+                "lengthChange": true,
                   columns: [
                     {'data': 'id_bahan_jadi'},
                     {'data': 'nama_bahan_jadi'},
