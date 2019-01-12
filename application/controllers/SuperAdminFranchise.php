@@ -117,7 +117,7 @@ class SuperAdminFranchise extends CI_Controller {
 
         	$where = array('bulan_tahun' => $bulanlalu."-".$tahunlalu);
         	$countlapgajiwithcase = $this->Produk->getRowCount('laporan_gaji_karyawan',$where);
-
+        	
         	if ($countlapgajiwithcase <= 0) {
         		
 
@@ -126,6 +126,7 @@ class SuperAdminFranchise extends CI_Controller {
         		$alldatakaryawan = $this->Produk->getAllData('karyawan_fingerspot');
 
 				foreach ($alldatakaryawan as $perkaryawan) {
+
 					$where1 = array('id_stan' => $perkaryawan->id_stan );
 					$data_detail_stan = $this->Produk->getData($where1,'data_detail_stan');
 
@@ -348,61 +349,86 @@ class SuperAdminFranchise extends CI_Controller {
         				// var_dump($datatosave);
         			// }
 				}
-
         		// CREATE LAPORAN GAJI BULAN TAHUN SEBELUMNYA
-        	}else{
-        		// $alldatakaryawan = $this->Produk->getAllData('karyawan_fingerspot');
-        		// $getfirstmonth = $this->Produk->getSpecificColumn('presensi_karyawan','MIN(scan_date) as scan_date');
-        		// $getfirstmonth = $getfirstmonth[0]->scan_date;
-        		// $getfirstmonth = explode('-', $getfirstmonth);
-        		// $getfirstmonth = $getfirstmonth[1];
-        		// $getfirstyear = $getfirstmonth[0];
-
-        		// $monthnow = date("n");
-        		// $yearnow = date("Y");
-
-        		// if ($yearnow - $getfirstyear == 0) {
-        		// 	$banyakbulan = $monthnow-$getfirstmonth;
-        		// }else{
-        		// 	$differenceyear = $yearnow-$getfirstyear;
-
-        		// 	$banyakbulan = ((($differenceyear*12) - ($getfirstmonth-1)) + $monthnow);
-        		// }
-
-        		// foreach ($alldatakaryawan as $perkaryawan) {
-        		// 	for ($i=0; $i < $banyakbulan; $i++) { 
-        		// 		$bulan = $getfirstmonth;
-        		// 		$tahun = $getfirstyear;
-
-        		// 		$where = array(
-        		// 			'pin' => $perkaryawan->pin,
-        		// 			'MONTH(scan_date)' => $bulan,
-        		// 			'YEAR(scan_date)' => $tahun
-        		// 		);
-        		// 		$allpresensikaryawan = $this->Produk->getData($where,'presensi_karyawan');
- 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 
-        		// 		// $datatosave = array(
-	        	// 		// 	'pin' => ,
-	        	// 		// 	'nama' => ,
-	        	// 		// 	'bulan_tahun' => ,
-	        	// 		// 	'masuk' => ,
-	        	// 		// 	'lembur' => ,
-	        	// 		// 	'terlambat' => ,
-	        	// 		// 	'tidak_masuk' => ,
-	        	// 		// 	'potongan_lain' => ,
-	        	// 		// 	'keterangan_potongan_lain' => ,
-	        	// 		// 	'gaji_tambahan' => ,
-	        	// 		// 	'keterangan_gaji_tambahan' => ,
-	        	// 		// 	'bonus_omset' => ,
-	        	// 		// 	'uang_makan' => ,
-	        	// 		// 	'uang_lembur' => ,
-	        	// 		// 	'potongan_terlambat' => ,
-	        	// 		// 	'potongan_cuti' => ,
-	        	// 		// 	'gaji_akhir' => ,
-	        	// 		// );
-        		// 	}
-        		// }
         	}
+
+        	$where = array(
+        		'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+        		'keterangan' => 'Pengeluaran Stan (Kasir)'
+
+        	);
+        	$checkkeuntunganstanbulanlalu = $this->Produk->getRowCount('keuntungan_stan',$where);
+        	$alldatastan = $this->Produk->getAllData('stan');
+
+        	if ($checkkeuntunganstanbulanlalu<=0) {
+        		foreach ($alldatastan as $perstan) {
+        			$where2 = array(
+	        			'tanggal LIKE' => $tahunlalu."-".$bulanlalu.'-%',
+	        			'id_stan' => $perstan->id_stan
+	        		);
+	        		$allpengeluaranstanblnlalu = $this->Produk->getData($where2,'pengeluaran_lain');
+	        		$total = 0;
+
+	        		foreach ($allpengeluaranstanblnlalu as $perpengeluaran) {
+	        			$total = $total+$perpengeluaran->pengeluaran;
+	        		}
+
+	        		$datatosave = array(
+	        			'id_stan' => $perstan->id_stan,
+	        			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+	        			'keterangan' => 'Pengeluaran Stan (Kasir)',
+	        			'total' => $total,
+	        			'tipe' => 'Kredit'
+	        		);
+
+	        		$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
+        		}
+        	}
+
+        	$where = array(
+        		'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+        		'keterangan' => 'Stock Keluar (Kasir)'
+
+        	);
+        	$checkkeuntunganstanbulanlalu = $this->Produk->getRowCount('keuntungan_stan',$where);
+
+        	if ($checkkeuntunganstanbulanlalu<=0) {
+        		foreach ($alldatastan as $perstan) {
+        			$where2 = array(
+	        			'tanggal LIKE' => $tahunlalu."-".$bulanlalu.'-%',
+	        			'id_stan' => $perstan->id_stan
+	        		);
+	        		$allstokkeluarstanblnlalu = $this->Produk->getData($where2,'stok_bahan_jadi');
+	        		$total = 0;
+
+	        		foreach ($allstokkeluarstanblnlalu as $perstokkeluar) {
+	        			$whereharga = array(
+	        				'id_bahan_jadi' => $perstokkeluar->id_bahan_jadi
+	        			);
+	        			$getharga = $this->Produk->getData($whereharga,'bahan_jadi');
+
+	        			if ($this->Produk->getRowCount('bahan_jadi',$whereharga) <= 0) {
+	        				$harga = 0;
+	        			}else{
+	        				$harga = $getharga[0]->harga_bahan_jadi;
+	        			}
+
+	        			$total = $total + ( $harga * $perstokkeluar->stok_keluar );
+	        		}
+
+	        		$datatosave = array(
+	        			'id_stan' => $perstan->id_stan,
+	        			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+	        			'keterangan' => 'Stock Keluar (Kasir)',
+	        			'total' => $total,
+	        			'tipe' => 'Kredit'
+	        		);
+
+	        		$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
+        		}
+        	}
+
+
 
         	$this->load->view('superadminfranchise/navigationbar');
             $this->load->view('superadminfranchise/dashboard');
@@ -2055,8 +2081,8 @@ class SuperAdminFranchise extends CI_Controller {
   	$keterangan = $this->input->post('keterangan');
   	$biaya = $this->input->post('biaya');
 
-  	$tanggal = explode('/', $tanggal);
-  	$tanggal = $tanggal[2]."-".$tanggal[1]."-".$tanggal[0];
+  	$tanggal1 = explode('/', $tanggal);
+  	$tanggal = $tanggal1[2]."-".$tanggal1[1]."-".$tanggal1[0];
 
   	$data = array(
   		'id_stan' => $stan,
@@ -2068,6 +2094,44 @@ class SuperAdminFranchise extends CI_Controller {
   	$insert = $this->Produk->insert('pengeluaran_lain_stan_superadmin',$data);
 
   	if ($insert) {
+  		$where1 = array(
+  			'id_stan' => $stan,
+  			'bulan_tahun' => $tanggal1[1]."-".$tanggal1[2],
+  			'keterangan' => 'Pengeluaran Stan (Super Admin)'
+  		);
+  		$check = $this->Produk->checkExist('keuntungan_stan',$where1);
+  		
+  		if ($check) {
+  			$datalappengeluaran = $this->Produk->getData($where1,'keuntungan_stan');
+  			$data = array(
+  				'total' => ($datalappengeluaran[0]->total)+$biaya, 
+  			);
+
+  			$update = $this->Produk->update('keuntungan_stan', $data, $where1);
+
+  		}else{
+  			$where12 = array(
+  				'id_stan' => $stan,
+  				'tanggal LIKE' => $tanggal1[2].'-'.$tanggal1[1].'-%'
+  			);
+  			$alldatapengeluaran = $this->Produk->getData($where12,'pengeluaran_lain_stan_superadmin');
+
+  			$total = 0;
+  			foreach ($alldatapengeluaran as $perpengeluaran) {
+  				$total = $total + $perpengeluaran->pengeluaran;
+  			}
+
+  			$datatosave = array(
+				'id_stan' => $stan,
+				'bulan_tahun' => $tanggal1[1]."-".$tanggal1[2],
+				'keterangan' => 'Pengeluaran Stan (Super Admin)',
+				'total' => $total,
+				'tipe' => 'Kredit'
+			);
+
+			$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
+  		}
+  		
   		echo "Berhasil Ditambahkan";
   	}else{
   		echo "Gagal Ditambahkan";
@@ -2078,10 +2142,54 @@ class SuperAdminFranchise extends CI_Controller {
   {
   	$id = $this->input->post('id');
   	$where = array('id_pengeluaran' => $id);
+  	$databeforedelete = $this->Produk->getData($where,'pengeluaran_lain_stan_superadmin');
+  	$tanggal = $databeforedelete[0]->tanggal;
+  	$tanggalpart = explode('-', $tanggal);
+ 	$newfortanggal = $tanggalpart[1]."-".$tanggalpart[0];
+
+  	$biaya = $databeforedelete[0]->pengeluaran;
 
   	$del = $this->Produk->DeleteWhere('pengeluaran_lain_stan_superadmin',$where);
 
   	if ($del) {
+  		$where1 = array(
+  			'id_stan' => $databeforedelete[0]->id_stan,
+  			'bulan_tahun' => $newfortanggal,
+  			'keterangan' => 'Pengeluaran Stan (Super Admin)'
+  		);
+  		$check = $this->Produk->checkExist('keuntungan_stan',$where1);
+  		
+  		if ($check) {
+  			$datalappengeluaran = $this->Produk->getData($where1,'keuntungan_stan');
+  			$data = array(
+  				'total' => ($datalappengeluaran[0]->total)-$biaya, 
+  			);
+
+  			$update = $this->Produk->update('keuntungan_stan', $data, $where1);
+
+  		}else{
+  			$where12 = array(
+  				'id_stan' => $databeforedelete[0]->id_stan,
+  				'tanggal LIKE' => $tanggalpart[0].'-'.$tanggalpart[1].'-%'
+  			);
+  			$alldatapengeluaran = $this->Produk->getData($where12,'pengeluaran_lain_stan_superadmin');
+
+  			$total = 0;
+  			foreach ($alldatapengeluaran as $perpengeluaran) {
+  				$total = $total + $perpengeluaran->pengeluaran;
+  			}
+
+  			$datatosave = array(
+				'id_stan' => $databeforedelete[0]->id_stan,
+				'bulan_tahun' => $newfortanggal,
+				'keterangan' => 'Pengeluaran Stan (Super Admin)',
+				'total' => $total,
+				'tipe' => 'Kredit'
+			);
+
+			$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
+  		}
+
   		echo "SUCCESSSAVE";
   	}else{
   		echo "CANTCONNECT";
@@ -2094,6 +2202,8 @@ class SuperAdminFranchise extends CI_Controller {
   	$pengeluaranbaru = $this->input->post('pengeluaranbaru');
   	$id_pengeluaran = $this->input->post('id_pengeluaran');
   	$tanggalbaru = $this->input->post('tanggalbaru');
+  	$tanggalpart = explode('-', $tanggalbaru);
+ 	$newfortanggal = $tanggalpart[1]."-".$tanggalpart[0];
 
   	$databaru = array(
   		'tanggal' => $tanggalbaru,
@@ -2103,9 +2213,49 @@ class SuperAdminFranchise extends CI_Controller {
 
   	$where = array('id_pengeluaran' => $id_pengeluaran);
 
+  	$getbeforeupdate = $this->Produk->getData($where,'pengeluaran_lain_stan_superadmin');
+  	$biayabefore = $getbeforeupdate[0]->pengeluaran;
+
   	$update = $this->Produk->update('pengeluaran_lain_stan_superadmin', $databaru, $where);
 
   	if ($update) {
+  		$where1 = array(
+  			'id_stan' => $getbeforeupdate[0]->id_stan,
+  			'bulan_tahun' => $newfortanggal,
+  			'keterangan' => 'Pengeluaran Stan (Super Admin)'
+  		);
+  		$check = $this->Produk->checkExist('keuntungan_stan',$where1);
+  		
+  		if ($check) {
+  			$datalappengeluaran = $this->Produk->getData($where1,'keuntungan_stan');
+  			$data = array(
+  				'total' => (($datalappengeluaran[0]->total)-$biayabefore)+$pengeluaranbaru, 
+  			);
+
+  			$update = $this->Produk->update('keuntungan_stan', $data, $where1);
+
+  		}else{
+  			$where12 = array(
+  				'id_stan' => $getbeforeupdate[0]->id_stan,
+  				'tanggal LIKE' => $tanggalpart[0]."-".$tanggalpart[1].'-%'
+  			);
+  			$alldatapengeluaran = $this->Produk->getData($where12,'pengeluaran_lain_stan_superadmin');
+
+  			$total = 0;
+  			foreach ($alldatapengeluaran as $perpengeluaran) {
+  				$total = $total + $perpengeluaran->pengeluaran;
+  			}
+
+  			$datatosave = array(
+				'id_stan' => $getbeforeupdate[0]->id_stan,
+				'bulan_tahun' => $newfortanggal,
+				'keterangan' => 'Pengeluaran Stan (Super Admin)',
+				'total' => $total,
+				'tipe' => 'Kredit'
+			);
+
+			$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
+  		}
   		echo "Berhasil Diupdate";
   	}else{
   		echo "Gagal Diupdate";
@@ -2137,10 +2287,18 @@ class SuperAdminFranchise extends CI_Controller {
 
   	$where = array('id_stan' => $stan);
   	$nama_stan = $this->Produk->getData($where,'stan');
+  	$tanggalstrip = explode('/', $tanggal);
+  		$tanggalstrip = $tanggalstrip[0]."-".$tanggalstrip[1];
 
   	$where1 = array(
   		'id_stan' => $stan,
   		'bulan_tahun' => $tanggal
+  	);
+
+  	$where12 = array(
+  		'id_stan' => $stan,
+  		'bulan_tahun' => $tanggalstrip,
+  		'keterangan' => 'Penjualan Stan'
   	);
   	$cek = $this->Produk->checkExist('penjualan_stan_by_superadmin',$where1);
 
@@ -2150,14 +2308,21 @@ class SuperAdminFranchise extends CI_Controller {
 	  		'penjualan' => $penjualan
 	  	);
 
+	  	$datatosave = array(
+			'total' => $penjualan
+		);
+
+
 	  	$getdataupdate = $this->Produk->getData($where1,'penjualan_stan_by_superadmin');
 	  	// var_dump($getdataupdate);
 
 	  	if ($getdataupdate[0]->penjualan == $penjualan && $getdataupdate[0]->nama_stan == $nama_stan[0]->nama_stan ) {
 	  		$update = true;
+	  		$update2 = true;
 
 	  	}else{
 	  		$update = $this->Produk->update('penjualan_stan_by_superadmin', $data, $where1);
+	  		$update2 = $this->Produk->update('keuntungan_stan',$datatosave, $where12);
 	  	}
 
   		
@@ -2169,10 +2334,64 @@ class SuperAdminFranchise extends CI_Controller {
 	  		'penjualan' => $penjualan
 	  	);
 
-  		$insert = $this->Produk->insert('penjualan_stan_by_superadmin',$data);
+  		$insert2 = $this->Produk->insert('penjualan_stan_by_superadmin',$data);
+  		$tanggalstrip = explode('/', $tanggal);
+  		$tanggalstrip = $tanggalstrip[0]."-".$tanggalstrip[1];
+
+  		$datatosave = array(
+			'id_stan' => $stan,
+			'bulan_tahun' => $tanggalstrip,
+			'keterangan' => 'Penjualan Stan',
+			'total' => $penjualan,
+			'tipe' => 'Debit'
+		);
+
+		$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
   	}
 
   	if ($insert || $update) {
+  		$where2 = array(
+			'id_stan' => $stan,
+			'status' => 'active',
+			'omset_minimal <=' => $penjualan
+		);
+		$data_gaji_bonus =  $this->Produk->getData($where2,'gaji_bonus_stan');
+
+		if ($this->Produk->getRowCount('gaji_bonus_stan',$where2)<=0) {
+			$data_gaji_bonus = 0;
+		}else{
+			$whereforbonus = array(
+				'id_stan' => $stan,
+				'status' => 'active'
+			);
+
+			$banyakpegawai = $this->Produk->getRowCount('karyawan_fingerspot',$whereforbonus);
+			$data_gaji_bonus = (($data_gaji_bonus[0]->persentase_bonus/100)*$penjualan)/$banyakpegawai;
+		}
+
+		$wheregaji = array(
+			'id_stan' => $stan,
+			'bulan_tahun' => $tanggalstrip,
+		);
+		
+		// $getgajidata = $this->Produk->update('laporan_gaji_karyawan', $datatoupdate, $wheregaji);
+
+		$allgajibulanitu = $this->Produk->getData($wheregaji,'laporan_gaji_karyawan');
+		foreach ($allgajibulanitu as $pergajibulanitu) {
+			$datatoupdate = array(
+				'bonus_omset' => $data_gaji_bonus,
+				'gaji_akhir' => ((($pergajibulanitu->gaji_akhir) - ($pergajibulanitu->bonus_omset))+$data_gaji_bonus) 
+			);
+
+			$wheregajitoup = array(
+				'id_stan' => $stan,
+				'bulan_tahun' => $tanggalstrip,
+				'pin' => $pergajibulanitu->pin
+			);
+
+			$update = $this->Produk->update('laporan_gaji_karyawan', $datatoupdate, $wheregajitoup);
+		}
+
   		echo "Berhasil Ditambahkan";
   	}else{
   		echo "Gagal Ditambahkan";
@@ -2507,4 +2726,75 @@ class SuperAdminFranchise extends CI_Controller {
   	$save = $this->Produk->update('laporan_gaji_karyawan',$data,$where);
   	echo "Berhasil Diupdate";
   }
+
+  public function lapkeuntunganstan()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lapkeuntunganstan');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function lapkeuntunganglobal()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+    if(empty($akses)){
+        redirect('login');
+    }else{
+    	$this->load->view('superadminfranchise/navigationbar');
+        $this->load->view('superadminfranchise/lapkeuntunganglobal');
+		// $this->load->view('superadminfranchise/datatable_produk');
+    }
+  }
+
+  public function datalaporankeuntunganstan()
+  {
+  	$id_stan = $this->input->post('id_stan');
+  	$bulan_tahun = $this->input->post('bulan_tahun');
+  	$bulan_tahun = str_replace("/","-",$bulan_tahun);
+
+  	$where = array(
+  		'id_stan' => $id_stan,
+  		'bulan_tahun' => $bulan_tahun
+  	);
+
+  	$data = $this->Produk->getDataWhereDesc2column('keuntungan_stan',$where,"tipe ASC");
+
+ //  	$this->load->library('datatables');
+	// $this->datatables->select('id_keuntungan_stan,id_stan,bulan_tahun,keterangan,total,tipe');
+	// $this->datatables->from('keuntungan_stan');
+	// $this->datatables->order_by('tipe');
+	// $this->datatables->where($where);
+	
+	// echo $this->datatables->generate();
+  	echo json_encode($data);
+  }
+
+
+  public function datalaporankeuntunganglobal()
+  {
+  	$bulan_tahun = $this->input->post('bulan_tahun');
+  	$bulan_tahun = str_replace("/","-",$bulan_tahun);
+
+  	$where = array(
+  		'bulan_tahun' => $bulan_tahun
+  	);
+
+  	$data = $this->Produk->getDataWhereDesc2column('keuntungan_global',$where,"tipe ASC");
+
+ //  	$this->load->library('datatables');
+	// $this->datatables->select('id_keuntungan_global,bulan_tahun,keterangan,total,tipe');
+	// $this->datatables->from('keuntungan_global');
+	// $this->datatables->order_by('tipe');
+
+	// $this->datatables->where($where);
+	
+	// echo $this->datatables->generate();
+  	echo json_encode($data);
+  }
+
 }
