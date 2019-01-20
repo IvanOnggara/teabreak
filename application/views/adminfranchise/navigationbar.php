@@ -39,6 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- <link rel="stylesheet" href=<echo base_url("assets/css/bootstrap-select.less")?>> -->
     <link rel="stylesheet" href=<?php echo base_url("assets/scss/style.css")?>>
     <link href=<?php echo base_url("assets/css/lib/vector-map/jqvmap.min.css")?> rel="stylesheet">
+    <link rel="stylesheet" href=<?php echo base_url("assets/css/teabreak.css")?>>
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
@@ -115,6 +116,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </li>
                     <li id="stokkeluar">
                         <a href="stokkeluar"> <i class="menu-icon ti-package"></i>Stok Keluar </a>
+                    </li>
+                    <h3 class="menu-title">KARYAWAN</h3><!-- /.menu-title -->
+                    <li id="sinkronisasidata">
+                        <a href="sinkronisasidata"> <i class="menu-icon fa fa-refresh"></i>Sinkronisasi Data </a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->

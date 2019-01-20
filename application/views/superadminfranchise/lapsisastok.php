@@ -18,28 +18,38 @@
                             <strong class="card-title">Data Laporan Sisa Stok Stan</strong>
                         </div>
                         <div class="card-body">
+                            <form method="post" action="downloadexcelstan" >
+                                
+                            
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Stan</label>
-                                        <select name="select" id="select_stan" class="form-control" onchange="refreshTable()">
+                                        <select name="select" name="select_stan" required="" id="select_stan" class="form-control" onchange="refreshTable()">
 
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="id" class=" form-control-label">Tanggal Awal</label>
-                                        <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal Awal" class="form-control">
+                                        <label for="id" class=" form-control-label">Tanggal</label>
+                                        <input type="text" name="tanggal_awal" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control" required="true">
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label"> </label>
+                                        <button type="submit" class="form-control btn btn-success"><i class="fa fa-save"></i> Download Excel</button>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Tanggal Akhir</label>
                                         <input type="text" id="tanggal_akhir" placeholder="Masukkan Tanggal Akhir" class="form-control">
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
+                            </form>
                             <br>
                                 <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                                     <thead class="">
@@ -47,6 +57,8 @@
                                         <th>Tanggal</th>
                                         <th>ID Bahan Jadi</th>
                                         <th>Nama Bahan Jadi</th>
+                                        <th>Stok Masuk</th>
+                                        <th>Stok Keluar</th>
                                         <th>Sisa Stok</th>
                                       </tr>
                                     </thead>
@@ -99,32 +111,51 @@
             useCurrent: false
         });
 
-        $('#tanggal_akhir').datetimepicker({
-            format: 'DD/MM/YYYY',
-            useCurrent: false
-        });
+        // $('#tanggal_akhir').datetimepicker({
+        //     format: 'DD/MM/YYYY',
+        //     useCurrent: false
+        // });
 
         $("#tanggal_awal").on("dp.change", function(e) {
             refreshTable();
-            $('#tanggal_akhir').data("DateTimePicker").minDate(e.date);
+            // $('#tanggal_akhir').data("DateTimePicker").minDate(e.date);
         });
 
-        $("#tanggal_akhir").on("dp.change", function(e) {
-            refreshTable();
-            $('#tanggal_awal').data("DateTimePicker").maxDate(e.date);
-        });
+        // $("#tanggal_akhir").on("dp.change", function(e) {
+        //     refreshTable();
+        //     $('#tanggal_awal').data("DateTimePicker").maxDate(e.date);
+        // });
 
-        $("#tanggal_awal").click(function () {
-            if ($("#tanggal_akhir").val()!='') {
-                $('#tanggal_awal').data("DateTimePicker").maxDate($('#tanggal_akhir').data('date'));
-            }
-        });
+        // $("#tanggal_awal").click(function () {
+        //     if ($("#tanggal_akhir").val()!='') {
+        //         $('#tanggal_awal').data("DateTimePicker").maxDate($('#tanggal_akhir').data('date'));
+        //     }
+        // });
 
-        $('#tanggal_akhir').click(function () {
-            if ($("#tanggal_awal").val()!='') {
-                $('#tanggal_akhir').data("DateTimePicker").minDate($('#tanggal_awal').data('date'));
-            }
-        });
+        // $('#tanggal_akhir').click(function () {
+        //     if ($("#tanggal_awal").val()!='') {
+        //         $('#tanggal_akhir').data("DateTimePicker").minDate($('#tanggal_awal').data('date'));
+        //     }
+        // });
+
+        function downloadexcel() {
+            alert('Development Process');
+
+            $.post(
+              "downloadexcelstan",
+              {
+                tanggal: function (argument) {
+                    return $("#tanggal_awal").val();
+                },
+                idstan : function (argument) {
+                    return $("#select_stan").val();
+                }
+              },
+              function(data, status){
+                // alert("Data: " + data + "\nStatus: " + status);
+              }
+            );
+        }
 
     </script>
 </body>

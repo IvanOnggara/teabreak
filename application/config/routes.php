@@ -95,7 +95,17 @@ $route['lappengeluaranstok'] = 'superadminfranchise/lappengeluaranstok';
 $route['lapsisastok'] = 'superadminfranchise/lapsisastok';
 $route['presensi'] = 'superadminfranchise/presensi';
 $route['masterdataprodukkemasan'] = 'superadminfranchise/masterdataprodukkemasan';
-
+$route['lappengeluaranwh'] = 'superadminfranchise/lappengeluaranwh';
+$route['lapasetstokwh'] = 'superadminfranchise/lapasetstokwh';
+$route['lapasetstokstan'] = 'superadminfranchise/lapasetstokstan';
+$route['lapasetstokglobal'] = 'superadminfranchise/lapasetstokglobal';
+$route['lapsisastokwh'] = 'superadminfranchise/lapsisastokwh';
+$route['pengeluaranstan'] = 'superadminfranchise/pengeluaranstan';
+$route['inputpenjualanstan'] = 'superadminfranchise/inputpenjualanstan';
+$route['manajemenshift'] = 'superadminfranchise/manajemenshift';
+$route['lapgajikaryawan'] = 'superadminfranchise/lapgajikaryawan';
+$route['lapkeuntunganstan'] = 'superadminfranchise/lapkeuntunganstan';
+$route['lapkeuntunganglobal'] = 'superadminfranchise/lapkeuntunganglobal';
 
 
 
@@ -109,6 +119,14 @@ $route['distribusi'] = 'adminfranchise/distribusi';
 $route['stokkeluar'] = 'adminfranchise/stokkeluar';
 $route['orderstan'] = 'adminfranchise/orderstan';
 $route['supply'] = 'adminfranchise/orderstan';
+$route['sinkronisasidata'] = 'adminfranchise/sinkronisasidata';
 
 $route['json'] = 'superadminfranchise/json';
 $route['translate_uri_dashes'] = FALSE;
+
+
+
+//try
+$route['downloadexcel'] = 'superadminfranchise/downloadexcel1';
+$route['downloadexcelstan'] = 'superadminfranchise/downloadexcelstan';
+$route['downloadexcelwarehouse'] = 'superadminfranchise/downloadexcelwarehouse';

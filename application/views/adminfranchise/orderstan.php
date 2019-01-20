@@ -154,7 +154,10 @@
                     return_data.push({
                       'id_order': json.data[i].id_order,
                       'id_stan'  : stan,
-                      'tanggal_order' : uidate(json.data[i].tanggal_order),
+                      'tanggal_order'  : {
+                        "display" : uidate(json.data[i].tanggal_order),
+                        "real" : json.data[i].tanggal_order
+                      },
                       'detail' : '<button onclick=detail_order("'+json.data[i].status+'","'+json.data[i].id_order+'") class="btn btn-primary">Detail</button> ',
                       'set_done' : setdone
                     });
@@ -203,9 +206,9 @@
                   columns: [
                     {'data': 'id_order'},
                     {'data': 'id_stan'},
-                    {'data': 'tanggal_order'},
-                    {'data': 'detail'},
-                    {'data': 'set_done'}
+                    {'data': 'tanggal_order',render: {_: 'display',sort: 'real'}},
+                    {'data': 'detail','orderable':false,'searchable':false},
+                    {'data': 'set_done','orderable':false,'searchable':false}
                   ],
             });
 

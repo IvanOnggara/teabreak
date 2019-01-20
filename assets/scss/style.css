@@ -565,7 +565,7 @@
   border-color: #343a40; }
 
 .social-box {
-  min-height: 160px;
+  /*min-height: 160px;*/
   margin-bottom: 1.5rem;
   text-align: center;
   background: #fff; }
@@ -612,6 +612,9 @@
   .social-box.google-plus i {
     color: #fff;
     background: #d34836; }
+    .social-box.green i {
+    color: #fff;
+    background: green; }
 
 .horizontal-bars {
   padding: 0;

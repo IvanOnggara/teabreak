@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <link rel="stylesheet" href=<?php echo base_url("assets/css/themify-icons.css")?>>
     <link rel="stylesheet" href=<?php echo base_url("assets/css/flag-icon.min.css")?>>
+    <link rel="stylesheet" href=<?php echo base_url("assets/css/teabreak.css")?>>
     <link rel="stylesheet" href=<?php echo base_url("assets/css/cs-skin-elastic.css")?>>
     <link rel="stylesheet" href=<?php echo base_url("assets/datatable/datatables.css") ?>>
     <!-- bootstrap-daterangepicker -->
@@ -116,6 +117,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="gajibonusstan">
                         <a style="pointer-events: none;" href="gajibonusstan"> <i class="menu-icon ti-money"></i>Gaji Bonus Stan </a>
                     </li>
+                    <li id="pengeluaranstan">
+                        <a href="pengeluaranstan"> <i class="menu-icon fa fa-money"></i>Pengeluaran Stan </a>
+                    </li>
+                    <li id="inputpenjualanstan">
+                        <a href="inputpenjualanstan"> <i class="menu-icon fa fa-tasks"></i>Input Hasil Penjualan Stan</a>
+                    </li>
                     <li id="rekapharianstan">
                         <a href="rekapharianstan"> <i class="menu-icon ti-book"></i>Rekap Harian Stan </a>
                     </li>
@@ -128,15 +135,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="masterdatakaryawan">
                         <a href="masterdatakaryawan"> <i class="menu-icon fa fa-users"></i>Data Karyawan </a>
                     </li>
+                    <li id="manajemenshift">
+                        <a href="manajemenshift"> <i class="menu-icon ti-layers-alt"></i>Manajemen Shift </a>
+                    </li>
 
                     <h3 class="menu-title">LAPORAN</h3><!-- /.menu-title -->
+                    <li id="lappengeluaranwh">
+                        <a href="lappengeluaranwh"> <i class="menu-icon ti-agenda"></i>Laporan Pengeluaran WareHouse</a>
+                    </li>
+                    <li id="lapasetstokstan">
+                        <a href="lapasetstokstan"> <i class="menu-icon ti-agenda"></i>Laporan Aset Stan</a>
+                    </li>
+                    <li id="lapasetstokwh">
+                        <a href="lapasetstokwh"> <i class="menu-icon ti-agenda"></i>Laporan Aset Warehouse</a>
+                    </li>
+                    <li id="lapasetstokglobal">
+                        <a href="lapasetstokglobal"> <i class="menu-icon ti-agenda"></i>Laporan Aset Global</a>
+                    </li>
                     <li id="lappenjstan">
                         <a href="lappenjstan"> <i class="menu-icon ti-agenda"></i>Laporan Penjualan Stand</a>
                     </li>
-                    <li>
+                    <li id="lapsisastok">
                         <a href="lapsisastok"> <i class="menu-icon ti-agenda"></i>Laporan Sisa Stock Stan</a>
                     </li>
-                    <li id="">
+                    <li id="lapsisastokwh">
+                        <a href="lapsisastokwh"> <i class="menu-icon ti-agenda"></i>Laporan Sisa Stock Warehouse</a>
+                    </li>
+                    <li id="lapgajikaryawan">
+                        <a href="lapgajikaryawan"> <i class="menu-icon ti-agenda"></i>Laporan Gaji Karyawan</a>
+                    </li>
+                    <li id="lapkeuntunganstan">
+                        <a  href="lapkeuntunganstan"> <i class="menu-icon ti-agenda"></i>Keuntungan Stand</a>
+                    </li>
+                    <li id="lapkeuntunganglobal">
+                        <a  href="lapkeuntunganglobal"> <i class="menu-icon ti-agenda"></i>Keuntungan Global</a>
+                    </li>
+                    <!-- <li id="">
                         <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Laporan Pembelian</a>
                     </li>
                     <li id="">
@@ -147,7 +181,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </li>
                     <li id="">
                         <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Laporan Keuntungan Stand</a>
-                    </li>
+                    </li> -->
                     
                 </ul>
             </div><!-- /.navbar-collapse -->

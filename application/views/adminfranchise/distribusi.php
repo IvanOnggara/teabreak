@@ -522,7 +522,10 @@
                 nama = nama.split(' ').join('+');
                 return_data.push({
                   'nama_stan': json.data[i].nama_stan,
-                  'tanggal'  : uidate(json.data[i].tanggal),
+                  'tanggal'  : {
+                    "display" : uidate(json.data[i].tanggal),
+                    "real" : json.data[i].tanggal
+                  },
                   'detail' : '<button onclick=detaildistribusi("'+json.data[i].id_distribusi+'","'+nama+'","'+json.data[i].tanggal+'") class="btn btn-warning"><b>Detail</b></button> ',
                   'cetaksurat' : '<button onclick=cetaksurat("'+json.data[i].id_distribusi+'","'+nama+'","'+json.data[i].tanggal+'") class="btn btn-primary"><b>Cetak Surat</b></button> ',
                   // 'hapus' : '<button onclick=hapusdistribusi("'+json.data[i].id_distribusi+'") class="btn btn-danger"><b>Hapus</b></button> ',
@@ -572,12 +575,14 @@
             "lengthChange": true,
               columns: [
                 {'data': 'nama_stan'},
-                {'data': 'tanggal'},
+                {'data': 'tanggal',render: {_: 'display',sort: 'real'}},
                 {'data': 'detail','orderable':false,'searchable':false},
                 {'data': 'cetaksurat','orderable':false,'searchable':false},
                 // {'data': 'hapus','orderable':false,'searchable':false},
               ],
-              "order": [[ 1, "desc" ]]
+              "order": [
+                [ 1, "desc" ]
+              ]
         });
 
         // function editdistribusi(id_distribusi,nama_stan,tanggal) {

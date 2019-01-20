@@ -66,6 +66,7 @@
                             <strong class="card-title">Data Pengeluaran</strong>
                         </div>
                         <div class="card-body">
+                              <h3 id="sisamodal" style="margin-bottom: 10px;">Sisa Modal : Rp. -</h3>
                           <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                             <thead>
                               <tr>
@@ -144,10 +145,35 @@
 
     <script type="text/javascript">
 
+
         var tabeldata;
         $('.numeric').on('input', function (event) { 
             this.value = this.value.replace(/[^0-9]/g, '');
         });
+
+        updateModalNow();
+        function updateModalNow() {
+          $.post({
+            url: "<?php echo base_url('adminfranchise/getmodal')?>/",
+            success:function(response) {
+              $("#sisamodal").html("Sisa Modal : Rp. "+currency(response)+" ,-");
+            },
+            error:function(argument) {
+              $("#sisamodal").html("Sisa Modal : *Data Error (Silahkan Refresh Halaman)");
+              $("#sisamodal").css("color","red");
+            }
+          });
+        }
+
+        
+
+        function currency(x) {
+          var retVal=x.toString().replace(/[^\d]/g,'');
+          while(/(\d+)(\d{3})/.test(retVal)) {
+            retVal=retVal.replace(/(\d+)(\d{3})/,'$1'+'.'+'$2');
+          }
+          return retVal;
+        }
 
         function tambahpengeluaran() {
 
@@ -175,7 +201,7 @@
                             reload_table();
 
                           if(response == 'Berhasil Ditambahkan'){
-                            
+                            updateModalNow();
                             
                             if($('#keterangan').has("is-invalid")){
                               $('#keterangan').removeClass("is-invalid");
@@ -230,7 +256,11 @@
               var shift;
               for(var i=0;i< json.data.length; i++){
                 return_data.push({
-                  'tanggal': uidate(json.data[i].tanggal),
+                  
+                  'tanggal'  : {
+                    "display" : uidate(json.data[i].tanggal),
+                    "real" : json.data[i].tanggal
+                  },
                   'keterangan': json.data[i].keterangan,
                   'pengeluaran'  : "Rp. "+currency(json.data[i].pengeluaran)+",-",
                   'edit' : '<button onclick="editpengeluaran(\''+json.data[i].id_pengeluaran+'\',\''+json.data[i].keterangan+'\',\''+json.data[i].pengeluaran+'\')" class="btn btn-warning" >Edit</button> ',
@@ -279,7 +309,7 @@
             ],
             "lengthChange": true,
               columns: [
-                {'data': 'tanggal'},
+                {'data': 'tanggal',render: {_: 'display',sort: 'real'}},
                 {'data': 'keterangan'},
                 {'data': 'pengeluaran'},
                 {'data': 'edit','orderable':false,'searchable':false},
@@ -352,7 +382,8 @@
                       reload_table();
 
                       if(response == 'Berhasil Diupdate'){
-                        
+                        updateModalNow();
+
                         
                         if($('#editket').has("is-invalid")){
                           $('#editket').removeClass("is-invalid");

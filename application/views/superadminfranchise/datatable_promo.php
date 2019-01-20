@@ -1,4 +1,5 @@
 <script type="text/javascript">
+  var howmuch = 0;
   var jenis = document.getElementById("jenispromo");
   var valjenis = jenis.options[jenis.selectedIndex].value;
   if (valjenis == 'buy1get1' || valjenis == 'buy2get1') {
@@ -59,6 +60,7 @@
     "url"    : "<?php echo base_url('superadminfranchise/promo_data');?>",
     "dataSrc": function (json) {
       var return_data = new Array();
+      howmuch = json.data.length;
       var jenis_diskon = '';
       var statuss = '';
       for(var i=0;i< json.data.length; i++){
@@ -80,8 +82,15 @@
         return_data.push({
           'nama_diskon': json.data[i].nama_diskon,
           'jenis_diskon' : jenis_diskon,
-          'tanggal_mulai' : json.data[i].tanggal_mulai,
-          'tanggal_akhir' : json.data[i].tanggal_akhir,
+
+          'tanggal_mulai'  : {
+            "display" : uidate(json.data[i].tanggal_mulai),
+            "real" : json.data[i].tanggal_mulai
+          },
+          'tanggal_akhir'  : {
+            "display" : uidate(json.data[i].tanggal_akhir),
+            "real" : json.data[i].tanggal_akhir
+          },
           'hari' : json.data[i].hari,
           'waktu' : json.data[i].jam_mulai+' - '+json.data[i].jam_akhir,
           'edit' : '<button onclick=edit_promo("'+json.data[i].id_diskon+'") class="btn btn-warning" style="color:white;">Edit</button> ',
@@ -91,49 +100,41 @@
       return return_data;
     }
   },
-  dom: 'Bfrtlip',
-        buttons: [
-            {
-                extend: 'copyHtml5',
-                text: 'Copy',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'excelHtml5',
-                text: 'Excel',
-                className: 'exportExcel',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'csvHtml5',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'pdfHtml5',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            },{
-                extend: 'print',
-                filename: 'Data Promo',
-                exportOptions: {
-                  columns:[0,1,2,3,4,5]
-                }
-            }
-        ],
-        "lengthChange": true,
+            dom: 'Bfrtlip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Data Promo',
+                        messageTop: '',
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // jQuery selector to add a border
+                            $('row c[r*="2"]', sheet).attr( 's', '27' );
+
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 3;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'exportExcel',
+                        filename: function (argument) {
+
+                              return 'Data Seluruh Promo' ;
+                        } ,
+                        exportOptions: {
+                          columns:[0,1,2,3,4,5]
+                        }
+                    }
+                ],
+                "lengthChange": true,
   columns    : [
     {'data': 'nama_diskon'},
     {'data': 'jenis_diskon'},
-    {'data': 'tanggal_mulai'},
-    {'data': 'tanggal_akhir'},
+    {'data': 'tanggal_mulai',render: {_: 'display',sort: 'real'}},
+    {'data': 'tanggal_akhir',render: {_: 'display',sort: 'real'}},
     {'data': 'hari'},
     {'data': 'waktu','orderable':false,'searchable':false},
     {'data': 'edit','orderable':false,'searchable':false},

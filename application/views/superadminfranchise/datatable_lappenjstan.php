@@ -1,4 +1,5 @@
 <script type="text/javascript">
+	var howmuch = 0;
 	var tabeldata;
 	var tabeldetail;
 	
@@ -48,6 +49,7 @@
 			      var return_data = new Array();
 			      var total_harga_akhir = 0;
 			      var no = 1;
+			      howmuch = json.length;
 
 			      for(var i=0;i< json.length; i++){
 			      	var nama = json[i].nama_diskon;
@@ -57,7 +59,10 @@
 			        return_data.push({
 			        	'no': no,
 			          'id_nota': json[i].id_nota,
-			          'tanggal_nota'  : uidate(json[i].tanggal_nota),
+			          'tanggal_nota'  : {
+                            "display" : uidate(json[i].tanggal_nota),
+                            "real" : json[i].tanggal_nota
+                          },
 			          'waktu_nota' : json[i].waktu_nota,
 			          'shift' : json[i].shift.charAt(0).toUpperCase() + json[i].shift.slice(1),
 			          'total_harga_jual' : "Rp "+currency(json[i].total_harga),
@@ -80,48 +85,52 @@
 			      return return_data;
 			    }
 			  },
-		   		dom: 'Bfrtlip',
-		        buttons: [
-		            {
-		                extend: 'copyHtml5',
-		                text: 'Copy',
-		                filename: 'Nota Penjualan Stand',
-		                exportOptions: {
-		                  columns:[0,1,2,3,4,5]
-		                }
-		            },{
-		                extend: 'excelHtml5',
-		                text: 'Excel',
-		                className: 'exportExcel',
-		                filename: 'Nota Penjualan Stand',
-		                exportOptions: {
-		                  columns:[0,1,2,3,4,5]
-		                }
-		            },{
-		                extend: 'csvHtml5',
-		                filename: 'Nota Penjualan Stand',
-		                exportOptions: {
-		                  columns:[0,1,2,3,4,5]
-		                }
-		            },{
-		                extend: 'pdfHtml5',
-		                filename: 'Nota Penjualan Stand',
-		                exportOptions: {
-		                  columns:[0,1,2,3,4,5]
-		                }
-		            },{
-		                extend: 'print',
-		                filename: 'Nota Penjualan Stand',
-		                exportOptions: {
-		                  columns:[0,1,2,3,4,5]
-		                }
-		            }
-		        ],
-		        "lengthChange": true,
+            dom: 'Bfrtlip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title:function(argument) {
+                            return 'Data Laporan Penjualan Stan ';
+                        } ,
+                        messageTop: function (argument) {
+                            return 'Stan : '+$("#select_stan option:selected").text()+', Tanggal : '+$("#tanggal_awal").val()+' - '+$("#tanggal_akhir").val()+", Shift : "+$("#shift option:selected").val();
+                        },
+                        customize: function ( xlsx ){
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // jQuery selector to add a border
+                            $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                            for (var i = 0; i < howmuch; i++) {
+                              var row = i + 4;
+                              $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                            }
+
+                        },
+                        text: '<i class="fa fa-download"></i> Download Excel',
+                        className: 'btn btn-success',
+                        init: function(api, node, config) {
+                           $(node).removeClass('dt-button');
+                           $(node).removeClass('buttons-excel');
+                           $(node).removeClass('buttons-html5');
+                        },
+                        filename: function (argument) {
+                              // var standdd = $("#select_stan option:selected").text();
+                              // var tgl = $("#tanggal_awal").val();
+
+                              return 'Laporan Penjualan Stan '+$("#select_stan option:selected").text()+', Tanggal : '+$("#tanggal_awal").val()+' - '+$("#tanggal_akhir").val()+", Shift : "+$("#shift option:selected").val();
+                        } ,
+
+                        exportOptions: {
+                          columns:[0,1,2,3,4,5]
+                        }
+                    }
+                ],
+                "lengthChange": true,
 				  columns: [
 				  {'data' : 'no'},
 				    {'data': 'id_nota'},
-				    {'data': 'tanggal_nota'},
+				    {'data': 'tanggal_nota',render: {_: 'display',sort: 'real'}},
 				    {'data' : 'waktu_nota'},
 				    {'data': 'shift'},
 				    {'data': 'total_harga_jual'},

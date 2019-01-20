@@ -63,3 +63,47 @@ function currency(x) {
 	}
 	return retVal;
 }
+
+function currency_special(x) {
+	var all = x.toString().split('.');
+	var awal = all[0];
+	var koma='';
+	if (all[1] == null) {
+		koma = '-';
+	}else{
+		koma = all[1]+'';
+	}
+	var retVal=awal.replace(/[^\d]/g,'');
+	while(/(\d+)(\d{3})/.test(retVal)) {
+	  retVal=retVal.replace(/(\d+)(\d{3})/,'$1'+'.'+'$2');
+	}
+	return retVal+","+koma;
+}
+
+function strtobln(bln) {
+	if (bln == "01") {
+        return 'Januari';
+    }else if (bln == '02'){
+        return 'Februari';
+    }else if (bln == '03'){
+        return 'Maret';
+    }else if (bln == '04'){
+        return 'April';
+    }else if (bln == '05'){
+        return 'Mei';
+    }else if (bln == '06'){
+        return 'Juni';
+    }else if (bln == '07'){
+        return 'Juli';
+    }else if (bln == '08'){
+        return 'Agustus';
+    }else if (bln == '09'){
+        return 'September';
+    }else if (bln == '10'){
+        return 'Oktober';
+    }else if (bln == '11'){
+        return 'November';
+    }else if (bln == '12'){
+        return 'Desember';
+    }
+}

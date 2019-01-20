@@ -149,6 +149,19 @@
 
     <script src=<?php echo base_url("assets/js/jquery.easy-autocomplete.js")?>></script>
     <script type="text/javascript">
+      var date = new Date();
+      var bulan = date.getMonth()+1;
+      var hari = date.getDate();
+      if (hari < 10) {
+        hari = "0"+hari;
+      }
+
+      if (bulan < 10) {
+        bulan = "0"+bulan;
+      }
+
+      var tanggal = hari+"-"+bulan+"-"+date.getFullYear();
+      var howmuch = 0;
       $('.numeric').on('input', function (event) { 
         this.value = this.value.replace(/[^0-9]/g, '');
         // if ($(this).val().indexOf('.') == 0) {
@@ -381,6 +394,7 @@
                     "url"    : "<?php echo base_url('superadminfranchise/bahanjadi_data');?>",
                     "dataSrc": function (json) {
                       var return_data = new Array();
+                      howmuch = json.data.length;
                       for(var i=0;i< json.data.length; i++){
                         return_data.push({
                           'id_bahan_jadi': json.data[i].id_bahan_jadi,
@@ -396,35 +410,23 @@
                    dom: 'Bfrtlip',
                         buttons: [
                             {
-                                extend: 'copyHtml5',
-                                text: 'Copy',
-                                filename: 'Bahan Jadi Data',
-                                exportOptions: {
-                                  columns:[0,1,2]
-                                }
-                            },{
                                 extend: 'excelHtml5',
-                                text: 'Excel',
+                                title: 'Data Seluruh Bahan Jadi',
+                                messageTop: 'Tanggal : '+tanggal,
+                                customize: function ( xlsx ){
+                                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                 
+                                    // jQuery selector to add a border
+                                    $('row c[r*="3"]', sheet).attr( 's', '27' );
+
+                                    for (var i = 0; i < howmuch; i++) {
+                                      var row = i + 4;
+                                      $('row c[r*="'+row+'"]', sheet).attr( 's', '25' );
+                                    }
+                                },
+                                text: '<i class="fa fa-download"></i> Download Excel',
                                 className: 'exportExcel',
-                                filename: 'Bahan Jadi Data',
-                                exportOptions: {
-                                  columns:[0,1,2]
-                                }
-                            },{
-                                extend: 'csvHtml5',
-                                filename: 'Bahan Jadi Data',
-                                exportOptions: {
-                                  columns:[0,1,2]
-                                }
-                            },{
-                                extend: 'pdfHtml5',
-                                filename: 'Bahan Jadi Data',
-                                exportOptions: {
-                                  columns:[0,1,2]
-                                }
-                            },{
-                                extend: 'print',
-                                filename: 'Bahan Jadi Data',
+                                filename: 'Data Bahan Jadi '+tanggal,
                                 exportOptions: {
                                   columns:[0,1,2]
                                 }

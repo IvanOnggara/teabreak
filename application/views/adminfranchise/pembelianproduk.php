@@ -34,7 +34,7 @@
                               <table id="mytable" class="table table-striped table-bordered">
                                 <thead>
                                   <tr>
-                                    <th>Date Data Sort</th>
+                                    <!-- <th>Date Data Sort</th> -->
                                     <th>No Nota</th>
                                     <th>Tanggal</th>
                                     <th>Total Harga</th>
@@ -400,9 +400,12 @@ tabeldata = $("#mytable").DataTable({
               }
 
             return_data.push({
-                'date_sort':json.data[i].tanggal,
+                // 'date_sort':json.data[i].tanggal,
               'no_nota': json.data[i].no_nota,
-              'tanggal_nota': uidate(json.data[i].tanggal),
+              'tanggal_nota'  : {
+                "display" : uidate(json.data[i].tanggal),
+                "real" : json.data[i].tanggal
+              },
               'total'  : "Rp. "+currency(json.data[i].total_harga)+",-",
               'metode' : metode,
               'jatuh_tempo' : jatuh_tempo,
@@ -420,7 +423,7 @@ tabeldata = $("#mytable").DataTable({
                 text: 'Copy',
                 filename: 'Nota Gudang',
                 exportOptions: {
-                  columns:[1,2,3,4,5]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'excelHtml5',
@@ -428,33 +431,32 @@ tabeldata = $("#mytable").DataTable({
                 className: 'exportExcel',
                 filename: 'Nota Gudang',
                 exportOptions: {
-                  columns:[1,2,3,4,5]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'csvHtml5',
                 filename: 'Nota Gudang',
                 exportOptions: {
-                  columns:[1,2,3,4,5]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'pdfHtml5',
                 filename: 'Nota Gudang',
                 exportOptions: {
-                  columns:[1,2,3,4,5]
+                  columns:[0,1,2,3,4]
                 }
             },{
                 extend: 'print',
                 filename: 'Nota Gudang',
                 exportOptions: {
-                  columns:[1,2,3,4,5]
+                  columns:[0,1,2,3,4]
                 }
             }
         ],
         "lengthChange": true,
           columns: [
-          {'data':'date_sort'},
             {'data': 'no_nota'},
-            {'data': 'tanggal_nota'},
+            {'data': 'tanggal_nota',render: {_: 'display',sort: 'real'}},
             {'data': 'total'},
             {'data': 'metode'},
             {'data': 'jatuh_tempo'},
