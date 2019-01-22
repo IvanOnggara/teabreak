@@ -153,6 +153,7 @@ class SuperAdminFranchise extends CI_Controller {
 					);
 
 					$allshift = $this->Produk->getData($whr,'manajemen_shift');
+					$done = true;
 					// date_modify($date,"+1 hour");
 
 					foreach ($allpresensikaryawan as $perpresensikaryawan) {
@@ -1802,16 +1803,27 @@ class SuperAdminFranchise extends CI_Controller {
   {
   	$data = $this->input->post('jumlah');
 
-  	$datamodal = $this->Produk->getAllData('modal_gudang');
-    $modal = $datamodal[0]->jumlah_modal;
-    $data = array(
-      'jumlah_modal' => $modal-$data
-    );
-    $where = array(
-      'id' => 'modaldata'
-    );
+  	if ($this->Produk->getRowCountAll('modal_gudang') <= 0) {
 
-    $ok = $this->Produk->update('modal_gudang',$data, $where);
+  		$datanew = array(
+  			'id' => 'modaldata',
+  			'jumlah_modal' => $data
+  		);
+  		$ok = $this->Produk->insert('modal_gudang',$datanew);
+  	}else{
+  		$datamodal = $this->Produk->getAllData('modal_gudang');
+	    $modal = $datamodal[0]->jumlah_modal;
+	    $data = array(
+	      'jumlah_modal' => $modal+$data
+	    );
+	    $where = array(
+	      'id' => 'modaldata'
+	    );
+
+	    $ok = $this->Produk->update('modal_gudang',$data, $where);
+  	}
+
+  	
     if ($ok) {
     	echo "sukses";
     }else{

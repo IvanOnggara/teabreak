@@ -698,6 +698,7 @@ class AdminFranchise extends CI_Controller {
       $modal = $datamodal[0]->jumlah_modal;
     }else{
       $data = array(
+        'id' => 'modaldata',
         'jumlah_modal' => 0
       );
       $this->Produk->insert('modal_gudang',$data);
