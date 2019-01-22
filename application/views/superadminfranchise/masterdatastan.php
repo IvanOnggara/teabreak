@@ -74,7 +74,7 @@
                                     
                                 </div>
                                 <div class="row">
-                                <div class="col-lg-2">
+                                <!-- <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Pinalti Terlambat</label>
                                         <div class="input-group">
@@ -84,7 +84,7 @@
                                         
                                     </div>
                                     
-                                </div>
+                                </div> -->
                                 <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Pinalti Bolos</label>
@@ -185,7 +185,7 @@
                                 <th>Password</th>
                                 <th>Uang Makan</th>
                                 <th>Uang Lembur</th>
-                                <th>Denda Terlambat</th>
+                                <!-- <th>Denda Terlambat</th> -->
                                 <th>Denda Bolos</th>
                                 <th>Batas Lembur</th>
                                 <th>Standar Lembur</th>
@@ -248,7 +248,7 @@
                             </div> -->
                         </div>
                         <div class="row">
-                                <div class="col-lg-6">
+                                <!-- <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Pinalti Terlambat</label>
                                         <div class="input-group">
@@ -258,7 +258,7 @@
                                         
                                     </div>
                                     
-                                </div>
+                                </div> -->
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Pinalti Bolos</label>
@@ -332,7 +332,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+</div>
 
     <!-- Right Panel -->
  

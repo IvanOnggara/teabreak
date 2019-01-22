@@ -91,37 +91,49 @@
 
         </div> <!-- .content -->
     </div><!-- /#right-panel -->
-        <div class="modal fade" id="modal_edit" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="header modal-header">
-                        <h4 class="modal-title">Edit</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="editid" class=" form-control-label">Kode Bahan Jadi</label>
-                                    <input type="text" id="editid" placeholder="Masukkan Kode Barang" class="form-control">
-                                    <input type="hidden" name="id_lama" id="id_lama">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="editnama" class=" form-control-label">Nama Bahan Jadi</label>
-                                    <input type="text" id="editnama" placeholder="Masukkan Nama Barang" class="form-control">
-                                </div>
-                            </div>
+
+    <div class="modal fade" id="modal_edit" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="header modal-header">
+                <h4 class="modal-title">Edit</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="editid" class=" form-control-label">Keterangan</label>
+                            <textarea class="form-control" rows="5" id="editket" placeholder="Keterangan"></textarea>
+                            <input type="hidden" name="id_lama" id="id_lama">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-default">Batal</button>
-                        <button type="button" onclick="simpaneditbahanjadi()" class="btn add_field_button btn-info">Simpan</button>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="editid" class=" form-control-label">Omset Minimal</label>
+                            <input type="text" id="editomset" placeholder="Masukkan Omset" class="form-control numeric">
+                            <input type="hidden" id="id_lama" name="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="editshift" class=" form-control-label">Bonus</label>
+                            <input type="text" id="editbonus" placeholder="Persentase" class="form-control numeric_persen">
+                        </div>
                     </div>
                 </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">Batal</button>
+                <button type="button" onclick="simpanedit()" class="btn add_field_button btn-info">Simpan</button>
             </div>
         </div>
+    </div>
+</div>
+
     <script src=<?php echo base_url("assets/js/lib/vector-map/jquery.vmap.js")?>></script>
     <script src=<?php echo base_url("assets/js/lib/vector-map/jquery.vmap.min.js")?>></script>
     <script src=<?php echo base_url("assets/js/lib/vector-map/jquery.vmap.sampledata.js")?>></script>
@@ -289,9 +301,9 @@
                           'nama_stan': json.data[i].nama_stan,
                           'omset_minimal': json.data[i].omset_minimal,
                           'bonus'  : json.data[i].persentase_bonus,
-                          'edit' : '<button onclick="edit(\''+json.data[i].keterangan+'\',\''+json.data[i].no_nota+'\')" class="btn btn-primary">Edit</button> ',
+                          'edit' : '<button onclick="edit(\''+json.data[i].id_gaji_bonus+'\',\''+json.data[i].omset_minimal+'\',\''+json.data[i].persentase_bonus+'\')" class="btn btn-warning">Edit</button> ',
                           // .split(' ').join('+')
-                          'delete' : '<button onclick="delete(\''+json.data[i].keterangan+'\',\''+json.data[i].no_nota+'\')" class="btn btn-primary">Delete</button> '
+                          'delete' : '<button onclick="delete_data(\''+json.data[i].id_gaji_bonus+'\')" class="btn btn-danger">Delete</button> '
                         })
                       }
                       return return_data;
@@ -348,6 +360,100 @@
 
                 function reload_table(){
                   tabeldata.ajax.reload();
+                }
+
+                function delete_data(id) {
+                  if(confirm('Apakah anda yakin ingin menghapus data ini??')){
+                    $.ajax({
+                            type:"post",
+                            url: "<?php echo base_url('superadminfranchise/delete_gaji_bonus')?>/",
+                            data:{ id:id,sst:'sinkron'},
+                            success:function(response)
+                            {
+                                if (response == 'CANTCONNECT') {
+                                  alert('Pastikan anda terhubung dengan internet!');
+                                }else if (response == 'SUCCESSSAVE') {
+                                  alert('Data Berhasil Dihapus!');
+                                  reload_table();
+                                }else{
+                                  alert('Error! Coba lagi nanti!');
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown)
+                            {
+                              alert(errorThrown);
+                            }
+                        }
+                    );
+                  }
+                }
+
+                function edit(id,omset,bonus) {
+                  $('#modal_edit').modal('toggle');
+                  $('#editomset').val(omset);
+                  $('#editbonus').val(bonus);
+                  $('#id_lama').val(id);
+                }
+
+                function simpanedit() {
+                  var omsetbaru = $('#editomset').val();
+                  var bonusbaru = $('#editbonus').val();
+                  var id_gaji_bonus = $('#id_lama').val();
+
+                  if (omsetbaru.replace(/\s/g, '').length>0 && bonusbaru.replace(/\s/g, '').length>0 && id_gaji_bonus.replace(/\s/g, '').length>0) {
+
+                    // console.log(id_pengeluaran);
+                    $.ajax(
+                        {
+                            type:"post",
+                            url: "<?php echo base_url('superadminfranchise/edit_gaji_bonus_stan')?>/",
+                            data:{ omsetbaru:omsetbaru,bonusbaru:bonusbaru,id_gaji_bonus:id_gaji_bonus},
+                            success:function(response)
+                            {
+                              reload_table();
+
+                              if(response == 'Berhasil Diupdate'){
+                                
+                                
+                                if($('#editomset').has("is-invalid")){
+                                  $('#editomset').removeClass("is-invalid");
+                                }
+
+                                if($('#editbonus').has("is-invalid")){
+                                  $('#editbonus').removeClass("is-invalid");
+                                }
+
+                                $('#modal_edit').modal('toggle');
+
+                                alert(response);
+                              }else{
+                                alert('unknown error is happen! try again.');
+                              }
+                              
+                            },
+                            error: function (jqXHR, textStatus, errorThrown)
+                            {
+                              alert(errorThrown);
+                            }
+                        }
+                    );
+                    
+                  }else{
+                    if (omsetbaru.replace(/\s/g, '').length>0) {
+                      $('#editomset').removeClass('is-invalid');
+                    }else{
+                      $("#editomset").addClass('is-invalid');
+                    }
+
+                    if (bonusbaru.replace(/\s/g, '').length>0) {
+                      $('#editbonus').removeClass('is-invalid');
+                    }else{
+                      $("#editbonus").addClass('is-invalid');
+                    }
+
+                    alert('Periksa Kembali inputan anda');
+                    
+                  }
                 }
     </script>
 

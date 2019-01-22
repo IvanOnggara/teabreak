@@ -36,7 +36,7 @@
                                     
                                     
                                 </div>
-                                <div class="col-lg-1">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Jam Awal</label>
                                         <input type="text" id="jam_awal" placeholder="Masukkan Jam" class="form-control">
@@ -45,7 +45,7 @@
                                     
                                     
                                 </div>
-                                <div class="col-lg-1">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="id" class=" form-control-label">Jam Akhir</label>
                                         <input type="text" id="jam_akhir" placeholder="Masukkan Jam" class="form-control">
