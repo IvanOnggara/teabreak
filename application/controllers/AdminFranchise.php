@@ -387,9 +387,14 @@ class AdminFranchise extends CI_Controller {
 
   public function getpengeluaranlain()
   {
+    $tanggal = $this->input->post('tanggal');
+    $tanggal = explode("/", $tanggal);
+    $tanggal = $tanggal[1]."-".$tanggal[0]."-%";
+    $data = array('tanggal LIKE' => $tanggal);
     $this->load->library('datatables');
     $this->datatables->select('id_pengeluaran,tanggal,keterangan,pengeluaran');
     $this->datatables->from('pengeluaran_lain_gudang');
+    $this->datatables->where($data);
     echo $this->datatables->generate();
   }
 
@@ -698,6 +703,7 @@ class AdminFranchise extends CI_Controller {
       $modal = $datamodal[0]->jumlah_modal;
     }else{
       $data = array(
+        'id' => 'modaldata',
         'jumlah_modal' => 0
       );
       $this->Produk->insert('modal_gudang',$data);

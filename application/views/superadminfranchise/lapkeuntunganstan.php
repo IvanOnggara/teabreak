@@ -247,6 +247,7 @@
                           // 'detail' : '<button onclick="detailgaji(\''+json[i].id_gaji+'\',\''+json[i].pin+'\',\''+json[i].id_stan+'\',\''+json[i].nama+'\',\''+json[i].masuk+'\',\''+json[i].lembur+'\',\''+json[i].terlambat+'\',\''+json[i].terlambatlembur+'\',\''+json[i].tidak_masuk+'\',\''+json[i].gaji_akhir+'\',\''+json[i].gaji_tetap+'\',\''+json[i].bonus_omset+'\',\''+json[i].potongan_lain+'\',\''+json[i].keterangan_potongan_lain+'\',\''+json[i].gaji_tambahan+'\',\''+json[i].keterangan_gaji_tambahan+'\')" class="btn btn-primary" >Detail</button> '
                         });
                       }
+                      $("#total_keuntungan").text('Total Keuntungan Rp '+currency(saldo));
                       return return_data;
                     }
                   },

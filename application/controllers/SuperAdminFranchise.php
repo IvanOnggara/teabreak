@@ -151,8 +151,9 @@ class SuperAdminFranchise extends CI_Controller {
 					$whr = array(
 						'id_stan' => $perkaryawan->id_stan
 					);
-
-					$allshift = $this->Produk->getData($whr,'manajemen_shift');
+					$kolomto = 'jam_awal DESC';
+					$allshift = $this->Produk->getDataWhereDesc('manajemen_shift',$whr,$kolomto);
+					$done = true;
 					// date_modify($date,"+1 hour");
 
 					foreach ($allpresensikaryawan as $perpresensikaryawan) {
@@ -590,7 +591,7 @@ class SuperAdminFranchise extends CI_Controller {
 
 	public function datastan(){
 		$this->load->library('datatables');
-		$this->datatables->select('stan.id_stan,nama_stan,alamat,password,uang_makan,uang_lembur,pinalti_terlambat,pinalti_bolos,batas_telat_lembur,standar_lembur');
+		$this->datatables->select('stan.id_stan,nama_stan,alamat,password,uang_makan,uang_lembur,pinalti_bolos,batas_telat_lembur,standar_lembur');
 		$this->datatables->from('stan');
 		$this->datatables->join('data_detail_stan','stan.id_stan = data_detail_stan.id_stan');
 		echo$this->datatables->generate();
@@ -617,7 +618,6 @@ class SuperAdminFranchise extends CI_Controller {
 				'id_stan' => $this->input->post('id'),
 				'uang_makan' => $this->input->post('uang_makan'),
 		        'uang_lembur' => $this->input->post('uang_lembur'),
-		        'pinalti_terlambat' => $this->input->post('pinalti_terlambat'),
 		        'pinalti_bolos' => $this->input->post('pinalti_bolos'),
 		        'batas_telat_lembur' => $this->input->post('batas_telat_lembur'),
 		        'standar_lembur' => $this->input->post('standar_lembur')
@@ -662,7 +662,6 @@ class SuperAdminFranchise extends CI_Controller {
 			$data = array(
 				'uang_makan' => $this->input->post('uang_makan'),
 		        'uang_lembur' => $this->input->post('uang_lembur'),
-		        'pinalti_terlambat' => $this->input->post('pinalti_terlambat'),
 		        'pinalti_bolos' => $this->input->post('pinalti_bolos'),
 		        'batas_telat_lembur' => $this->input->post('batas_telat_lembur'),
 		        'standar_lembur' => $this->input->post('standar_lembur')
@@ -1761,15 +1760,15 @@ class SuperAdminFranchise extends CI_Controller {
   	$persen = $this->input->post('persen');
   	$idstan = $this->input->post('idstan');
   	$omset = $this->input->post('omset');
-  	$id_gaji_bonus = 'IDGajiBonusGenerator()';
 
   	$data = array(
-  		'id_gaji_bonus' => $id_gaji_bonus,
   		'id_stan' => $idstan,
   		'omset_minimal' => $omset,
   		'persentase_bonus' => $persen,
   		'status' => 'active'
   	);
+
+  	$ok = $this->Produk->insert('gaji_bonus_stan',$data);
 
   	echo "sukses";
   }
@@ -1802,16 +1801,27 @@ class SuperAdminFranchise extends CI_Controller {
   {
   	$data = $this->input->post('jumlah');
 
-  	$datamodal = $this->Produk->getAllData('modal_gudang');
-    $modal = $datamodal[0]->jumlah_modal;
-    $data = array(
-      'jumlah_modal' => $modal-$data
-    );
-    $where = array(
-      'id' => 'modaldata'
-    );
+  	if ($this->Produk->getRowCountAll('modal_gudang') <= 0) {
 
-    $ok = $this->Produk->update('modal_gudang',$data, $where);
+  		$datanew = array(
+  			'id' => 'modaldata',
+  			'jumlah_modal' => $data
+  		);
+  		$ok = $this->Produk->insert('modal_gudang',$datanew);
+  	}else{
+  		$datamodal = $this->Produk->getAllData('modal_gudang');
+	    $modal = $datamodal[0]->jumlah_modal;
+	    $data = array(
+	      'jumlah_modal' => $modal+$data
+	    );
+	    $where = array(
+	      'id' => 'modaldata'
+	    );
+
+	    $ok = $this->Produk->update('modal_gudang',$data, $where);
+  	}
+
+  	
     if ($ok) {
     	echo "sukses";
     }else{
@@ -1823,8 +1833,8 @@ class SuperAdminFranchise extends CI_Controller {
   {
   	$tanggal = $this->input->post('tanggal');
   	$tanggal = explode("/", $tanggal);
-  	$tanggal = $tanggal[2]."-".$tanggal[1]."-".$tanggal[0];
-  	$data = array('tanggal' => $tanggal);
+  	$tanggal = $tanggal[1]."-".$tanggal[0]."-%";
+  	$data = array('tanggal LIKE' => $tanggal);
   	// var_dump($tanggal);
   	$this->load->library('datatables');
     $this->datatables->select('id_pengeluaran,tanggal,keterangan,pengeluaran');
@@ -2795,6 +2805,57 @@ class SuperAdminFranchise extends CI_Controller {
 	
 	// echo $this->datatables->generate();
   	echo json_encode($data);
+  }
+
+  public function datatablegajibonus()
+  {
+  	// $tanggal = $this->input->post('tanggal');
+  	// $tanggal = explode("/", $tanggal);
+  	// $tanggal = $tanggal[1]."-".$tanggal[0]."-%";
+  	// $data = array('tanggal LIKE' => $tanggal);
+  	// var_dump($tanggal);
+  	$this->load->library('datatables');
+    $this->datatables->select('id_gaji_bonus,gaji_bonus_stan.id_stan,nama_stan,omset_minimal,persentase_bonus,status');
+    $this->datatables->from('gaji_bonus_stan');
+    $this->datatables->join('stan','gaji_bonus_stan.id_stan = stan.id_stan');
+    // $this->datatables->where($data);
+    echo $this->datatables->generate();
+  }
+
+  public function delete_gaji_bonus()
+  {
+  	$id = $this->input->post('id');
+  	$where = array('id_gaji_bonus' => $id );
+	$this->Produk->DeleteWhere('gaji_bonus_stan',$where);
+
+	echo "SUCCESSSAVE";
+  }
+
+  public function edit_gaji_bonus_stan()
+  {
+  	$omset = $this->input->post('omsetbaru');
+	$bonus = $this->input->post('bonusbaru');
+	$id = $this->input->post('id_gaji_bonus');
+
+  	$databaru = array(
+  		'omset_minimal' => $omset,
+  		'persentase_bonus' => $bonus
+  	);
+
+  	$where = array('id_gaji_bonus' => $id);
+  	$datatoup = $this->Produk->getData($where,'gaji_bonus_stan');
+
+  	$update = $this->Produk->update('gaji_bonus_stan', $databaru, $where);
+
+  	if ($datatoup[0]->omset_minimal == $omset && $datatoup[0]->persentase_bonus == $bonus) {
+  		$update = true;
+  	}
+
+  	if ($update) {
+  		echo "Berhasil Diupdate";
+  	}else{
+  		echo "Gagal Diupdate";
+  	}
   }
 
 }

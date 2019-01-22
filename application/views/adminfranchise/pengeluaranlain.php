@@ -67,6 +67,15 @@
                         </div>
                         <div class="card-body">
                               <h3 id="sisamodal" style="margin-bottom: 10px;">Sisa Modal : Rp. -</h3>
+                              <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="id" class=" form-control-label">Tanggal</label>
+                                        <input type="text" id="tanggal_awal" placeholder="Masukkan Tanggal" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                           <table id="mytable" class="table table-striped table-bordered" style="width: 100%" width="100%">
                             <thead>
                               <tr>
@@ -139,6 +148,11 @@
     <script src=<?php echo base_url("assets/datatable/JSZip-2.5.0/jszip.js")?>></script>
     <script src=<?php echo base_url("assets/datatable/pdfmake-0.1.36/pdfmake.js")?>></script>
     <script src=<?php echo base_url("assets/datatable/pdfmake-0.1.36/vfs_fonts.js")?>></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src=<?php echo base_url("assets/vendors/moment/min/moment.min.js")?>></script>
+    <script src=<?php echo base_url("assets/vendors/bootstrap-daterangepicker/daterangepicker.js")?>></script>
+    <!-- bootstrap-datetimepicker -->    
+    <script src=<?php echo base_url("assets/vendors/Date-Time-Picker-Bootstrap-4/build/js/bootstrap-datetimepicker.min.js")?>></script>
     
 
     <script src=<?php echo base_url("assets/js/jquery.easy-autocomplete.js")?>></script>
@@ -147,6 +161,42 @@
 
 
         var tabeldata;
+
+        $('#tanggal_awal').datetimepicker({
+            format: 'MM/YYYY',
+            useCurrent: false
+        });
+
+        $("#tanggal_awal").on("dp.change", function(e) {
+            reload_table();
+            // $('#tanggal_akhir').data("DateTimePicker").minDate(e.date);
+        });
+
+        var tanggalfull = new Date();
+          var tanggal = tanggalfull.getDate();
+          var bulan = tanggalfull.getMonth()+1;
+          var tahun = tanggalfull.getFullYear();
+          var jam = tanggalfull.getHours();
+          var menit = tanggalfull.getMinutes();
+
+          if (parseInt(tanggal)<10) {
+            tanggal = "0"+tanggal;
+          }
+
+          if (parseInt(bulan)<10) {
+            bulan = "0"+bulan;
+          }
+
+          if (parseInt(jam)<10) {
+            jam = "0"+jam;
+          }
+
+          if (parseInt(menit)<10) {
+            menit = "0"+menit;
+          }
+
+        $('#tanggal_awal').val(bulan+"/"+tahun);
+
         $('.numeric').on('input', function (event) { 
             this.value = this.value.replace(/[^0-9]/g, '');
         });
@@ -251,6 +301,9 @@
           ajax: {
             "type"   : "POST",
             "url"    : "<?php echo base_url('adminfranchise/getpengeluaranlain');?>",
+            "data"   : function(data) {
+                  data.tanggal = $("#tanggal_awal").val();
+                },
             "dataSrc": function (json) {
               var return_data = new Array();
               var shift;
@@ -319,6 +372,9 @@
 
         function reload_table(){
           tabeldata.ajax.reload();
+        }
+        function gettanggal() {
+            return $("#tanggal_awal").val()
         }
 
         function editpengeluaran(id,keterangan,pengeluaran) {

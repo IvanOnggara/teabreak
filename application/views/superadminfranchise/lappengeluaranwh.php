@@ -120,7 +120,7 @@
         //TAMBAH DATA
         var howmuch = 0;
         $('#tanggal_awal').datetimepicker({
-            format: 'DD/MM/YYYY',
+            format: 'MM/YYYY',
             useCurrent: false
         });
 
@@ -152,7 +152,7 @@
             menit = "0"+menit;
           }
 
-        $('#tanggal_awal').val(tanggal+"/"+bulan+"/"+tahun);
+        $('#tanggal_awal').val(bulan+"/"+tahun);
 
         $('.numeric').on('input', function (event) { 
 

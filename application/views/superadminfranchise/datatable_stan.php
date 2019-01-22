@@ -26,7 +26,7 @@
             $("#editidlama").val(response[0].id_stan);
             $("#editalamat").val(response[0].alamat);
             $("#editnama").val(response[0].nama_stan);
-            $("#editpinalti_terlambat").val(response[0].pinalti_terlambat);
+            // $("#editpinalti_terlambat").val(response[0].pinalti_terlambat);
             $("#editpinalti_bolos").val(response[0].pinalti_bolos);
             $("#edituang_makan").val(response[0].uang_makan);
             $("#edituang_lembur").val(response[0].uang_lembur);
@@ -51,19 +51,19 @@
     var nama =  $("#editnama").val();
     var id_lama = $("#editidlama").val();
     var password = $("#editpassword").val();
-    var pinalti_terlambat = $("#editpinalti_terlambat").val();
+    // var pinalti_terlambat = $("#editpinalti_terlambat").val();
     var pinalti_bolos = $("#editpinalti_bolos").val();
     var uang_makan = $("#edituang_makan").val();
     var uang_lembur = $("#edituang_lembur").val();
     var batas_telat_lembur = $("#editbatastelatlembur").val();
     var standar_lembur = $("#editstandarlembur").val();
     // var jumlahpegawai = $("#editjumlahpgw").val();
-    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_terlambat.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0&&batas_telat_lembur.replace(/\s/g, '').length>0&&standar_lembur.replace(/\s/g, '').length>0) {
+    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0&&batas_telat_lembur.replace(/\s/g, '').length>0&&standar_lembur.replace(/\s/g, '').length>0) {
       // &&jumlahpegawai.replace(/\s/g, '').length>0
     $.ajax({
           type:"post",
           url: "<?php echo base_url('superadminfranchise/edit_stan')?>/",
-          data:{ id_lama:id_lama,id:id,alamat:alamat,nama:nama,password:password,pinalti_terlambat:pinalti_terlambat,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur,batas_telat_lembur:batas_telat_lembur,standar_lembur:standar_lembur},
+          data:{ id_lama:id_lama,id:id,alamat:alamat,nama:nama,password:password,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur,batas_telat_lembur:batas_telat_lembur,standar_lembur:standar_lembur},
           success:function(response)
           {
             if(response == 'Berhasil Diupdate'){
@@ -81,9 +81,9 @@
                 $('#editpassword').removeClass("error");
               }
 
-              if($('#editpinalti_terlambat').has("error")){
-                $('#editpinalti_terlambat').removeClass("error");
-              }
+              // if($('#editpinalti_terlambat').has("error")){
+              //   $('#editpinalti_terlambat').removeClass("error");
+              // }
               if($('#editpinalti_bolos').has("error")){
                 $('#editpinalti_bolos').removeClass("error");
               }
@@ -130,13 +130,13 @@
         }
       }
     
-      if (pinalti_terlambat.replace(/\s/g, '').length<=0) {
-        $('#editpinalti_terlambat').addClass("error");
-      }else{
-        if($('#editpinalti_terlambat').has("error")){
-          $('#editpinalti_terlambat').removeClass("error");
-        }
-      }
+      // if (pinalti_terlambat.replace(/\s/g, '').length<=0) {
+      //   $('#editpinalti_terlambat').addClass("error");
+      // }else{
+      //   if($('#editpinalti_terlambat').has("error")){
+      //     $('#editpinalti_terlambat').removeClass("error");
+      //   }
+      // }
       if (pinalti_bolos.replace(/\s/g, '').length<=0) {
         $('#editpinalti_bolos').addClass("error");
       }else{
@@ -236,20 +236,20 @@ function tambahstan(){
     var nama = $("#nama").val();
     var alamat = $("#alamat").val();
     var password = $("#password").val();
-    var pinalti_terlambat = $("#pinalti_terlambat").val();
+    // var pinalti_terlambat = $("#pinalti_terlambat").val();
     var pinalti_bolos = $("#pinalti_bolos").val();
     var uang_makan = $("#uang_makan").val();
     var uang_lembur = $("#uang_lembur").val();
     var batas_telat_lembur = $("#batastelatlembur").val();
     var standar_lembur = $("#standarlembur").val();
     // var jumlahpegawai = $("#jumlahpgw").val();
-    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_terlambat.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0&&batas_telat_lembur.replace(/\s/g, '').length>0&&standar_lembur.replace(/\s/g, '').length>0) {
+    if (id.replace(/\s/g, '').length>0&&nama.replace(/\s/g, '').length>0&&alamat.replace(/\s/g, '').length>0&&password.replace(/\s/g, '').length>0&&pinalti_bolos.replace(/\s/g, '').length>0&&uang_makan.replace(/\s/g, '').length>0&&uang_lembur.replace(/\s/g, '').length>0&&batas_telat_lembur.replace(/\s/g, '').length>0&&standar_lembur.replace(/\s/g, '').length>0) {
 
         $.ajax(
             {
                 type:"post",
                 url: "<?php echo base_url('superadminfranchise/tambah_stan')?>/",
-                data:{ id:id,nama:nama,alamat:alamat,password:password,pinalti_terlambat:pinalti_terlambat,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur,batas_telat_lembur:batas_telat_lembur,standar_lembur:standar_lembur},
+                data:{ id:id,nama:nama,alamat:alamat,password:password,pinalti_bolos:pinalti_bolos,uang_makan:uang_makan,uang_lembur:uang_lembur,batas_telat_lembur:batas_telat_lembur,standar_lembur:standar_lembur},
                 success:function(response)
                 {
 
@@ -270,9 +270,9 @@ function tambahstan(){
                     // if($('#jumlahpgw').has("error")){
                     //   $('#jumlahpgw').removeClass("error");
                     // }
-                    if($('#pinalti_terlambat').has("error")){
-                      $('#pinalti_terlambat').removeClass("error");
-                    }
+                    // if($('#pinalti_terlambat').has("error")){
+                    //   $('#pinalti_terlambat').removeClass("error");
+                    // }
                     if($('#pinalti_bolos').has("error")){
                       $('#pinalti_bolos').removeClass("error");
                     }
@@ -343,13 +343,13 @@ function tambahstan(){
             }
         }
 
-        if (pinalti_terlambat.replace(/\s/g, '').length<=0) {
-          $('#pinalti_terlambat').addClass("error");
-        }else{
-          if($('#pinalti_terlambat').has("error")){
-            $('#pinalti_terlambat').removeClass("error");
-          }
-        }
+        // if (pinalti_terlambat.replace(/\s/g, '').length<=0) {
+        //   $('#pinalti_terlambat').addClass("error");
+        // }else{
+        //   if($('#pinalti_terlambat').has("error")){
+        //     $('#pinalti_terlambat').removeClass("error");
+        //   }
+        // }
         if (pinalti_bolos.replace(/\s/g, '').length<=0) {
           $('#pinalti_bolos').addClass("error");
         }else{
@@ -440,7 +440,7 @@ function tambahstan(){
           'nama_stan' : json.data[i].nama_stan,
           'alamat' : json.data[i].alamat,
           'password' : json.data[i].password,
-          'pinalti_terlambat' : json.data[i].pinalti_terlambat,
+          // 'pinalti_terlambat' : json.data[i].pinalti_terlambat,
           'pinalti_bolos' : json.data[i].pinalti_bolos,
           'uang_makan' : json.data[i].uang_makan,
           'uang_lembur' : json.data[i].uang_lembur,
@@ -474,7 +474,7 @@ function tambahstan(){
                 className: 'exportExcel',
                 filename: 'Data Seluruh Stan '+tanggal,
                 exportOptions: {
-                  columns:[0,1,2,3,4,5,6,7,8,9]
+                  columns:[0,1,2,3,4,5,6,7,8]
                 }
             }
         ],
@@ -487,7 +487,7 @@ function tambahstan(){
         {"data": "password"},
         {"data": "uang_makan"},
         {"data": "uang_lembur"},
-        {"data": "pinalti_terlambat"},
+        // {"data": "pinalti_terlambat"},
         {"data": "pinalti_bolos"},
         {"data": "batas_telat_lembur"},
         {"data": "standar_lembur"},
