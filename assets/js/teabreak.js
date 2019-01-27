@@ -57,11 +57,17 @@ function getimageteabreak() {
 }
 
 function currency(x) {
+	var minus;
+	if (x<0) {
+		minus = '-';
+	}else{
+		minus = '';
+	}
 	var retVal=x.toString().replace(/[^\d]/g,'');
 	while(/(\d+)(\d{3})/.test(retVal)) {
 	  retVal=retVal.replace(/(\d+)(\d{3})/,'$1'+'.'+'$2');
 	}
-	return retVal;
+	return minus+retVal;
 }
 
 function currency_special(x) {

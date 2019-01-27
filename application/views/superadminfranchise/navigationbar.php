@@ -123,13 +123,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="inputpenjualanstan">
                         <a href="inputpenjualanstan"> <i class="menu-icon fa fa-tasks"></i>Input Hasil Penjualan Stan</a>
                     </li>
-                    <li id="rekapharianstan">
+                    <!-- <li id="rekapharianstan">
                         <a href="rekapharianstan"> <i class="menu-icon ti-book"></i>Rekap Harian Stan </a>
-                    </li>
-                    <h3 class="menu-title">PROMO</h3><!-- /.menu-title -->
-                    <li id="skemapromo">
+                    </li> -->
+                    <!-- <h3 class="menu-title">PROMO</h3> --><!-- /.menu-title -->
+                    <!-- <li id="skemapromo">
                         <a href="skemapromo"> <i class="menu-icon fa fa-percent"></i>Skema Promo </a>
-                    </li>
+                    </li> -->
 
                     <h3 class="menu-title">KARYAWAN</h3><!-- /.menu-title -->
                     <li id="masterdatakaryawan">
@@ -137,6 +137,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </li>
                     <li id="manajemenshift">
                         <a href="manajemenshift"> <i class="menu-icon ti-layers-alt"></i>Manajemen Shift </a>
+                    </li>
+
+                    <h3 class="menu-title">WAREHOUSE</h3><!-- /.menu-title -->
+                    <li id="notapembelian">
+                        <a href="notapembelian"> <i class="menu-icon ti-shopping-cart"></i>Nota Pembelian Warehouse </a>
                     </li>
 
                     <h3 class="menu-title">LAPORAN</h3><!-- /.menu-title -->
@@ -152,9 +157,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="lapasetstokglobal">
                         <a href="lapasetstokglobal"> <i class="menu-icon ti-agenda"></i>Laporan Aset Global</a>
                     </li>
-                    <li id="lappenjstan">
+                    <!-- <li id="lappenjstan">
                         <a href="lappenjstan"> <i class="menu-icon ti-agenda"></i>Laporan Penjualan Stand</a>
-                    </li>
+                    </li> -->
                     <li id="lapsisastok">
                         <a href="lapsisastok"> <i class="menu-icon ti-agenda"></i>Laporan Sisa Stock Stan</a>
                     </li>

@@ -350,6 +350,8 @@ class SuperAdminFranchise extends CI_Controller {
         				// var_dump($datatosave);
         			// }
 				}
+
+				//KEUNTUNGAN STAN GAJI KARYAWAN
 				
         		// CREATE LAPORAN GAJI BULAN TAHUN SEBELUMNYA
         	}
@@ -431,7 +433,141 @@ class SuperAdminFranchise extends CI_Controller {
         		}
         	}
 
+        	//GAJI KARYAWAN DI KEUNTUNGAN STAN
+        	$where = array(
+        		'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+        		'keterangan' => 'Gaji Karyawan'
+
+        	);
+        	$checkkeuntunganstanbulanlalu = $this->Produk->getRowCount('keuntungan_stan',$where);
+
+        	if ($checkkeuntunganstanbulanlalu<=0) {
+        		foreach ($alldatastan as $perstan) {
+        			$where2 = array(
+	        			'bulan_tahun LIKE' => $bulanlalu.'-'.$tahunlalu,
+	        			'id_stan' => $perstan->id_stan
+	        		);
+	        		$allgajiblnlalu = $this->Produk->getData($where2,'laporan_gaji_karyawan');
+	        		$total = 0;
+
+	        		foreach ($allgajiblnlalu as $pergaji) {
+	        			$total = $total + $pergaji->gaji_akhir;
+	        		}
+
+	        		$datatosave = array(
+	        			'id_stan' => $perstan->id_stan,
+	        			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+	        			'keterangan' => 'Gaji Karyawan',
+	        			'total' => $total,
+	        			'tipe' => 'Kredit'
+	        		);
+
+	        		$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
+
+        		}
+        	}
+
+
+        	//keuntungan global
+
+        	$alldatastan = $this->Produk->getAllData('stan');
+
+        	foreach ($alldatastan as $perstan) {
+        		$where = array(
+	        		'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+	        		'keterangan' => 'Keuntungan Stan '.$perstan->nama_stan
+	        	);
+
+	        	$checkkeuntunganglobal = $this->Produk->getRowCount('keuntungan_global',$where);
+
+	        	if ($checkkeuntunganglobal<=0) {
+	        		$where2 = array(
+	        			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+	        			'id_stan' => $perstan->id_stan
+	        		);
+	        		$allkeuntunganstan = $this->Produk->getData($where2,'keuntungan_stan');
+	        		$total = 0;
+	        		foreach ($allkeuntunganstan as $perkeuntungan) {
+	        			if ($perkeuntungan->tipe == 'Kredit') {
+	        				$total = $total - $perkeuntungan->total;
+	        			}else{
+	        				$total = $total + $perkeuntungan->total;
+	        			}
+	        		}
+
+	        		$datatosave = array(
+	        			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+	        			'keterangan' => 'Keuntungan Stan '.$perstan->nama_stan,
+	        			'total' => $total,
+	        			'tipe' => 'Debit'
+	        		);
+
+	        		$insert = $this->Produk->insert('keuntungan_global',$datatosave);
+	        	}
+        	}
+
+        	$where = array(
+        		'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+        		'keterangan' => 'Pengeluaran Warehouse'
+
+        	);
+        	$checkkeuntunganglobal = $this->Produk->getRowCount('keuntungan_global',$where);
+
+        	if ($checkkeuntunganglobal<=0) {
+        		$where = array(
+	        		'tanggal LIKE' => $tahunlalu."-".$bulanlalu."-%"
+	        	);
+
+	        	$allpengeluarangudang = $this->Produk->getData($where,'pengeluaran_lain_gudang');
+	        	$totalpengeluaran = 0;
+
+	        	foreach ($allpengeluarangudang as $perpengeluaran) {
+	        		$totalpengeluaran+=$perpengeluaran->pengeluaran;
+	        	}
+
+	        	$datatosave = array(
+        			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+        			'keterangan' => 'Pengeluaran Warehouse',
+        			'total' => $totalpengeluaran,
+        			'tipe' => 'Kredit'
+        		);
+
+        		$insert = $this->Produk->insert('keuntungan_global',$datatosave);
+        	}
+
+        	$where = array(
+        		'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+        		'keterangan' => 'Gaji Karyawan Warehouse'
+
+        	);
+        	$checkkeuntunganglobal = $this->Produk->getRowCount('keuntungan_global',$where);
+
+        	if ($checkkeuntunganglobal<=0) {
+        		$where = array(
+        			'id_stan' => 'warehouse',
+	        		'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+	        	);
+
+	        	$allgajiwarehouse = $this->Produk->getData($where,'laporan_gaji_karyawan');
+	        	$total = 0;
+
+	        	foreach ($allgajiwarehouse as $pergaji) {
+	        		$total+=$pergaji->gaji_akhir;
+	        	}
+
+	        	$datatosave = array(
+        			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+        			'keterangan' => 'Gaji Karyawan Warehouse',
+        			'total' => $total,
+        			'tipe' => 'Kredit'
+        		);
+
+        		$insert = $this->Produk->insert('keuntungan_global',$datatosave);
+        	}
+
         	//1,2,12hitung keuntungan global
+
+        	
 
         	$this->load->view('superadminfranchise/navigationbar');
             $this->load->view('superadminfranchise/dashboard');
@@ -2144,6 +2280,8 @@ class SuperAdminFranchise extends CI_Controller {
 			$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
   		}
 
+  		$this->sinkronkeuntunganglobalstan($tanggal1[1]."-".$tanggal1[2],$stan);
+
   		//7dan3 hitung keuntungan global
   		
   		echo "Berhasil Ditambahkan";
@@ -2204,6 +2342,9 @@ class SuperAdminFranchise extends CI_Controller {
 			$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
   		}
 
+
+  		$this->sinkronkeuntunganglobalstan($newfortanggal,$databeforedelete[0]->id_stan);
+
   		//4 dan 8 hitung keuntungan global
 
   		echo "SUCCESSSAVE";
@@ -2211,6 +2352,7 @@ class SuperAdminFranchise extends CI_Controller {
   		echo "CANTCONNECT";
   	}
   }
+
 
   public function edit_pengeluaran_lain_stan()
   {
@@ -2272,6 +2414,8 @@ class SuperAdminFranchise extends CI_Controller {
 
 			$insert = $this->Produk->insert('keuntungan_stan',$datatosave);
   		}
+
+  		$this->sinkronkeuntunganglobalstan($newfortanggal,$getbeforeupdate[0]->id_stan);
 
   		//9 dan 5 hitung keuntungan global
   		echo "Berhasil Diupdate";
@@ -2409,8 +2553,28 @@ class SuperAdminFranchise extends CI_Controller {
 			);
 
 			$update = $this->Produk->update('laporan_gaji_karyawan', $datatoupdate, $wheregajitoup);
+
 		}
 
+		$allgajibulanitu = $this->Produk->getData($wheregaji,'laporan_gaji_karyawan');
+		$total = 0;
+		foreach ($allgajibulanitu as $pergajibulanitu) {
+			$total = $total + $pergajibulanitu->gaji_akhir;
+
+		}
+
+		$where = array(
+        		'bulan_tahun' => $tanggalstrip,
+        		'keterangan' => 'Gaji Karyawan',
+        		'id_stan' => $stan
+		);
+		$datatosave = array(
+			'total' => $total
+		);
+
+		$update = $this->Produk->update('keuntungan_stan', $datatosave, $where);
+
+		$this->sinkronkeuntunganglobalstan($tanggalstrip,$stan);
 		//10,6,15 hitung keuntungan global
 
   		echo "Berhasil Ditambahkan";
@@ -2513,6 +2677,26 @@ class SuperAdminFranchise extends CI_Controller {
 
 			$update = $this->Produk->update('laporan_gaji_karyawan', $datatoupdate, $wheregajitoup);
 		}
+
+		$allgajibulanitu = $this->Produk->getData($wheregaji,'laporan_gaji_karyawan');
+		$total = 0;
+		foreach ($allgajibulanitu as $pergajibulanitu) {
+			$total = $total + $pergajibulanitu->gaji_akhir;
+
+		}
+
+		$where = array(
+        		'bulan_tahun' => $tanggalstrip,
+        		'keterangan' => 'Gaji Karyawan',
+        		'id_stan' => $datatoup[0]->id_stan
+		);
+		$datatosave = array(
+			'total' => $total
+		);
+
+		$update = $this->Produk->update('keuntungan_stan', $datatosave, $where);
+
+		$this->sinkronkeuntunganglobalstan($tanggalstrip,$datatoup[0]->id_stan);
 		//11,13hitung keuntungan global
 
   		echo "Berhasil Diupdate";
@@ -2805,6 +2989,37 @@ class SuperAdminFranchise extends CI_Controller {
   	);
 
   	$save = $this->Produk->update('laporan_gaji_karyawan',$data,$where);
+  	$getgaji = $this->Produk->getData($where,'laporan_gaji_karyawan');
+
+  	$wheregaji = array(
+  		'bulan_tahun' => $getgaji[0]->bulan_tahun,
+  		'id_stan' => $getgaji[0]->id_stan,
+
+  	);
+
+  	$allgajibulanitu = $this->Produk->getData($wheregaji,'laporan_gaji_karyawan');
+		$total = 0;
+		foreach ($allgajibulanitu as $pergajibulanitu) {
+			$total = $total+$pergajibulanitu->gaji_akhir;
+
+		}
+
+		if ($getgaji[0]->id_stan == 'warehouse') {
+			$this->sinkronkeuntunganglobalgajiwarehouse($getgaji[0]->bulan_tahun);
+		}else{
+			$where = array(
+        		'bulan_tahun' => $getgaji[0]->bulan_tahun,
+        		'keterangan' => 'Gaji Karyawan',
+        		'id_stan' => $getgaji[0]->id_stan
+			);
+			$datatosave = array(
+				'total' => $total
+			);
+
+			$update = $this->Produk->update('keuntungan_stan', $datatosave, $where);
+
+			$this->sinkronkeuntunganglobalstan($getgaji[0]->bulan_tahun,$getgaji[0]->id_stan);
+		}
   	//14hitung keuntungan global
   	echo "Berhasil Diupdate";
   }
@@ -2930,6 +3145,111 @@ class SuperAdminFranchise extends CI_Controller {
   	}
   }
 
+  public function notapembelian()
+  {
+  	$akses = $this->session->userdata('aksessupadmin');
+        if(empty($akses)){
+            redirect('login');
+        }else{
+        	$this->load->view('superadminfranchise/navigationbar');
+          $this->load->view('superadminfranchise/notapembelian');
+        }
+  }
+
+  public function sinkronkeuntunganglobalstan($tanggal,$id_stan)
+  {
+  	$wherestan = array(
+		'id_stan' => $id_stan
+	);
+
+	$datastan =  $this->Produk->getData($wherestan,'stan');
+
+	$where = array(
+		'bulan_tahun' => $tanggal,
+		'keterangan' => 'Keuntungan Stan '.$datastan[0]->nama_stan
+	);
+
+	$checkkeuntunganglobal = $this->Produk->getRowCount('keuntungan_global',$where);
+
+	if ($checkkeuntunganglobal>0) {
+		$where2 = array(
+			'bulan_tahun' => $tanggal,
+			'id_stan' => $id_stan
+		);
+		$allkeuntunganstan = $this->Produk->getData($where2,'keuntungan_stan');
+		$total = 0;
+		foreach ($allkeuntunganstan as $perkeuntungan) {
+			if ($perkeuntungan->tipe == 'Kredit') {
+				$total = $total - $perkeuntungan->total;
+			}else{
+				$total = $total + $perkeuntungan->total;
+			}
+		}
+
+		$datatosave = array(
+			'total' => $total
+		);
+
+		$insert = $this->Produk->update('keuntungan_global',$datatosave,$where);
+	}else{
+		$datatosave = array(
+			'bulan_tahun' => $tanggal,
+			'keterangan' => 'Keuntungan Stan '.$datastan[0]->nama_stan,
+			'total' => $total,
+			'tipe' => 'Debit'
+		);
+
+		$insert = $this->Produk->insert('keuntungan_global',$datatosave);
+	}
+  }
+
+  public function sinkronkeuntunganglobalgajiwarehouse($tanggal)
+  {
+  		$tanggalpart = explode('-', $tanggal);
+    		$bulan = $tanggalpart[0];
+    		$tahun = $tanggalpart[1];
+
+  		$where = array(
+    		'bulan_tahun' => $tanggal,
+    		'keterangan' => 'Gaji Karyawan Warehouse'
+
+    	);
+    	$checkkeuntunganglobal = $this->Produk->getRowCount('keuntungan_global',$where);
+
+    	$where1 = array(
+    		'bulan_tahun' => $tanggal
+    	);
+
+    	$allgajiwarehouse = $this->Produk->getData($where1,'laporan_gaji_karyawan');
+    	$totalgaji = 0;
+
+    	foreach ($allgajiwarehouse as $pergaji) {
+    		$totalgaji+=$pergaji->gaji_akhir;
+    	}
+
+    	if ($checkkeuntunganglobal<=0) {
+    		
+        	$datatosave = array(
+    			'bulan_tahun' => $bulanlalu."-".$tahunlalu,
+    			'keterangan' => 'Gaji Karyawan Warehouse',
+    			'total' => $totalgaji,
+    			'tipe' => 'Kredit'
+    		);
+
+    		$insert = $this->Produk->insert('keuntungan_global',$datatosave);
+    	}else{
+
+    		$datatosave = array(
+    			'total' => $totalgaji
+    		);
+
+    		$update = $this->Produk->update('keuntungan_global',$datatosave,$where);
+    	}
+  }
+
+  
+  //2490
+  //46167,7kwh 17.30
   
 
 }

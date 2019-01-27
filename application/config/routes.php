@@ -105,7 +105,8 @@ $route['inputpenjualanstan'] = 'superadminfranchise/inputpenjualanstan';
 $route['manajemenshift'] = 'superadminfranchise/manajemenshift';
 $route['lapgajikaryawan'] = 'superadminfranchise/lapgajikaryawan';
 $route['lapkeuntunganstan'] = 'superadminfranchise/lapkeuntunganstan';
-$route['lapkeuntunganglobal'] = 'superadminfranchise/lapkeuntunganglobal';
+$route['notapembelian'] = 'superadminfranchise/notapembelian';
+
 
 
 
