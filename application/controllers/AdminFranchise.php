@@ -350,6 +350,7 @@ class AdminFranchise extends CI_Controller {
     $jumlahpengeluaran = $this->input->post('jumlahpengeluaran');
 
     $datenow = date("Y-m-d");
+    $datenow2 = date("m-Y");
     
     $data = array(
       'tanggal' => $datenow,
@@ -380,6 +381,8 @@ class AdminFranchise extends CI_Controller {
         $ok = $this->Produk->insert('modal_gudang',$data);
       }
 
+      $this->sinkronkeuntunganglobalpengeluaranwarehouse($datenow2);
+
       echo "Berhasil Ditambahkan";
     }
     
@@ -402,10 +405,18 @@ class AdminFranchise extends CI_Controller {
   {
     $id_pengeluaran = $this->input->post('id');
 
+    $where = array('id_pengeluaran' => $id_pengeluaran);
+    $realdata = $this->Produk->getData($where,'pengeluaran_lain_gudang');
+    $dateall = $realdata[0]->tanggal;
+      $dateall = explode('-', $dateall);
+      $datenow2 = $dateall[1].'-'.$dateall[0];
+
+
     $wheredel = array('id_pengeluaran' => $id_pengeluaran);
     $sst = $this->Produk->deleteWhere('pengeluaran_lain_gudang',$wheredel);
 
     if ($sst) {
+      $this->sinkronkeuntunganglobalpengeluaranwarehouse($datenow2);
       echo "SUCCESSSAVE";
     }else{
       echo "ERROR";
@@ -453,6 +464,12 @@ class AdminFranchise extends CI_Controller {
         );
         $ok = $this->Produk->insert('modal_gudang',$data);
       }
+
+      $dateall = $realdata[0]->tanggal;
+      $dateall = explode('-', $dateall);
+      $datenow2 = $dateall[1].'-'.$dateall[0];
+
+      $this->sinkronkeuntunganglobalpengeluaranwarehouse($datenow2);
       echo "Berhasil Diupdate";
     }else{
       echo "gagal";
@@ -803,6 +820,7 @@ class AdminFranchise extends CI_Controller {
               'id_stan' => 'warehouse',
               'pin' => $user->PIN,
               'nama' => $user->Name
+
             );
 
             $this->Produk->insert('karyawan_fingerspot',$data);
@@ -884,5 +902,51 @@ class AdminFranchise extends CI_Controller {
     }
     return $response;
   }
+
+  public function sinkronkeuntunganglobalpengeluaranwarehouse($tanggal)
+  {
+    $tanggalpart = explode('-', $tanggal);
+          $bulan = $tanggalpart[0];
+          $tahun = $tanggalpart[1];
+
+        $where = array(
+          'bulan_tahun' => $tanggal,
+          'keterangan' => 'Pengeluaran Warehouse'
+
+        );
+        $checkkeuntunganglobal = $this->Produk->getRowCount('keuntungan_global',$where);
+
+        $where1 = array(
+          'tanggal LIKE' => $tahun."-".$bulan."-%"
+        );
+
+        $allpengeluarangudang = $this->Produk->getData($where1,'pengeluaran_lain_gudang');
+        $totalpengeluaran = 0;
+
+        foreach ($allpengeluarangudang as $perpengeluaran) {
+          $totalpengeluaran+=$perpengeluaran->pengeluaran;
+        }
+
+        if ($checkkeuntunganglobal<=0) {
+          
+            $datatosave = array(
+            'bulan_tahun' => $tanggal,
+            'keterangan' => 'Pengeluaran Warehouse',
+            'total' => $totalpengeluaran,
+            'tipe' => 'Kredit'
+          );
+
+          $insert = $this->Produk->insert('keuntungan_global',$datatosave);
+        }else{
+
+          $datatosave = array(
+            'total' => $totalpengeluaran
+          );
+
+          $update = $this->Produk->update('keuntungan_global',$datatosave,$where);
+        }
+  }
 }
+
+
 ?>
