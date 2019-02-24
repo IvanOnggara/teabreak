@@ -3170,22 +3170,22 @@ class SuperAdminFranchise extends CI_Controller {
 	);
 
 	$checkkeuntunganglobal = $this->Produk->getRowCount('keuntungan_global',$where);
+		
+	$where2 = array(
+		'bulan_tahun' => $tanggal,
+		'id_stan' => $id_stan
+	);
+	$allkeuntunganstan = $this->Produk->getData($where2,'keuntungan_stan');
+	$total = 0;
+	foreach ($allkeuntunganstan as $perkeuntungan) {
+		if ($perkeuntungan->tipe == 'Kredit') {
+			$total = $total - $perkeuntungan->total;
+		}else{
+			$total = $total + $perkeuntungan->total;
+		}
+	}
 
 	if ($checkkeuntunganglobal>0) {
-		$where2 = array(
-			'bulan_tahun' => $tanggal,
-			'id_stan' => $id_stan
-		);
-		$allkeuntunganstan = $this->Produk->getData($where2,'keuntungan_stan');
-		$total = 0;
-		foreach ($allkeuntunganstan as $perkeuntungan) {
-			if ($perkeuntungan->tipe == 'Kredit') {
-				$total = $total - $perkeuntungan->total;
-			}else{
-				$total = $total + $perkeuntungan->total;
-			}
-		}
-
 		$datatosave = array(
 			'total' => $total
 		);
