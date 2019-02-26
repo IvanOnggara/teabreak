@@ -3250,6 +3250,6 @@ class SuperAdminFranchise extends CI_Controller {
   
   //2490
   //46167,7kwh 17.30
-  
+  //46173,2kwh 17.40
 
 }
