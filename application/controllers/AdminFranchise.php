@@ -367,7 +367,7 @@ class AdminFranchise extends CI_Controller {
         $datamodal = $this->Produk->getAllData('modal_gudang');
         $modal = $datamodal[0]->jumlah_modal;
         $data = array(
-          'jumlah_modal' => $modal+$jumlahpengeluaran
+          'jumlah_modal' => $modal-$jumlahpengeluaran
         );
         $where = array(
           'id' => 'modaldata'
