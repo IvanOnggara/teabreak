@@ -123,6 +123,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="inputpenjualanstan">
                         <a href="inputpenjualanstan"> <i class="menu-icon fa fa-tasks"></i>Input Hasil Penjualan Stan</a>
                     </li>
+                    <li id="rekappengeluaranstan">
+                        <a href="rekappengeluaranstan"> <i class="menu-icon ti-book"></i>Rekap Pengeluaran Stan (Kasir) </a>
+                    </li>
                     <!-- <li id="rekapharianstan">
                         <a href="rekapharianstan"> <i class="menu-icon ti-book"></i>Rekap Harian Stan </a>
                     </li> -->
@@ -175,6 +178,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li id="lapkeuntunganglobal">
                         <a  href="lapkeuntunganglobal"> <i class="menu-icon ti-agenda"></i>Keuntungan Global</a>
                     </li>
+
+
+                    <!-- //not use -->
                     <!-- <li id="">
                         <a style="pointer-events: none;" href="#"> <i class="menu-icon ti-agenda"></i>Laporan Pembelian</a>
                     </li>

@@ -59,6 +59,7 @@ $route['masterdatastan'] = 'superadminfranchise/masterdatastan';
 $route['datastan'] = 'superadminfranchise/datastan';
 $route['gajibonusstan'] = 'superadminfranchise/gajibonusstan';
 $route['rekapharianstan'] = 'superadminfranchise/rekapharianstan';
+$route['rekappengeluaranstan'] = 'superadminfranchise/rekappengeluaranstan';
 $route['skemapromo'] = 'superadminfranchise/skemapromo';
 $route['masterdatakaryawan'] = 'superadminfranchise/masterdatakaryawan';
 $route['lappenjstan'] = 'superadminfranchise/lappenjstan';

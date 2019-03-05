@@ -334,7 +334,7 @@ class SuperAdminFranchise extends CI_Controller {
         				'bonus_omset' => $bonus_omset,
         				'uang_makan' => $uang_makan_akhir,
         				'uang_lembur' => $uang_lembur_akhir,
-        				'potongan_terlambat' => 0,
+        				// 'potongan_terlambat' => 0,
         				'potongan_cuti' => $potongan_cuti_akhir,
         				'gaji_akhir' => $gaji_akhir,
         			);
@@ -1783,6 +1783,17 @@ class SuperAdminFranchise extends CI_Controller {
         }else{
         	$this->load->view('superadminfranchise/navigationbar');
             $this->load->view('superadminfranchise/rekapdataharian');
+        }
+	}
+
+	public function rekappengeluaranstan()
+	{
+		$akses = $this->session->userdata('aksessupadmin');
+        if(empty($akses)){
+            redirect('login');
+        }else{
+        	$this->load->view('superadminfranchise/navigationbar');
+            $this->load->view('superadminfranchise/rekappengeluaranstanharian');
         }
 	}
 
